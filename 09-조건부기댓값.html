@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>9&nbsp; 조건부기댓값 – 확률론 입문 — 한국어 번역</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./10-부등식과-극한정리.html" rel="next">
+<link href="./08-변환.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7d8ad657b878717df1156ab40fed854c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./09-조건부기댓값.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">조건부기댓값</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="검색" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">확률론 입문 — 한국어 번역</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">번역 안내</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./서문.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">헌정사와 서문</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-확률과-경우의-수.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">확률과 경우의 수</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-조건부확률.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">조건부확률</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-확률변수와-분포.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">확률변수와 그 분포</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-기댓값.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">기댓값</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-연속확률변수.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">연속확률변수</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-적률.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">적률</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-결합분포.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">결합분포</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-변환.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">변환</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-조건부기댓값.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">조건부기댓값</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-부등식과-극한정리.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">부등식과 극한정리</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-마르코프-연쇄.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">마르코프 연쇄</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-마르코프-연쇄-몬테카를로.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">마르코프 연쇄 몬테카를로</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-포아송-과정.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">포아송 과정</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A-수학.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">수학</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./B-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./C-분포표.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">분포표</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./참고문헌.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">참고문헌</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./색인.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">색인</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#사건이-주어진-조건부기댓값" id="toc-사건이-주어진-조건부기댓값" class="nav-link active" data-scroll-target="#사건이-주어진-조건부기댓값"><span class="header-section-number">9.1</span> 사건이 주어진 조건부기댓값</a></li>
+  <li><a href="#확률변수가-주어졌을-때의-조건부기댓값" id="toc-확률변수가-주어졌을-때의-조건부기댓값" class="nav-link" data-scroll-target="#확률변수가-주어졌을-때의-조건부기댓값"><span class="header-section-number">9.2</span> 확률변수가 주어졌을 때의 조건부기댓값</a></li>
+  <li><a href="#조건부기댓값의-성질" id="toc-조건부기댓값의-성질" class="nav-link" data-scroll-target="#조건부기댓값의-성질"><span class="header-section-number">9.3</span> 조건부기댓값의 성질</a></li>
+  <li><a href="#조건부기댓값의-기하학적-해석" id="toc-조건부기댓값의-기하학적-해석" class="nav-link" data-scroll-target="#조건부기댓값의-기하학적-해석"><span class="header-section-number">9.4</span> *조건부기댓값의 기하학적 해석</a></li>
+  <li><a href="#조건부분산" id="toc-조건부분산" class="nav-link" data-scroll-target="#조건부분산"><span class="header-section-number">9.5</span> 조건부분산</a></li>
+  <li><a href="#아담과-이브의-법칙-예제" id="toc-아담과-이브의-법칙-예제" class="nav-link" data-scroll-target="#아담과-이브의-법칙-예제"><span class="header-section-number">9.6</span> 아담과 이브의 법칙 예제</a></li>
+  <li><a href="#정리" id="toc-정리" class="nav-link" data-scroll-target="#정리"><span class="header-section-number">9.7</span> 정리</a></li>
+  <li><a href="#r" id="toc-r" class="nav-link" data-scroll-target="#r"><span class="header-section-number">9.8</span> R</a>
+  <ul class="collapse">
+  <li><a href="#정체를-모르는-상품-시뮬레이션" id="toc-정체를-모르는-상품-시뮬레이션" class="nav-link" data-scroll-target="#정체를-모르는-상품-시뮬레이션"><span class="header-section-number">9.8.1</span> 정체를 모르는 상품 시뮬레이션</a></li>
+  <li><a href="#hh와-ht가-나올-때까지의-시간" id="toc-hh와-ht가-나올-때까지의-시간" class="nav-link" data-scroll-target="#hh와-ht가-나올-때까지의-시간"><span class="header-section-number">9.8.2</span> HH와 HT가 나올 때까지의 시간</a></li>
+  <li><a href="#선형회귀" id="toc-선형회귀" class="nav-link" data-scroll-target="#선형회귀"><span class="header-section-number">9.8.3</span> 선형회귀</a></li>
+  </ul></li>
+  <li><a href="#연습문제" id="toc-연습문제" class="nav-link" data-scroll-target="#연습문제"><span class="header-section-number">9.9</span> 연습문제</a>
+  <ul class="collapse">
+  <li><a href="#사건이-주어졌을-때의-조건부기댓값" id="toc-사건이-주어졌을-때의-조건부기댓값" class="nav-link" data-scroll-target="#사건이-주어졌을-때의-조건부기댓값"><span class="header-section-number">9.9.1</span> 사건이 주어졌을 때의 조건부기댓값</a></li>
+  <li><a href="#확률변수가-주어졌을-때의-조건부기댓값-1" id="toc-확률변수가-주어졌을-때의-조건부기댓값-1" class="nav-link" data-scroll-target="#확률변수가-주어졌을-때의-조건부기댓값-1"><span class="header-section-number">9.9.2</span> 확률변수가 주어졌을 때의 조건부기댓값</a></li>
+  <li><a href="#종합-연습" id="toc-종합-연습" class="nav-link" data-scroll-target="#종합-연습"><span class="header-section-number">9.9.3</span> 종합 연습</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">조건부기댓값</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>앞 장들을 읽었다면 조건부기댓값이 무엇인지 이미 알고 있다. 조건부확률을 사용하는 기댓값이다. 조건부확률이 필요한 이유와 비슷한 이유로 이 개념은 필수적이다.</p>
+<ul>
+<li>조건부기댓값은 기댓값을 계산하는 강력한 도구이다. 알면 좋을 것을 조건으로 삼거나 첫 단계 분석 같은 전략을 이용하면 복잡한 기댓값 문제를 더 간단한 부분으로 나눌 수 있는 경우가 많다.</li>
+<li>조건부기댓값은 그 자체로 중요한 양이며, 현재 이용 가능한 증거를 바탕으로 미지의 값을 예측하거나 추정할 수 있게 한다. 예를 들어 통계학에서는 설명변수(푼 연습문제 수나 직업훈련 프로그램 등록 여부 등)를 바탕으로 반응변수(시험 점수나 소득 등)를 예측하고자 하는 경우가 많다.</li>
+</ul>
+<p>조건부기댓값에는 서로 다르지만 밀접하게 연결된 두 개념이 있다.</p>
+<ul>
+<li><strong>사건이 주어진 조건부기댓값 <span class="math inline">\(E(Y\mid A)\)</span>:</strong> <span class="math inline">\(Y\)</span>를 확률변수, <span class="math inline">\(A\)</span>를 사건이라 하자. <span class="math inline">\(A\)</span>가 발생했음을 알았을 때 갱신된 <span class="math inline">\(Y\)</span>의 기댓값을 <span class="math inline">\(E(Y\mid A)\)</span>로 나타내며, <span class="math inline">\(E(Y)\)</span>와 비슷하게 계산하되 <span class="math inline">\(A\)</span>가 주어진 조건부확률을 사용한다.</li>
+<li><strong>확률변수가 주어진 조건부기댓값 <span class="math inline">\(E(Y\mid X)\)</span>:</strong> <span class="math inline">\(X,Y\)</span>가 모두 확률변수일 때 <span class="math inline">\(E(Y\mid X)\)</span>를 어떻게 정의할지는 더 미묘한 문제이다. 직관적으로 <span class="math inline">\(E(Y\mid X)\)</span>는 <span class="math inline">\(X\)</span>에서 얻을 수 있는 정보만을 사용하여 <span class="math inline">\(Y\)</span>를 가장 잘 예측하는 확률변수이다.</li>
+</ul>
+<p>이 장에서는 두 형태의 조건부기댓값에 대한 정의, 성질, 직관과 응용을 살펴본다.</p>
+<section id="사건이-주어진-조건부기댓값" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="사건이-주어진-조건부기댓값"><span class="header-section-number">9.1</span> 사건이 주어진 조건부기댓값</h2>
+<p>이산확률변수 <span class="math inline">\(Y\)</span>의 기댓값 <span class="math inline">\(E(Y)\)</span>는 가능한 값들의 가중평균이며 가중치는 확률질량함숫값 <span class="math inline">\(P(Y=y)\)</span>이다. 사건 <span class="math inline">\(A\)</span>가 발생했음을 알게 된 후에는 이 새로운 정보를 반영해 갱신된 가중치를 사용하고자 한다. <span class="math inline">\(E(Y\mid A)\)</span>의 정의는 확률 <span class="math inline">\(P(Y=y)\)</span>를 조건부확률 <span class="math inline">\(P(Y=y\mid A)\)</span>로 바꾸기만 하면 된다.</p>
+<p>마찬가지로 <span class="math inline">\(Y\)</span>가 연속형이면 <span class="math inline">\(E(Y)\)</span>는 여전히 <span class="math inline">\(Y\)</span>의 가능한 값들의 가중평균이지만 합 대신 적분을 쓰고 확률질량함숫값 대신 확률밀도함숫값 <span class="math inline">\(f(y)\)</span>를 쓴다. <span class="math inline">\(A\)</span>가 발생했음을 알게 되면 <span class="math inline">\(f(y)\)</span>를 조건부 확률밀도함수 <span class="math inline">\(f(y\mid A)\)</span>로 바꾸어 <span class="math inline">\(Y\)</span>의 기댓값을 갱신한다.</p>
+<p><strong>정의 9.1.1 (사건이 주어진 조건부기댓값).</strong> <span class="math inline">\(A\)</span>를 확률이 양수인 사건이라 하자. <span class="math inline">\(Y\)</span>가 이산확률변수이면 <span class="math inline">\(A\)</span>가 주어졌을 때 <span class="math inline">\(Y\)</span>의 조건부기댓값은</p>
+<p><span class="math display">\[E(Y\mid A)=\sum_y yP(Y=y\mid A)\]</span></p>
+<p>이며 합은 <span class="math inline">\(Y\)</span>의 지지집합에 걸쳐 취한다. <span class="math inline">\(Y\)</span>가 확률밀도함수 <span class="math inline">\(f\)</span>를 갖는 연속확률변수이면</p>
+<p><span class="math display">\[E(Y\mid A)=\int_{-\infty}^{\infty}yf(y\mid A)\,dy,\]</span></p>
+<p>여기서 조건부 확률밀도함수 <span class="math inline">\(f(y\mid A)\)</span>는 조건부 누적분포함수 <span class="math inline">\(F(y\mid A)=P(Y\le y\mid A)\)</span>의 도함수로 정의되며, 베이즈 정리의 혼합형을 이용해 다음과 같이 계산할 수도 있다.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p><span class="math display">\[f(y\mid A)=\frac{P(A\mid Y=y)f(y)}{P(A)}.\]</span></p>
+<p><strong>직관 9.1.2.</strong> <span class="math inline">\(E(Y\mid A)\)</span>에 대한 직관을 얻기 위해 시뮬레이션으로 근사해 보자. 또는 같은 실험을 여러 번 반복하는 빈도주의적 관점에서 생각해도 된다. <span class="math inline">\(Y\)</span>가 수치적으로 요약하는 실험을 <span class="math inline">\(n\)</span>번 반복한다고 상상하자. 그러면 <span class="math inline">\(Y\)</span>의 값 <span class="math inline">\(y_1,\ldots,y_n\)</span>을 얻게 되고</p>
+<p><span class="math display">\[E(Y)\approx\frac1n\sum_{j=1}^n y_j\]</span></p>
+<p>으로 근사할 수 있다. <span class="math inline">\(E(Y\mid A)\)</span>를 근사하려면 <span class="math inline">\(A\)</span>가 발생한 반복들로 제한하여 그때의 <span class="math inline">\(Y\)</span> 값들만 평균한다. 이는 다음과 같이 쓸 수 있다.</p>
+<p><span class="math display">\[E(Y\mid A)\approx\frac{\sum_{j=1}^n y_jI_j}{\sum_{j=1}^n I_j},\]</span></p>
+<p>여기서 <span class="math inline">\(I_j\)</span>는 <span class="math inline">\(j\)</span>번째 반복에서 <span class="math inline">\(A\)</span>가 발생한 사건의 지시확률변수이다. 시뮬레이션에서 <span class="math inline">\(A\)</span>가 전혀 발생하지 않으면 이 값은 정의되지 않는다. 그러한 경우 ‘<span class="math inline">\(A\)</span>가 발생한’ 상황이 어떤지 알려 주는 시뮬레이션 자료가 전혀 없으므로 이는 납득할 만하다. <span class="math inline">\(A\)</span>가 여러 번 발생하도록 <span class="math inline">\(n\)</span>을 충분히 크게 잡고 싶다. <span class="math inline">\(A\)</span>가 희귀 사건이라면 <span class="math inline">\(E(Y\mid A)\)</span>를 근사하기 위해 더 정교한 기법이 필요할 수도 있다.</p>
+<p>하지만 원리는 단순하다. <span class="math inline">\(E(Y\mid A)\)</span>는 <span class="math inline">\(A\)</span>가 발생한 많은 시뮬레이션 실행에서 얻은 <span class="math inline">\(Y\)</span>의 평균으로 근사된다. <span class="math inline">\(\square\)</span></p>
+<p><strong>주의 9.1.3.</strong> 조건부기댓값과 무조건부기댓값을 혼동하는 것은 위험한 실수이다. 더 일반적으로, 무엇을 조건으로 삼아야 하고 무엇을 실제로 조건으로 삼고 있는지 주의 깊게 추적하지 않으면 재앙을 초래할 수 있다.</p>
+<p>앞의 주의가 생사를 가르는 예로 기대수명을 생각해 보자.</p>
+<p><strong>예제 9.1.4 (기대수명).</strong> 프레드는 30세이며 자기 나라의 평균 기대수명이 80세라는 말을 듣는다. 그렇다면 앞으로 평균 50년을 더 살 것이라고 결론 내려야 할까? 그렇지 않다. 그가 이미 30세까지 살았다는 사실은 반드시 조건으로 삼아야 하는 중요한 정보이다. 프레드의 수명을 <span class="math inline">\(T\)</span>라 하면 다음과 같은 반가운 소식이 있다.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p><span class="math display">\[E(T)&lt;E(T\mid T\ge30).\]</span></p>
+<p>왼쪽은 출생 시점의 프레드의 기대수명으로, 그가 태어났다는 사실을 암묵적으로 조건으로 삼고 있다. 오른쪽은 프레드가 30세에 이르렀다는 조건 아래에서의 기대수명이다.</p>
+<p>더 어려운 질문은 <span class="math inline">\(E(T)\)</span>의 적절한 추정치를 어떻게 정할 것인가이다. 그저 나라 전체의 평균인 80세를 쓰면 될까? 거의 모든 나라에서 여성의 평균 기대수명이 남성보다 길므로, 프레드가 남성이라는 사실을 조건으로 삼는 것이 타당하다. 하지만 그가 태어난 도시도 조건으로 삼아야 할까? 부모의 인종이나 경제적 정보, 또는 태어난 시간대도 조건으로 삼아야 할까? 직관적으로는 프레드에게 정확하면서도 관련 있는 추정치를 원한다. 그러나 프레드의 특징을 더 많이 조건으로 삼을수록 기대수명을 추정하는 자료로 쓸 수 있는, 그 특징에 부합하는 사람 수가 줄어든다는 상충관계가 있다.</p>
+<p>이제 미국에 관한 구체적인 수치를 살펴보자. 사회보장국의 한 연구는 1900년부터 2000년 사이 미국의 출생 시 평균 기대수명이 남성의 경우 46세에서 74세로, 여성의 경우 49세에서 79세로 늘었다고 추정했다. 엄청난 증가이다! 그러나 이 증가의 상당 부분은 아동 사망률의 감소 때문이다. 1900년에 30세였던 사람의 평균 잔여 수명은 남성이 35년, 여성이 36년이었다. 2000년의 대응 수치는 남성 46년, 여성 50년이었다.</p>
+<p>이러한 추정치를 얻는 데는 미묘한 통계적 문제가 있다. 예를 들어 적어도 2100년까지 기다리지 않고 2000년에 태어난 사람의 기대수명을 어떻게 추정했을까? 생존분포의 추정은 생물통계학과 보험계리학에서 매우 중요한 주제이다. <span class="math inline">\(\square\)</span></p>
+<p>전체 확률의 법칙을 이용하면 표본공간을 조각으로 나누고 각 조각에서 조건부확률을 계산하여 무조건부확률을 구할 수 있다. 같은 생각을 무조건부기댓값을 구하는 데도 쓸 수 있다.</p>
+<p><strong>정리 9.1.5 (전체 기댓값의 법칙).</strong> <span class="math inline">\(A_1,\ldots,A_n\)</span>을 표본공간의 분할로서 모든 <span class="math inline">\(i\)</span>에 대해 <span class="math inline">\(P(A_i)&gt;0\)</span>이라 하고 <span class="math inline">\(Y\)</span>를 이 표본공간의 확률변수라 하자. 그러면</p>
+<p><span class="math display">\[E(Y)=\sum_{i=1}^n E(Y\mid A_i)P(A_i).\]</span></p>
+<p>사실 근본적인 연결에 따라 모든 확률은 기댓값이므로 전체 확률의 법칙은 전체 기댓값의 법칙의 특수한 경우이다. 이를 보려면 사건 <span class="math inline">\(B\)</span>의 지시확률변수 <span class="math inline">\(Y=I_B\)</span>를 취한다. 그러면 위 정리는</p>
+<p><span class="math display">\[P(B)=E(I_B)=\sum_{i=1}^n E(I_B\mid A_i)P(A_i)=\sum_{i=1}^nP(B\mid A_i)P(A_i)\]</span></p>
+<p>를 뜻하며, 이것이 바로 전체 확률의 법칙이다. 전체 기댓값의 법칙은 다시 <strong>아담의 법칙</strong>이라는 중요한 결과(정리 9.3.7)의 특수한 경우이므로 아직 증명하지 않겠다.</p>
+<p>알면 좋을 것을 조건으로 삼아 무조건부기댓값을 조건부기댓값들로 분해하는 흥미로운 예가 많다. 먼저 주의 깊게 조건을 삼고 정당한 근거 없이 정보를 버리지 않는 것이 얼마나 중요한지 보여 주는 두 가지 경고 이야기로 시작한다.</p>
+<p><strong>예제 9.1.6 (두 봉투 역설).</strong> 낯선 사람이 겉보기에 똑같고 봉인된 봉투 두 개를 내놓는다. 각 봉투에는 양의 금액이 적힌 수표가 들어 있다. 한 봉투에 다른 봉투의 정확히 두 배가 들어 있다는 말을 들었다. 어느 봉투든 고를 수 있다면 왼쪽과 오른쪽 중 어느 쪽을 선호하겠는가? 각 봉투에 든 금액의 기댓값은 유한하다고 가정하자. 현실 세계에서는 분명 타당한 가정이다!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-9-1.png" class="img-fluid figure-img"></p>
+<figcaption>그림 9.1: 한 봉투에는 다른 봉투의 두 배가 들어 있다. 같은 확률로 <span class="math inline">\(Y=2X\)</span> 또는 <span class="math inline">\(Y=X/2\)</span>이다. 어느 쪽을 선호하겠는가?</figcaption>
+</figure>
+</div>
+<p><em>풀이.</em> 왼쪽과 오른쪽 봉투에 든 금액을 각각 <span class="math inline">\(X,Y\)</span>라 하자. 대칭성에 따라 어느 한 봉투를 다른 봉투보다 선호할 이유가 없다. 낯선 사람이 왼손잡이이고 왼손잡이는 더 많은 돈을 왼쪽에 놓기 좋아한다는 사전 정보는 없다고 가정한다. 대칭성에 의해 <span class="math inline">\(E(X)=E(Y)\)</span>라고 결론 내리면 어느 봉투를 받든 상관없어 보인다.</p>
+<p>그러나 봉투 안에 무엇이 있는지 상상하다 보면 다른 논증이 떠오른다. 왼쪽 봉투에 100달러가 들어 있다고 하자. 그러면 오른쪽 봉투에는 50달러 또는 200달러가 있다. 50과 200의 평균은 125달러이므로 오른쪽 봉투가 더 좋아 보인다. 하지만 여기서 100달러라는 값에 특별한 점은 없었다. 왼쪽 봉투의 금액이 어떤 값 <span class="math inline">\(x\)</span>이든 <span class="math inline">\(2x\)</span>와 <span class="math inline">\(x/2\)</span>의 평균은 <span class="math inline">\(x\)</span>보다 크므로 오른쪽 봉투가 더 좋아 보인다. 그런데 이는 대칭성 논증에 모순될 뿐 아니라 같은 논리를 오른쪽 봉투에서 출발해 적용하면 영원히 이쪽저쪽으로 바꾸게 되므로 이상하다!</p>
+<p>무슨 일이 일어나는지 보기 위해 이 논증을 형식화해 보자. 같은 확률로 <span class="math inline">\(Y=2X\)</span> 또는 <span class="math inline">\(Y=X/2\)</span>이다. 정리 9.1.5에 의해</p>
+<p><span class="math display">\[E(Y)=E(Y\mid Y=2X)\cdot\frac12+E(Y\mid Y=X/2)\cdot\frac12.\]</span></p>
+<p>그러면 다음과 같다고 생각하기 쉽다.</p>
+<p><span class="math display">\[E(2X)\cdot\frac12+E(X/2)\cdot\frac12=\frac54E(X).\]</span></p>
+<p>이는 왼쪽 봉투에서 오른쪽으로 바꾸면 25%의 이익을 얻는다는 뜻처럼 보인다. 그러나 이 계산에는 큰 실수가 있다. <span class="math inline">\(E(Y\mid Y=2X)=E(2X\mid Y=2X)\)</span>이지만, <span class="math inline">\(Y\)</span>에 <span class="math inline">\(2X\)</span>를 대입한 뒤 <span class="math inline">\(Y=2X\)</span>라는 조건을 없앨 정당한 근거가 없다.</p>
+<p>달리 말해 <span class="math inline">\(I\)</span>를 사건 <span class="math inline">\(Y=2X\)</span>의 지시확률변수라 하면 <span class="math inline">\(E(Y\mid Y=2X)=E(2X\mid I=1)\)</span>이다. <span class="math inline">\(X\)</span>가 <span class="math inline">\(I\)</span>와 독립임을 안다면 <span class="math inline">\(I=1\)</span>이라는 조건을 없앨 수 있다. 하지만 실제로는 <span class="math inline">\(X\)</span>와 <span class="math inline">\(I\)</span>가 독립일 수 없음을 방금 <em>증명했다</em>. 독립이라면 역설이 생기기 때문이다! 놀랍게도 <span class="math inline">\(X\)</span>를 관찰하면 <span class="math inline">\(X\)</span>가 더 큰 값인지 작은 값인지에 대한 정보를 얻는다. <span class="math inline">\(X\)</span>가 아주 크다는 것을 알면 <span class="math inline">\(X\)</span>가 <span class="math inline">\(Y\)</span>보다 크다고 짐작할 수 있겠지만, 무엇을 아주 크다고 볼까? <span class="math inline">\(10^{100}\)</span>에 비하면 아주 작은 <span class="math inline">\(10^{12}\)</span>는 아주 큰 수인가? 두 봉투 역설에 따르면 <span class="math inline">\(X\)</span>의 분포가 무엇이든 그 분포에 상대적으로 ‘아주 크다’를 합리적으로 정의하는 방법이 있다.</p>
+<p>연습문제 8에서는 두 봉투의 금액이 독립이고 동일한 분포를 따르는 확률변수인 관련 문제를 살펴본다. 한 봉투의 안을 살펴본 후 바꿀지를 결정할 수 있다면 더 좋은 봉투를 얻을 확률이 50%보다 높은 전략이 있음을 보일 것이다! <span class="math inline">\(\square\)</span></p>
+<p>다음 예는 모든 정보를 조건으로 삼는 것의 중요성을 생생하게 보여 준다. 여기서 드러나는 현상은 무엇을 살지와 어떻게 투자할지에 관한 많은 실제 결정에서 나타난다.</p>
+<p><strong>예제 9.1.7 (정체를 모르는 상품).</strong> 또 다른 낯선 사람이 다가와 정체를 모르는 상품이 든 상자에 입찰할 기회를 준다! 상품의 가치는 전혀 알려져 있지 않으며, 다만 적어도 0달러이고 최대 100만 달러라는 것만 안다. 따라서 상품의 실제 가치 <span class="math inline">\(V\)</span>는 백만 달러 단위로 측정할 때 <span class="math inline">\([0,1]\)</span> 위의 균등분포를 따른다고 본다.</p>
+<p>입찰액 <span class="math inline">\(b\)</span>(백만 달러 단위)는 원하는 대로 정할 수 있다. 상품의 가치보다 훨씬 싼 값에 얻을 기회도 있지만, 너무 많이 입찰하면 손해를 볼 수도 있다. 구체적으로 <span class="math inline">\(b&lt;2V/3\)</span>이면 입찰이 거절되고 얻거나 잃는 것이 없다. <span class="math inline">\(b\ge2V/3\)</span>이면 입찰이 수락되며 순이익은 <span class="math inline">\(V-b\)</span>이다. 가치가 <span class="math inline">\(V\)</span>인 상품을 얻기 위해 <span class="math inline">\(b\)</span>를 지불하기 때문이다. 기대이익을 최대화하는 최적 입찰액 <span class="math inline">\(b\)</span>는 얼마인가?</p>
+<p><em>풀이.</em> 입찰액 <span class="math inline">\(b\ge0\)</span>은 미리 정한 상수여야 한다. <span class="math inline">\(V\)</span>는 알려져 있지 않으므로 <span class="math inline">\(V\)</span>를 바탕으로 정할 수 없다! 기대이익 <span class="math inline">\(W\)</span>를 구하기 위해 입찰 수락 여부를 조건으로 삼자.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-9-2.png" class="img-fluid figure-img"></p>
+<figcaption>그림 9.2: 가치가 알려지지 않은 자산에 입찰할 때는 승자의 저주를 주의하고 관련 정보를 조건으로 삼아야 한다. 그림 속 생각: “25만 달러를 입찰할까? 거절되면 잃는 게 없고, 수락되면 평균적으로 50만 달러짜리 상품을 얻는다!”</figcaption>
+</figure>
+</div>
+<p>입찰이 수락되면 이익은 <span class="math inline">\(V-b\)</span>, 거절되면 0이므로</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(W)&amp;=E(W\mid b\ge2V/3)P(b\ge2V/3)+E(W\mid b&lt;2V/3)P(b&lt;2V/3)\\
+&amp;=E(V-b\mid b\ge2V/3)P(b\ge2V/3)+0\\
+&amp;=(E(V\mid V\le3b/2)-b)P(V\le3b/2).
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\(b\ge2/3\)</span>이면 사건 <span class="math inline">\(V\le3b/2\)</span>의 확률은 1이므로 오른쪽은 <span class="math inline">\(1/2-b\)</span>이고 음수이다. 이제 <span class="math inline">\(b&lt;2/3\)</span>이라 하자. 그러면 <span class="math inline">\(V\le3b/2\)</span>의 확률은 <span class="math inline">\(3b/2\)</span>이다. <span class="math inline">\(V\le3b/2\)</span>가 주어졌을 때 <span class="math inline">\(V\)</span>의 조건부분포는 <span class="math inline">\([0,3b/2]\)</span> 위의 균등분포이다. 따라서<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p><span class="math display">\[E(W)=(E(V\mid V\le3b/2)-b)P(V\le3b/2)=\left(\frac{3b}{4}-b\right)\frac{3b}{2}=-\frac{3b^2}{8}.\]</span></p>
+<p>위 식은 <span class="math inline">\(b=0\)</span>인 경우를 제외하고 음수이므로 최적 입찰액은 0이다. 이 게임을 하지 말아야 한다!</p>
+<p>다른 방법으로 다음 세 사건 중 어느 것이 발생하는지를 조건으로 삼을 수 있다. <span class="math inline">\(A=\{V&lt;b/2\}\)</span>, <span class="math inline">\(B=\{b/2\le V\le3b/2\}\)</span>, <span class="math inline">\(C=\{V&gt;3b/2\}\)</span>이다. 그러면</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(W\mid A)&amp;=E(V-b\mid A)&lt;E(b/2-b\mid A)=-b/2\le0,\\
+E(W\mid B)&amp;=E\left(\frac{b/2+3b/2}{2}-b\mid B\right)=0,\\
+E(W\mid C)&amp;=0,
+\end{aligned}
+\]</span></p>
+<p>이므로 <span class="math inline">\(b=0\)</span>으로 정하고 떠나면 된다.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>이 이야기의 교훈은 모든 정보를 조건으로 삼으라는 것이다. 위 계산에서는 <span class="math inline">\(E(V)=1/2\)</span> 대신 <span class="math inline">\(E(V\mid V\le3b/2)\)</span>를 사용하는 것이 중요하다. 입찰이 수락되었다는 사실을 알면 정체를 모르는 상품의 가치에 관한 정보를 얻게 되므로 이 정보를 버려서는 안 된다. 이 문제는 이른바 <strong>승자의 저주</strong>와 관련이 있다. 승자의 저주는 정보가 불완전한 경매에서 낙찰자가 자신이 기대하는 것보다 적은 이익을 얻는 경향이 있다는 것이다. 물론 확률을 이해한다면 그렇지 않을 수 있다! 많은 상황에서 입찰에 이겼다는 조건 아래 입찰한 물건의 기댓값은 원래 생각했던 무조건부기댓값보다 작기 때문이다. <span class="math inline">\(b\ge2/3\)</span>이면 <span class="math inline">\(V\le1\)</span>임을 미리 알므로 <span class="math inline">\(V\le3b/2\)</span>를 조건으로 삼아도 아무 변화가 없지만, 그런 입찰액은 터무니없이 높다. <span class="math inline">\(0&lt;b&lt;2/3\)</span>이면 입찰이 수락되었다는 사실을 알게 됨으로써 기댓값이 낮아진다.</p>
+<p><span class="math display">\[E(V\mid V\le3b/2)&lt;E(V).\qquad\square\]</span></p>
+<p>나머지 예제에서는 첫 단계 분석으로 무조건부기댓값을 계산한다. 먼저 4장에서 약속한 대로 첫 단계 분석을 이용해 기하분포의 기댓값을 유도하자.</p>
+<p><strong>예제 9.1.8 (기하분포의 기댓값 다시 보기).</strong> <span class="math inline">\(X\sim\operatorname{Geom}(p)\)</span>라 하자. <span class="math inline">\(X\)</span>를 앞면 확률이 <span class="math inline">\(p\)</span>인 동전 던지기 수열에서 첫 앞면이 나오기 전 뒷면의 횟수로 해석한다. <span class="math inline">\(E(X)\)</span>를 구하기 위해 첫 던지기의 결과를 조건으로 삼는다. 앞면이면 <span class="math inline">\(X\)</span>는 0이고 끝난다. 뒷면이면 한 번을 허비했고 무기억성에 의해 처음 상태로 돌아간다. 따라서 <span class="math inline">\(q=1-p\)</span>일 때<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p><span class="math display">\[E(X)=E(X\mid\text{첫 던지기 H})p+E(X\mid\text{첫 던지기 T})q=0\cdot p+(1+E(X))q,\]</span></p>
+<p>이며 이를 풀면 <span class="math inline">\(E(X)=q/p\)</span>이다. <span class="math inline">\(\square\)</span></p>
+<p>다음 예에서는 두 단계에 걸친 조건부 계산을 사용하여 더 복잡한 패턴의 기대 대기시간을 유도한다.</p>
+<p><strong>예제 9.1.9 (HH와 HT가 나올 때까지의 시간).</strong> 공정한 동전을 반복해서 던진다. 패턴 HT가 처음 나타날 때까지 던지는 횟수의 기댓값은 얼마인가? HH가 처음 나타날 때까지는 어떠한가?</p>
+<p><em>풀이.</em> HT가 나타날 때까지 던지는 횟수를 <span class="math inline">\(W_{HT}\)</span>라 하자. 그림 9.3에서 보듯 <span class="math inline">\(W_{HT}\)</span>는 첫 앞면이 나올 때까지의 대기시간 <span class="math inline">\(W_1\)</span>과 그 첫 앞면 이후 첫 뒷면까지의 추가 대기시간 <span class="math inline">\(W_2\)</span>의 합이다. 첫 성공 분포의 이야기에 따라 <span class="math inline">\(W_1,W_2\)</span>는 i.i.d. <span class="math inline">\(\operatorname{FS}(1/2)\)</span>이므로 <span class="math inline">\(E(W_1)=E(W_2)=2\)</span>이고 <span class="math inline">\(E(W_{HT})=4\)</span>이다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-9-3.png" class="img-fluid figure-img"></p>
+<figcaption>그림 9.3: HT를 기다리는 시간은 첫 H를 기다리는 <span class="math inline">\(W_1\)</span>과 다음 T를 기다리는 <span class="math inline">\(W_2\)</span>의 합이다. 부분적인 진전이 유지될 수 있다!</figcaption>
+</figure>
+</div>
+<p>HH의 기대 대기시간 <span class="math inline">\(E(W_{HH})\)</span>를 구하는 것은 더 복잡하다. <span class="math inline">\(E(W_{HT})\)</span>와 같은 논리를 적용할 수 없다. 그림 9.4에서 보듯 첫 앞면 바로 다음이 뒷면이면 그동안의 진전이 사라지고 처음부터 다시 시작해야 한다. 하지만 이는 문제를 푸는 우리에게는 진전이다. 시스템이 초기화될 수 있다는 사실이 첫 단계 분석이라는 전략을 시사하기 때문이다. 첫 던지기의 결과를 조건으로 삼자.</p>
+<p><span class="math display">\[E(W_{HH})=E(W_{HH}\mid\text{첫 던지기 H})\frac12+E(W_{HH}\mid\text{첫 던지기 T})\frac12.\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-9-4.png" class="img-fluid figure-img"></p>
+<figcaption>그림 9.4: HH를 기다릴 때는 부분적인 진전이 쉽게 사라질 수 있다.</figcaption>
+</figure>
+</div>
+<p>두 번째 항에 대해서는 무기억성에 의해 <span class="math inline">\(E(W_{HH}\mid\text{첫 던지기 T})=1+E(W_{HH})\)</span>이다. 첫 번째 항은 두 번째 던지기의 결과를 추가로 조건으로 삼아 계산한다. 두 번째 던지기도 앞면이면 두 번 만에 HH를 얻는다. 뒷면이면 두 번을 허비했고 처음부터 다시 시작해야 한다! 따라서</p>
+<p><span class="math display">\[E(W_{HH}\mid\text{첫 던지기 H})=2\cdot\frac12+(2+E(W_{HH}))\cdot\frac12.\]</span></p>
+<p>그러므로</p>
+<p><span class="math display">\[E(W_{HH})=\left(2\cdot\frac12+(2+E(W_{HH}))\cdot\frac12\right)\frac12+(1+E(W_{HH}))\frac12.\]</span></p>
+<p>이를 풀면 <span class="math inline">\(E(W_{HH})=6\)</span>이다.</p>
+<p>처음에는 HH의 기대 대기시간이 HT의 기대 대기시간보다 길다는 것이 놀라울 수 있다. 동전을 두 번 던졌을 때 HH와 HT가 나타날 확률이 모두 <span class="math inline">\(1/4\)</span>이라는 사실과 어떻게 조화시킬 수 있을까? 왜 대칭성에 의해 평균 대기시간이 같지 않을까?</p>
+<p>우리는 이 문제를 풀면서 실제로 중요한 비대칭성을 알아차렸다. HT를 기다릴 때는 첫 H를 얻는 순간 사라질 수 없는 부분적인 진전을 이룬다. H 다음에 또 H가 나오면 이전과 같은 상태이고 T가 나오면 끝이기 때문이다. 반면 HH를 기다릴 때는 첫 H를 얻은 후에도 T가 뒤따르면 처음 상태로 돌아갈 수 있다. 이는 HH의 평균 대기시간이 더 길어야 함을 시사한다. 대칭성에 따르면 HH의 평균 대기시간은 TT의 평균 대기시간과 같고, HT의 평균 대기시간은 TH의 평균 대기시간과 같다. 하지만 HH와 HT의 평균 대기시간이 같아야 한다는 뜻은 아니다.</p>
+<p>무슨 일이 일어나는지에 대한 직관을 더 얻으려면 그림 9.5처럼 동전을 던진 결과가 길게 이어진 수열을 생각하면 된다. HH의 출현은 서로 겹칠 수 있지만 HT의 출현은 서로 겹치지 않는다는 것을 바로 알아챈다. 예를 들어 HHHHHH에는 HH가 5번 나타나지만 HTHTHT에는 HT가 3번만 나타난다. HH와 HT는 평균적으로 같은 횟수만큼 나타나지만 HH는 때때로 한데 뭉치므로, 이를 보상하기 위해 HH의 평균 대기시간이 HT보다 더 길어야 한다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-9-5.png" class="img-fluid figure-img"></p>
+<figcaption>그림 9.5: 뭉침. (a) HH의 출현은 겹칠 수 있다. (b) HT의 출현은 서로 겹치지 않는다.</figcaption>
+</figure>
+</div>
+<p>관련 문제는 메시지를 압축하는 정보이론과 DNA 서열에서 모티프라고 부르는 반복 패턴을 찾는 유전학에서 나타난다. <span class="math inline">\(\square\)</span></p>
+<p>이 절의 마지막 예는 알면 좋을 것을 조건으로 삼는 방법을 확률과 기댓값 양쪽에 사용하여 임의보행에 관한 질문을 연구한다.</p>
+<p><strong>예제 9.1.10 (정수 위의 임의보행).</strong> 죽지 않는 취한 사람이 정수 위를 무작위로 돌아다닌다. 그는 원점에서 시작하고 각 단계에서 이전의 모든 걸음과 독립적으로 같은 확률로 오른쪽이나 왼쪽으로 한 단위 움직인다. <span class="math inline">\(b\)</span>를 구골플렉스라 하자. 이는 <span class="math inline">\(10^g\)</span>이고 <span class="math inline">\(g=10^{100}\)</span>은 구골이다.</p>
+<ol type="a">
+<li><p>이 사람이 처음으로 원점에 돌아오기 전에 <span class="math inline">\(b\)</span>를 방문할 확률을 간단한 식으로 구하라.</p></li>
+<li><p>이 사람이 처음으로 원점에 돌아오기 전에 <span class="math inline">\(b\)</span>를 방문하는 횟수의 기댓값을 구하라.</p></li>
+</ol>
+<p><em>풀이.</em> (a) 처음으로 원점에 돌아오기 전에 <span class="math inline">\(b\)</span>를 방문하는 사건을 <span class="math inline">\(B\)</span>, 첫 걸음이 왼쪽인 사건을 <span class="math inline">\(L\)</span>이라 하자. <span class="math inline">\(-1\)</span>에서 <span class="math inline">\(b\)</span>로 가는 모든 경로는 반드시 0을 지나므로 <span class="math inline">\(P(B\mid L)=0\)</span>이다. <span class="math inline">\(P(B\mid L^c)\)</span>에 대해서는 참가자 A가 1달러, 참가자 B가 <span class="math inline">\(b-1\)</span>달러로 시작하고 매 판이 공정한 도박사의 파산 문제와 정확히 같은 상황이다. 그 결과를 적용하면</p>
+<p><span class="math display">\[P(B)=P(B\mid L)P(L)+P(B\mid L^c)P(L^c)=\frac1b\cdot\frac12=\frac1{2b}.\]</span></p>
+<ol start="2" type="a">
+<li>처음 원점으로 돌아오기 전 <span class="math inline">\(b\)</span>를 방문한 횟수를 <span class="math inline">\(N\)</span>, (a)에서 구한 확률을 <span class="math inline">\(p=1/(2b)\)</span>라 하자. 그러면</li>
+</ol>
+<p><span class="math display">\[E(N)=E(N\mid N=0)P(N=0)+E(N\mid N\ge1)P(N\ge1)=pE(N\mid N\ge1).\]</span></p>
+<p><span class="math inline">\(N\ge1\)</span>이 주어졌을 때 <span class="math inline">\(N\)</span>의 조건부분포는 <span class="math inline">\(\operatorname{FS}(p)\)</span>이다. 이 사람이 <span class="math inline">\(b\)</span>에 도달했다면, 대칭성에 의해 <span class="math inline">\(b\)</span>를 다시 방문하기 전에 원점으로 돌아올 확률이 <span class="math inline">\(p\)</span>이다. 이를 ‘성공’이라 부르자. 원점으로 돌아오기 전에 <span class="math inline">\(b\)</span>를 다시 방문할 확률은 <span class="math inline">\(1-p\)</span>이며 이를 ‘실패’라 부르자. 이 사람이 <span class="math inline">\(b\)</span>에 있을 때마다 과거와 독립적으로 상황이 같으므로 시행들은 독립이다. 따라서 <span class="math inline">\(E(N\mid N\ge1)=1/p\)</span>이고</p>
+<p><span class="math display">\[E(N)=pE(N\mid N\ge1)=p\cdot\frac1p=1.\]</span></p>
+<p>놀랍게도 이 결과는 <span class="math inline">\(b\)</span>의 값에 의존하지 않으며, 증명에도 <span class="math inline">\(p\)</span>의 구체적인 값을 알 필요가 없었다. <span class="math inline">\(\square\)</span></p>
+</section>
+<section id="확률변수가-주어졌을-때의-조건부기댓값" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="확률변수가-주어졌을-때의-조건부기댓값"><span class="header-section-number">9.2</span> 확률변수가 주어졌을 때의 조건부기댓값</h2>
+<p>이 절에서는 확률변수가 주어졌을 때의 조건부기댓값을 소개한다. 즉 확률변수 <span class="math inline">\(X\)</span>에 대해 <span class="math inline">\(E(Y\mid X)\)</span>라고 쓰는 것이 무엇을 뜻하는지 이해하고자 한다. 앞으로 보겠지만 <span class="math inline">\(E(Y\mid X)\)</span>는 <span class="math inline">\(X\)</span>를 알게 된다는 가정 아래, 어떤 의미에서 <span class="math inline">\(Y\)</span>에 대한 최선의 예측인 확률변수이다.</p>
+<p><span class="math inline">\(E(Y\mid X)\)</span>를 이해하는 열쇠는 먼저 <span class="math inline">\(E(Y\mid X=x)\)</span>를 이해하는 것이다. <span class="math inline">\(X=x\)</span>는 사건이므로 <span class="math inline">\(E(Y\mid X=x)\)</span>는 이 사건이 주어졌을 때 <span class="math inline">\(Y\)</span>의 조건부기댓값이며, <span class="math inline">\(X=x\)</span>가 주어졌을 때 <span class="math inline">\(Y\)</span>의 조건부분포를 이용해 계산할 수 있다.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p><span class="math inline">\(Y\)</span>가 이산형이면 무조건부 확률질량함수 <span class="math inline">\(P(Y=y)\)</span> 대신 조건부 확률질량함수 <span class="math inline">\(P(Y=y\mid X=x)\)</span>를 사용한다.</p>
+<p><span class="math display">\[E(Y\mid X=x)=\sum_y yP(Y=y\mid X=x).\]</span></p>
+<p>마찬가지로 <span class="math inline">\(Y\)</span>가 연속형이고 조건부 확률밀도함수 <span class="math inline">\(f_{Y\mid X}(y\mid x)\)</span>가 존재하면 무조건부 확률밀도함수 대신 이를 사용한다. <span class="math inline">\(Y\)</span>의 주변분포가 연속형이라는 사실만으로 조건부 밀도가 반드시 존재하는 것은 아니다.</p>
+<p><span class="math display">\[E(Y\mid X=x)=\int_{-\infty}^{\infty}y f_{Y\mid X}(y\mid x)\,dy.\]</span></p>
+<p><span class="math inline">\(y\)</span>에 대해 합하거나 적분하므로 <span class="math inline">\(E(Y\mid X=x)\)</span>는 <span class="math inline">\(x\)</span>만의 함수라는 점에 주목하자. 이 함수에 <span class="math inline">\(g\)</span>와 같은 이름을 붙일 수 있다. 즉 <span class="math inline">\(g(x)=E(Y\mid X=x)\)</span>라 하자. 함수 <span class="math inline">\(g(x)\)</span>의 형태를 구한 다음 <span class="math inline">\(x\)</span>에 <span class="math inline">\(X\)</span>를 대입하여 얻는 확률변수를 <span class="math inline">\(E(Y\mid X)\)</span>로 정의한다.</p>
+<p><strong>정의 9.2.1 (확률변수가 주어졌을 때의 조건부기댓값).</strong> <span class="math inline">\(g(x)=E(Y\mid X=x)\)</span>라 하자. 그러면 <span class="math inline">\(X\)</span>가 주어졌을 때 <span class="math inline">\(Y\)</span>의 조건부기댓값은 <span class="math inline">\(g(X)\)</span>로 정의하고 <span class="math inline">\(E(Y\mid X)\)</span>로 나타낸다. 다시 말해 실험을 수행한 후 <span class="math inline">\(X\)</span>가 <span class="math inline">\(x\)</span>로 결정되면 <span class="math inline">\(E(Y\mid X)\)</span>는 <span class="math inline">\(g(x)\)</span>로 결정된다.</p>
+<p><strong>주의 9.2.2.</strong> 이 정의의 표기는 때때로 혼란을 일으킨다. “<span class="math inline">\(g(x)=E(Y\mid X=x)\)</span>이므로 <span class="math inline">\(g(X)=E(Y\mid X=X)\)</span>이고, <span class="math inline">\(X=X\)</span>는 언제나 참이므로 이는 <span class="math inline">\(E(Y)\)</span>와 같다”는 뜻이 아니다. 그 대신 먼저 함수 <span class="math inline">\(g(x)\)</span>를 계산하고 그 후 <span class="math inline">\(x\)</span>에 <span class="math inline">\(X\)</span>를 대입해야 한다. 예를 들어 <span class="math inline">\(g(x)=x^2\)</span>이면 <span class="math inline">\(g(X)=X^2\)</span>이다. 균등분포의 보편성에서 <span class="math inline">\(F(X)\)</span>의 의미에 관한 주의 5.3.2도 이와 비슷한 흔한 실수이다.</p>
+<p><strong>주의 9.2.3.</strong> 정의에 따라 <span class="math inline">\(E(Y\mid X)\)</span>는 <span class="math inline">\(X\)</span>의 함수이므로 확률변수이다. 그렇다고 <span class="math inline">\(E(Y\mid X)\)</span>가 상수인 예가 없다는 뜻은 아니다. 상수도 퇴화 확률변수이며 <span class="math inline">\(X\)</span>의 상수 함수이다. 예를 들어 <span class="math inline">\(X\)</span>와 <span class="math inline">\(Y\)</span>가 독립이면 <span class="math inline">\(E(Y\mid X)=E(Y)\)</span>이고, 이는 상수이다. 따라서 확률변수 <span class="math inline">\(E(Y\mid X)\)</span>의 평균과 분산인 <span class="math inline">\(E(E(Y\mid X))\)</span>나 <span class="math inline">\(\operatorname{Var}(E(Y\mid X))\)</span> 같은 양을 계산하는 것은 의미가 있다. 조건부기댓값을 다룰 때는 범주 오류에 쉽게 빠질 수 있으므로 <span class="math inline">\(E(Y\mid A)\)</span> 형태의 조건부기댓값은 수인 반면 <span class="math inline">\(E(Y\mid X)\)</span> 형태의 조건부기댓값은 확률변수라는 점을 기억해야 한다.</p>
+<p>다음은 조건부기댓값을 계산하는 간단한 예들이다. 두 예 모두 더 직접적인 방법을 사용할 수 있으므로 <span class="math inline">\(E(Y\mid X=x)\)</span>를 구하기 위해 합이나 적분을 계산할 필요가 없다.</p>
+<p><strong>예제 9.2.4.</strong> 길이가 1인 막대를 균등하게 무작위로 고른 지점 <span class="math inline">\(X\)</span>에서 부러뜨린다. <span class="math inline">\(X=x\)</span>가 주어졌을 때 구간 <span class="math inline">\([0,x]\)</span>에서 두 번째로 부러뜨릴 지점 <span class="math inline">\(Y\)</span>를 균등하게 고른다. <span class="math inline">\(E(Y\mid X)\)</span>와 그 평균, 분산을 구하라.</p>
+<p><em>풀이.</em> 실험의 설명에 따라 <span class="math inline">\(X\sim\operatorname{Unif}(0,1)\)</span>이고 <span class="math inline">\(Y\mid X=x\sim\operatorname{Unif}(0,x)\)</span>이다. 그러면 <span class="math inline">\(E(Y\mid X=x)=x/2\)</span>이므로 <span class="math inline">\(x\)</span>에 <span class="math inline">\(X\)</span>를 대입하면</p>
+<p><span class="math display">\[E(Y\mid X)=X/2.\]</span></p>
+<p><span class="math inline">\(E(Y\mid X)\)</span>의 기댓값은</p>
+<p><span class="math display">\[E(E(Y\mid X))=E(X/2)=1/4.\]</span></p>
+<p>다음 절에서는 조건부기댓값의 일반적인 성질로 <span class="math inline">\(E(E(Y\mid X))=E(Y)\)</span>임을 보일 것이다. 따라서 <span class="math inline">\(E(Y)=1/4\)</span>임도 알 수 있다. <span class="math inline">\(E(Y\mid X)\)</span>의 분산은</p>
+<p><span class="math display">\[\operatorname{Var}(E(Y\mid X))=\operatorname{Var}(X/2)=1/48.\qquad\square\]</span></p>
+<p><strong>예제 9.2.5.</strong> <span class="math inline">\(X,Y\)</span>가 서로 독립이고 동일한 <span class="math inline">\(\operatorname{Expo}(\lambda)\)</span> 분포를 따를 때 <span class="math inline">\(E(\max(X,Y)\mid\min(X,Y))\)</span>를 구하라.</p>
+<p><em>풀이.</em> <span class="math inline">\(M=\max(X,Y)\)</span>, <span class="math inline">\(L=\min(X,Y)\)</span>라 하자. 무기억성에 따라 <span class="math inline">\(M-L\)</span>은 <span class="math inline">\(L\)</span>과 독립이고 <span class="math inline">\(M-L\sim\operatorname{Expo}(\lambda)\)</span>이다. 예제 7.3.6을 보라. 따라서</p>
+<p><span class="math display">\[
+E(M\mid L=l)=E(L\mid L=l)+E(M-L\mid L=l)
+=l+E(M-L)=l+\frac1\lambda,
+\]</span></p>
+<p>그러므로 <span class="math inline">\(E(M\mid L)=L+1/\lambda\)</span>이다. <span class="math inline">\(\square\)</span></p>
+</section>
+<section id="조건부기댓값의-성질" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="조건부기댓값의-성질"><span class="header-section-number">9.3</span> 조건부기댓값의 성질</h2>
+<p>조건부기댓값에는 매우 유용한 성질들이 있다.</p>
+<ul>
+<li><strong>독립인 것의 제거:</strong> <span class="math inline">\(X\)</span>와 <span class="math inline">\(Y\)</span>가 독립이면 <span class="math inline">\(E(Y\mid X)=E(Y)\)</span>이다.</li>
+<li><strong>알려진 것의 추출:</strong> 임의의 함수 <span class="math inline">\(h\)</span>에 대해 <span class="math inline">\(E(h(X)Y\mid X)=h(X)E(Y\mid X)\)</span>이다.</li>
+<li><strong>선형성:</strong> <span class="math inline">\(E(Y_1+Y_2\mid X)=E(Y_1\mid X)+E(Y_2\mid X)\)</span>이고, 상수 <span class="math inline">\(c\)</span>에 대해 <span class="math inline">\(E(cY\mid X)=cE(Y\mid X)\)</span>이다. 뒤의 식은 알려진 것의 추출의 특수한 경우이다.</li>
+<li><strong>아담의 법칙:</strong> <span class="math inline">\(E(E(Y\mid X))=E(Y)\)</span>이다.</li>
+<li><strong>사영 해석:</strong> <span class="math inline">\(X\)</span>를 이용해 <span class="math inline">\(Y\)</span>를 예측할 때의 <strong>잔차</strong>라고 부르는 확률변수 <span class="math inline">\(Y-E(Y\mid X)\)</span>는 임의의 함수 <span class="math inline">\(h\)</span>에 대해 <span class="math inline">\(h(X)\)</span>와 비상관이다.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></li>
+</ul>
+<p>이제 각 성질을 하나씩 살펴보자.</p>
+<p><strong>정리 9.3.1 (독립인 것의 제거).</strong> <span class="math inline">\(X\)</span>와 <span class="math inline">\(Y\)</span>가 독립이면 <span class="math inline">\(E(Y\mid X)=E(Y)\)</span>이다.</p>
+<p>독립이면 모든 <span class="math inline">\(x\)</span>에 대해 <span class="math inline">\(E(Y\mid X=x)=E(Y)\)</span>이므로 <span class="math inline">\(E(Y\mid X)=E(Y)\)</span>이다.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> 직관적으로 <span class="math inline">\(X\)</span>가 <span class="math inline">\(Y\)</span>에 대한 정보를 전혀 제공하지 않는다면, <span class="math inline">\(X\)</span>를 알게 되더라도 <span class="math inline">\(Y\)</span>에 대한 최선의 추측은 여전히 무조건부 평균 <span class="math inline">\(E(Y)\)</span>이다. 그러나 그 역은 거짓이다. 아래 예제 9.3.3이 반례를 제시한다.</p>
+<p><strong>정리 9.3.2 (알려진 것의 추출).</strong> 임의의 함수 <span class="math inline">\(h\)</span>에 대해</p>
+<p><span class="math display">\[E(h(X)Y\mid X)=h(X)E(Y\mid X).\]</span></p>
+<p>직관적으로 <span class="math inline">\(X\)</span>가 주어졌을 때 기댓값을 구한다는 것은 <span class="math inline">\(X\)</span>를 이미 알려진 상수로 결정된 것처럼 취급한다는 뜻이다. 그러면 <span class="math inline">\(X\)</span>의 임의의 함수, 예를 들어 <span class="math inline">\(h(X)\)</span>도 <span class="math inline">\(X\)</span>를 조건으로 삼는 동안 알려진 상수처럼 작용한다. 알려진 것의 추출은 무조건부 사실 <span class="math inline">\(E(cY)=cE(Y)\)</span>에 대응하는 조건부 성질이다. 차이점은 <span class="math inline">\(E(cY)=cE(Y)\)</span>가 두 <strong>수</strong>가 같다고 주장하는 반면, 알려진 것의 추출은 두 <strong>확률변수</strong>가 같다고 주장한다는 것이다.</p>
+<p><strong>예제 9.3.3.</strong> <span class="math inline">\(Z\sim\mathcal N(0,1)\)</span>이고 <span class="math inline">\(Y=Z^2\)</span>이라 하자. <span class="math inline">\(E(Y\mid Z)\)</span>와 <span class="math inline">\(E(Z\mid Y)\)</span>를 구하라.</p>
+<p><em>풀이.</em> <span class="math inline">\(Y\)</span>는 <span class="math inline">\(Z\)</span>의 함수이므로 알려진 것의 추출에 의해 <span class="math inline">\(E(Y\mid Z)=E(Z^2\mid Z)=Z^2\)</span>이다. <span class="math inline">\(E(Z\mid Y)\)</span>를 구하기 위해 <span class="math inline">\(y&gt;0\)</span>에서 <span class="math inline">\(Y=y\)</span>라는 조건 아래의 조건부분포를 생각하자. 표준정규분포의 대칭성에 의해 이 조건부분포는 <span class="math inline">\(Z=\sqrt y\)</span>와 <span class="math inline">\(Z=-\sqrt y\)</span>에 같은 확률을 부여한다. 따라서 <span class="math inline">\(E(Z\mid Y=y)=0\)</span>이고 <span class="math inline">\(E(Z\mid Y)=0\)</span>이다.</p>
+<p>이 경우 <span class="math inline">\(Y\)</span>는 <span class="math inline">\(Z\)</span>가 취할 수 있는 값을 단 두 개로 좁혀 주므로 <span class="math inline">\(Z\)</span>에 대한 많은 정보를 제공하지만, <span class="math inline">\(Z\)</span>의 부호가 아니라 크기만 알려 준다. 이 때문에 <span class="math inline">\(Z\)</span>와 <span class="math inline">\(Y\)</span>가 종속인데도 <span class="math inline">\(E(Z\mid Y)=E(Z)\)</span>이다. 이 예제는 정리 9.3.1의 역이 거짓임을 보여 준다. <span class="math inline">\(\square\)</span></p>
+<p><strong>정리 9.3.4 (선형성).</strong></p>
+<p><span class="math display">\[E(Y_1+Y_2\mid X)=E(Y_1\mid X)+E(Y_2\mid X).\]</span></p>
+<p>이 결과는 무조건부 사실 <span class="math inline">\(E(Y_1+Y_2)=E(Y_1)+E(Y_2)\)</span>에 대응하는 조건부 성질이며, 조건부확률이 확률이기 때문에 성립한다.</p>
+<p><strong>주의 9.3.5.</strong> “<span class="math inline">\(E(Y\mid X_1+X_2)=E(Y\mid X_1)+E(Y\mid X_2)\)</span>”라고 쓰는 것은 잘못이다. 선형성은 조건부 기호의 오른쪽이 아니라 왼쪽에 적용된다!</p>
+<p><strong>예제 9.3.6.</strong> <span class="math inline">\(X_1,\ldots,X_n\)</span>이 i.i.d.이고 <span class="math inline">\(S_n=X_1+\cdots+X_n\)</span>이라 하자. <span class="math inline">\(E(X_1\mid S_n)\)</span>을 구하라.</p>
+<p><em>풀이.</em> 대칭성에 의해</p>
+<p><span class="math display">\[E(X_1\mid S_n)=E(X_2\mid S_n)=\cdots=E(X_n\mid S_n),\]</span></p>
+<p>선형성에 의해</p>
+<p><span class="math display">\[E(X_1\mid S_n)+\cdots+E(X_n\mid S_n)=E(S_n\mid S_n)=S_n.\]</span></p>
+<p>따라서</p>
+<p><span class="math display">\[E(X_1\mid S_n)=S_n/n=\bar X_n,\]</span></p>
+<p>즉 <span class="math inline">\(X_j\)</span>들의 표본평균이다. 이는 직관적인 결과이다. i.i.d. 확률변수 <span class="math inline">\(X_1,X_2\)</span>가 두 개 있고 <span class="math inline">\(X_1+X_2=10\)</span>이라는 것을 알게 되었다면 <span class="math inline">\(X_1\)</span>을 전체의 절반인 5로 추측하는 것이 타당하다. 마찬가지로 i.i.d. 확률변수가 <span class="math inline">\(n\)</span>개 있고 그 합을 알게 되면, 그중 어느 하나에 대해서도 최선의 추측은 표본평균이다. <span class="math inline">\(\square\)</span></p>
+<p>다음 정리는 조건부기댓값과 무조건부기댓값을 연결한다. 이 정리는 전체 기댓값의 법칙, 반복 기댓값의 법칙, 탑 성질 등 여러 이름으로 불린다. 반복 기댓값의 법칙의 영어 약어는 진실로 빛나는 내용에 비해 끔찍하다. 이 책에서는 너무 자주 사용하므로 짧고 기억하기 쉬운 이름을 붙일 만하고, 곧 만날 상보적인 이름을 가진 다른 법칙과 함께 쓰이는 경우가 많기 때문에 <strong>아담의 법칙</strong>이라고 부른다.</p>
+<p><strong>정리 9.3.7 (아담의 법칙).</strong> 임의의 확률변수 <span class="math inline">\(X,Y\)</span>에 대해</p>
+<p><span class="math display">\[E(E(Y\mid X))=E(Y).\]</span></p>
+<p><em>증명.</em> <span class="math inline">\(X,Y\)</span>가 둘 다 이산형인 경우의 증명을 제시한다. 다른 경우의 증명도 유사하다. <span class="math inline">\(E(Y\mid X)=g(X)\)</span>라 하자. LOTUS를 적용하고, <span class="math inline">\(g(x)\)</span>의 정의를 전개해 이중합을 얻은 다음 합의 순서를 바꾸면</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(g(X))&amp;=\sum_x g(x)P(X=x)\\
+&amp;=\sum_x\left(\sum_y yP(Y=y\mid X=x)\right)P(X=x)\\
+&amp;=\sum_x\sum_y yP(X=x)P(Y=y\mid X=x)\\
+&amp;=\sum_y y\sum_x P(X=x,Y=y)\\
+&amp;=\sum_y yP(Y=y)=E(Y).
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\(\blacksquare\)</span></p>
+<p>아담의 법칙은 전체 기댓값의 법칙(정리 9.1.5)을 더 간결하고 일반적으로 나타낸 것이다. <span class="math inline">\(X\)</span>가 이산형일 때 다음 두 식은 같은 뜻이다.</p>
+<p><span class="math display">\[E(Y)=\sum_x E(Y\mid X=x)P(X=x),\qquad E(Y)=E(E(Y\mid X)).\]</span></p>
+<p><span class="math inline">\(E(Y\mid X=x)=g(x)\)</span>라 하면</p>
+<p><span class="math display">\[E(E(Y\mid X))=E(g(X))=\sum_xg(x)P(X=x)=\sum_xE(Y\mid X=x)P(X=x)\]</span></p>
+<p>이기 때문이다.</p>
+<p>아담의 법칙은 알면 좋을 확률변수 <span class="math inline">\(X\)</span>를 조건으로 삼아 기댓값 <span class="math inline">\(E(Y)\)</span>를 구하는 강력한 전략을 제공한다. 먼저 <span class="math inline">\(X\)</span>를 아는 것으로 취급하여 <span class="math inline">\(E(Y\mid X)\)</span>를 구한 다음, <span class="math inline">\(E(Y\mid X)\)</span>의 기댓값을 구한다. 이 장의 뒷부분에서 이에 대한 여러 예를 볼 것이다.</p>
+<p>2장에서 살펴보았듯이 베이즈 정리와 전체 확률의 법칙에는 추가 조건이 있는 형태가 있다. 이와 마찬가지로 아담의 법칙에도 추가 조건이 있는 형태가 있다.</p>
+<p><strong>정리 9.3.8 (추가 조건이 있는 아담의 법칙).</strong> 임의의 확률변수 <span class="math inline">\(X,Y,Z\)</span>에 대해</p>
+<p><span class="math display">\[E(E(Y\mid X,Z)\mid Z)=E(Y\mid Z).\]</span></p>
+<p>위 식은 아담의 법칙의 모든 곳에 <span class="math inline">\(Z\)</span>라는 추가 조건을 넣은 것이다. 조건부확률은 확률이므로 이 식이 성립한다. 따라서 아담의 법칙을 무조건부기댓값과 조건부기댓값을 구하는 데 모두 사용할 수 있다.</p>
+<p>아담의 법칙을 이용하면 앞에서 열거한 조건부기댓값의 성질 중 마지막 항목도 증명할 수 있다.</p>
+<p><strong>정리 9.3.9 (사영 해석).</strong> 임의의 함수 <span class="math inline">\(h\)</span>에 대해 확률변수 <span class="math inline">\(Y-E(Y\mid X)\)</span>는 <span class="math inline">\(h(X)\)</span>와 비상관이다. 동등하게,</p>
+<p><span class="math display">\[E\bigl((Y-E(Y\mid X))h(X)\bigr)=0.\]</span></p>
+<p>선형성과 아담의 법칙에 의해 <span class="math inline">\(E(Y-E(Y\mid X))=0\)</span>이므로 두 진술은 동등하다.</p>
+<p><em>증명.</em></p>
+<p><span class="math display">\[
+\begin{aligned}
+E\bigl((Y-E(Y\mid X))h(X)\bigr)
+&amp;=E(h(X)Y)-E(h(X)E(Y\mid X))\\
+&amp;=E(h(X)Y)-E(E(h(X)Y\mid X)).
+\end{aligned}
+\]</span></p>
+<p>두 번째 등식에서는 정리 9.3.2를 사용했다. 여기서는 안쪽 기댓값에 ‘알려진 것을 다시 집어넣은’ 셈이다. 아담의 법칙에 의해 두 번째 항은 <span class="math inline">\(E(h(X)Y)\)</span>와 같다. <span class="math inline">\(\blacksquare\)</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-9-6.png" class="img-fluid figure-img"></p>
+<figcaption>그림 9.6: 조건부기댓값 <span class="math inline">\(E(Y\mid X)\)</span>는 평면으로 나타낸 <span class="math inline">\(X\)</span>의 모든 함수의 공간에 대한 <span class="math inline">\(Y\)</span>의 사영이다. 잔차 <span class="math inline">\(Y-E(Y\mid X)\)</span>는 이 평면에 직교한다. 즉 <span class="math inline">\(X\)</span>의 모든 함수에 수직이며 비상관이다.</figcaption>
+</figure>
+</div>
+<p>기하학적 관점에서 정리 9.3.9를 그림 9.6처럼 시각화할 수 있다. 아래에서 설명하는 어떤 의미에서 <span class="math inline">\(E(Y\mid X)\)</span>는 <span class="math inline">\(Y\)</span>에 가장 가까운 <span class="math inline">\(X\)</span>의 함수이다. 그래서 <span class="math inline">\(E(Y\mid X)\)</span>를 <span class="math inline">\(Y\)</span>를 <span class="math inline">\(X\)</span>의 모든 함수로 이루어진 공간에 <strong>사영</strong>한 것이라고 말한다. 그림에서 <span class="math inline">\(Y\)</span>로부터 <span class="math inline">\(E(Y\mid X)\)</span>까지의 ‘선’은 ‘평면’에 직교한다. 즉 수직이다. <span class="math inline">\(Y\)</span>에서 <span class="math inline">\(E(Y\mid X)\)</span>로 가는 다른 모든 경로가 더 길기 때문이다. 이 직교성이 정리 9.3.9의 기하학적 해석임을 알 수 있다.</p>
+<p>이 관점의 자세한 내용은 다음 절에 나와 있다. 다음 절은 선형대수 지식이 필요하므로 별표가 붙어 있다. 하지만 선형대수를 깊이 살펴보지 않더라도 사영 그림은 유용한 직관을 제공한다. 앞에서 언급했듯 <span class="math inline">\(E(Y\mid X)\)</span>는 <span class="math inline">\(X\)</span>에 근거한 <span class="math inline">\(Y\)</span>의 예측으로 생각할 수 있다. 이는 통계학에서 매우 흔한 문제이다. 즉 데이터를 바탕으로 미래의 관측값이나 알려지지 않은 모수를 예측하거나 추정하는 문제이다. 조건부기댓값의 사영 해석에 따르면 <span class="math inline">\(E(Y\mid X)\)</span>는 <span class="math inline">\(X\)</span>에 근거한 <span class="math inline">\(Y\)</span>의 최선의 예측량이다. 이때 ‘최선’이란 <span class="math inline">\(X\)</span>의 함수 중 평균제곱오차, 즉 <span class="math inline">\(Y\)</span>와 <span class="math inline">\(Y\)</span>의 예측값 사이 차이의 제곱의 기댓값이 가장 작다는 뜻이다.</p>
+<p><strong>예제 9.3.10 (선형회귀).</strong> 선형회귀는 통계학에서 자료 분석에 매우 널리 쓰이는 방법이다. 가장 기본적인 형태의 선형회귀 모형은 하나의 설명변수 <span class="math inline">\(X\)</span>를 이용해 반응변수 <span class="math inline">\(Y\)</span>를 예측하며, <span class="math inline">\(Y\)</span>의 조건부기댓값이 <span class="math inline">\(X\)</span>의 선형함수라고 가정한다.</p>
+<p><span class="math display">\[E(Y\mid X)=a+bX.\]</span></p>
+<ol type="a">
+<li>이것을 다음과 같이 쓰는 것과 동등함을 보여라.</li>
+</ol>
+<p><span class="math display">\[Y=a+bX+\epsilon,\]</span></p>
+<p>여기서 <span class="math inline">\(\epsilon\)</span>은 <span class="math inline">\(E(\epsilon\mid X)=0\)</span>을 만족하는 확률변수이며 <strong>오차</strong>라고 부른다.</p>
+<ol start="2" type="a">
+<li><span class="math inline">\(E(X),E(Y),\operatorname{Cov}(X,Y),\operatorname{Var}(X)\)</span>를 이용하여 상수 <span class="math inline">\(a,b\)</span>를 구하라.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></li>
+</ol>
+<p><em>풀이.</em> (a) <span class="math inline">\(Y=a+bX+\epsilon\)</span>이고 <span class="math inline">\(E(\epsilon\mid X)=0\)</span>이라 하자. 그러면 선형성에 의해</p>
+<p><span class="math display">\[E(Y\mid X)=E(a\mid X)+E(bX\mid X)+E(\epsilon\mid X)=a+bX.\]</span></p>
+<p>반대로 <span class="math inline">\(E(Y\mid X)=a+bX\)</span>라고 가정하고</p>
+<p><span class="math display">\[\epsilon=Y-(a+bX)\]</span></p>
+<p>로 정의하자. 그러면 <span class="math inline">\(Y=a+bX+\epsilon\)</span>이고</p>
+<p><span class="math display">\[E(\epsilon\mid X)=E(Y\mid X)-E(a+bX\mid X)=E(Y\mid X)-(a+bX)=0.\]</span></p>
+<ol start="2" type="a">
+<li>먼저 아담의 법칙에 따라 양변의 기댓값을 취하면</li>
+</ol>
+<p><span class="math display">\[E(Y)=a+bE(X).\]</span></p>
+<p><span class="math inline">\(\epsilon\)</span>의 평균은 0이고 <span class="math inline">\(X\)</span>와 <span class="math inline">\(\epsilon\)</span>은 비상관이다. 왜냐하면</p>
+<p><span class="math display">\[E(\epsilon)=E(E(\epsilon\mid X))=E(0)=0\]</span></p>
+<p>이고,</p>
+<p><span class="math display">\[E(\epsilon X)=E(E(\epsilon X\mid X))=E(XE(\epsilon\mid X))=E(0)=0\]</span></p>
+<p>이기 때문이다. <span class="math inline">\(Y=a+bX+\epsilon\)</span>의 양변과 <span class="math inline">\(X\)</span>의 공분산을 취하면</p>
+<p><span class="math display">\[\operatorname{Cov}(X,Y)=\operatorname{Cov}(X,a)+b\operatorname{Cov}(X,X)+\operatorname{Cov}(X,\epsilon)=b\operatorname{Var}(X).\]</span></p>
+<p>따라서</p>
+<p><span class="math display">\[b=\frac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)},\qquad
+a=E(Y)-bE(X)=E(Y)-\frac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)}E(X).\qquad\square\]</span></p>
+</section>
+<section id="조건부기댓값의-기하학적-해석" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="조건부기댓값의-기하학적-해석"><span class="header-section-number">9.4</span> *조건부기댓값의 기하학적 해석</h2>
+<p>이 절에서는 선형대수의 몇 가지 개념을 이용하여 그림 9.6에 제시된 기하학적 관점을 더 자세히 설명한다. 어떤 확률공간 위의 확률변수들 중 분산이 유한한 모든 확률변수로 이루어진 벡터공간을 생각하자. 이 공간의 각 벡터 또는 점은 확률변수이다. 여기서 ‘벡터’는 선형대수에서의 뜻으로 사용하며, 7장의 확률벡터라는 뜻이 아니다. 두 확률변수 <span class="math inline">\(U,V\)</span>의 <strong>내적</strong>을 다음과 같이 정의한다.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+<p><span class="math display">\[\langle U,V\rangle=E(UV).\]</span></p>
+<p>이 정의가 내적의 공리들을 만족하려면 확률 1로 같은 두 확률변수를 같은 것으로 취급한다는 약속이 필요하다.</p>
+<p>확률변수 <span class="math inline">\(X\)</span>의 길이의 제곱은</p>
+<p><span class="math display">\[\lVert X\rVert^2=\langle X,X\rangle=E(X^2)\]</span></p>
+<p>이고, 두 확률변수 <span class="math inline">\(U,V\)</span> 사이 거리의 제곱은</p>
+<p><span class="math display">\[\lVert U-V\rVert^2=E((U-V)^2)\]</span></p>
+<p>이다. 특히 <span class="math inline">\(E(U)=E(V)=0\)</span>이면 다음과 같이 해석할 수 있다.</p>
+<ul>
+<li><span class="math inline">\(\lVert U\rVert^2=\operatorname{Var}(U)\)</span>이고 <span class="math inline">\(\lVert U\rVert=\operatorname{SD}(U)\)</span>이다.</li>
+<li><span class="math inline">\(\langle U,V\rangle=\operatorname{Cov}(U,V)\)</span>이고, <span class="math inline">\(U\)</span>와 <span class="math inline">\(V\)</span> 사이의 ‘각’의 코사인은 <span class="math inline">\(\operatorname{Corr}(U,V)\)</span>이다.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></li>
+<li><span class="math inline">\(U\)</span>와 <span class="math inline">\(V\)</span>는 비상관일 때, 그리고 그때에만 서로 직교한다. 즉 <span class="math inline">\(\langle U,V\rangle=0\)</span>이다.</li>
+</ul>
+<p><span class="math inline">\(E(Y\mid X)\)</span>를 기하학적으로 해석하려면 <span class="math inline">\(X\)</span>의 함수로 표현할 수 있는, 분산이 유한한 모든 확률변수로 이루어진 공간을 생각하자. 이것은 앞서 본 벡터공간의 부분공간이다. 그림 9.6에서는 <span class="math inline">\(h(X)\)</span> 꼴의 확률변수로 이루어진 부분공간을 평면으로 나타낸다. <span class="math inline">\(E(Y\mid X)\)</span>를 얻기 위해 <span class="math inline">\(Y\)</span>를 그 평면에 사영한다. 그러면 잔차 <span class="math inline">\(Y-E(Y\mid X)\)</span>는 모든 함수 <span class="math inline">\(h\)</span>에 대해 <span class="math inline">\(h(X)\)</span>와 직교하고, <span class="math inline">\(E(Y\mid X)\)</span>는 <span class="math inline">\(Y\)</span>를 가장 잘 예측하는 <span class="math inline">\(X\)</span>의 함수이다. 여기서 ‘가장 잘’이란 <span class="math inline">\(g(X)=E(Y\mid X)\)</span>를 택할 때 평균제곱오차 <span class="math inline">\(E((Y-g(X))^2)\)</span>가 최소가 된다는 뜻이다.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+<p>사영으로 해석하면 조건부기댓값의 여러 성질을 생각하는 데 도움이 된다. 예를 들어 <span class="math inline">\(Y=h(X)\)</span>가 <span class="math inline">\(X\)</span>의 함수라면 <span class="math inline">\(Y\)</span> 자체가 이미 평면 위에 있으므로 자기 자신의 사영이다. 이것은 다음이 성립하는 이유를 설명한다.</p>
+<p><span class="math display">\[E(h(X)\mid X)=h(X).\]</span></p>
+<p><strong>무조건부기댓값</strong>도 사영으로 생각할 수 있다. <span class="math inline">\(E(Y)\)</span>를 <span class="math inline">\(E(Y\mid0)\)</span>, 즉 <span class="math inline">\(Y\)</span>를 모든 상수로 이루어진 공간에 사영한 것으로 생각할 수 있다. 실제로 6.1.4 정리에서 증명했듯이 <span class="math inline">\(E(Y)\)</span>는 <span class="math inline">\(E((Y-c)^2)\)</span>를 최소화하는 상수 <span class="math inline">\(c\)</span>이다.</p>
+<p>이제 아담의 법칙도 기하학적으로 해석할 수 있다. <span class="math inline">\(E(Y)\)</span>는 <span class="math inline">\(Y\)</span>를 모든 상수로 이루어진 공간에 한 단계로 사영한다는 뜻이다. <span class="math inline">\(E(E(Y\mid X))\)</span>는 먼저 평면에 사영한 뒤 <span class="math inline">\(E(Y\mid X)\)</span>를 모든 상수로 이루어진 공간에 사영하므로 두 단계로 사영한다는 뜻이다. 모든 상수로 이루어진 공간은 그 평면 안의 직선이다. 아담의 법칙은 한 단계로 사영하는 방법과 두 단계로 사영하는 방법의 결과가 같다고 말한다.</p>
+<p>다음 절에서는 아담의 법칙이 기댓값에서 하는 것과 같은 역할을 분산에서 하는 이브의 법칙을 소개한다. 이에 앞서 조건부기댓값의 기하학적 해석을 더 살펴보기 위해 이 절의 관점으로 <span class="math inline">\(\operatorname{Var}(Y)\)</span>를 생각해 보자. <span class="math inline">\(E(Y)=0\)</span>이라고 가정한다. <span class="math inline">\(E(Y)\ne0\)</span>이면 <span class="math inline">\(Y\)</span>에서 <span class="math inline">\(E(Y)\)</span>를 빼 중심화할 수 있으며, 이렇게 해도 <span class="math inline">\(Y\)</span>의 분산은 바뀌지 않는다.</p>
+<p><span class="math inline">\(Y\)</span>를 서로 직교하는 두 항, 즉 잔차 <span class="math inline">\(Y-E(Y\mid X)\)</span>와 조건부기댓값 <span class="math inline">\(E(Y\mid X)\)</span>로 분해할 수 있다.</p>
+<p><span class="math display">\[Y=(Y-E(Y\mid X))+E(Y\mid X).\]</span></p>
+<p><span class="math inline">\(Y-E(Y\mid X)\)</span>는 <span class="math inline">\(X\)</span>의 모든 함수와 비상관이고 <span class="math inline">\(E(Y\mid X)\)</span>는 <span class="math inline">\(X\)</span>의 함수이므로 두 항은 서로 직교한다. 따라서 피타고라스 정리에 의해</p>
+<p><span class="math display">\[\lVert Y\rVert^2=\lVert Y-E(Y\mid X)\rVert^2+\lVert E(Y\mid X)\rVert^2.\]</span></p>
+<p>즉,</p>
+<p><span class="math display">\[\operatorname{Var}(Y)=\operatorname{Var}(Y-E(Y\mid X))+\operatorname{Var}(E(Y\mid X)).\]</span></p>
+<p>다음 절에서 보겠지만 이 항등식은 이브의 법칙의 한 형태이다. 따라서 처음 보면 알쏭달쏭할 수 있는 이브의 법칙은 <span class="math inline">\(Y-E(Y\mid X)\)</span>, <span class="math inline">\(E(Y\mid X)\)</span>, <span class="math inline">\(Y\)</span>를 변으로 하는 ‘삼각형’에 대한 피타고라스 정리로 해석할 수 있다.</p>
+</section>
+<section id="조건부분산" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="조건부분산"><span class="header-section-number">9.5</span> 조건부분산</h2>
+<p>확률변수가 주어졌을 때의 조건부기댓값을 정의했으므로, 확률변수가 주어졌을 때의 조건부분산도 자연스럽게 정의할 수 있다. 무조건부분산의 정의에 나타나는 모든 <span class="math inline">\(E(\cdot)\)</span>를 <span class="math inline">\(E(\cdot\mid X)\)</span>로 바꾸면 된다.</p>
+<p><strong>정의 9.5.1 (조건부분산).</strong> <span class="math inline">\(X\)</span>가 주어졌을 때 <span class="math inline">\(Y\)</span>의 조건부분산은<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a></p>
+<p><span class="math display">\[\operatorname{Var}(Y\mid X)=E\bigl((Y-E(Y\mid X))^2\mid X\bigr)\]</span></p>
+<p>이다. 이것은 다음과 동치이다.</p>
+<p><span class="math display">\[\operatorname{Var}(Y\mid X)=E(Y^2\mid X)-(E(Y\mid X))^2.\]</span></p>
+<p><strong>주의 9.5.2.</strong> <span class="math inline">\(E(Y\mid X)\)</span>와 마찬가지로 <span class="math inline">\(\operatorname{Var}(Y\mid X)\)</span>는 확률변수이며 <span class="math inline">\(X\)</span>의 함수이다.</p>
+<p>조건부분산은 조건부기댓값으로 정의되므로, 조건부기댓값에 관한 결과들을 이용하여 조건부분산을 계산할 수 있다. 다음은 그 예이다.</p>
+<p><strong>예제 9.5.3.</strong> <span class="math inline">\(Z\sim N(0,1)\)</span>이고 <span class="math inline">\(Y=Z^2\)</span>일 때 <span class="math inline">\(\operatorname{Var}(Y\mid Z)\)</span>와 <span class="math inline">\(\operatorname{Var}(Z\mid Y)\)</span>를 구하라.</p>
+<p><em>풀이.</em> 계산하지 않고도 <span class="math inline">\(\operatorname{Var}(Y\mid Z)=0\)</span>임을 알 수 있다. <span class="math inline">\(Z\)</span>가 주어지면 <span class="math inline">\(Y\)</span>는 값을 아는 상수이고, 상수의 분산은 0이기 때문이다. 같은 이유로 임의의 함수 <span class="math inline">\(h\)</span>에 대해 <span class="math inline">\(\operatorname{Var}(h(Z)\mid Z)=0\)</span>이다.</p>
+<p><span class="math inline">\(\operatorname{Var}(Z\mid Y)\)</span>를 구하려면 정의를 적용한다.</p>
+<p><span class="math display">\[\operatorname{Var}(Z\mid Z^2)=E(Z^2\mid Z^2)-(E(Z\mid Z^2))^2.\]</span></p>
+<p>첫 번째 항은 <span class="math inline">\(Z^2\)</span>이다. 두 번째 항은 예제 9.3.3에서 보았듯이 대칭성에 의해 0이다. 따라서 <span class="math inline">\(\operatorname{Var}(Z\mid Z^2)=Z^2\)</span>이고, 이를 <span class="math inline">\(\operatorname{Var}(Z\mid Y)=Y\)</span>라고 쓸 수 있다. <span class="math inline">\(\square\)</span></p>
+<p>다음 예제에서는 이변량 정규분포를 이용하여 조건부기댓값과 조건부분산을 다루는 연습을 한다.</p>
+<p><strong>예제 9.5.4 (이변량 정규분포에서의 조건부기댓값과 조건부분산).</strong> <span class="math inline">\((Z,W)\)</span>가 이변량 정규분포를 따르고 <span class="math inline">\(\operatorname{Corr}(Z,W)=\rho\)</span>이며 <span class="math inline">\(Z,W\)</span>의 주변분포가 각각 <span class="math inline">\(N(0,1)\)</span>이라고 하자. <span class="math inline">\(E(W\mid Z)\)</span>와 <span class="math inline">\(\operatorname{Var}(W\mid Z)\)</span>를 구하라.</p>
+<p><em>풀이.</em> <span class="math inline">\(E(W\mid Z)\)</span>와 <span class="math inline">\(\operatorname{Var}(W\mid Z)\)</span>는 <span class="math inline">\((Z,W)\)</span>의 결합분포에만 의존하고 <span class="math inline">\((Z,W)\)</span>를 생성한 구체적인 방법에는 의존하지 않으므로, 예제 7.5.10에서처럼 <span class="math inline">\((Z,W)\)</span>가 구성되었다고 가정해도 된다. 따라서 <span class="math inline">\(X,Y\)</span>가 독립이고 같은 <span class="math inline">\(N(0,1)\)</span> 분포를 따른다고 하고</p>
+<p><span class="math display">\[Z=X,\qquad W=\rho X+\sqrt{1-\rho^2}\,Y\]</span></p>
+<p>라고 놓자. 그러면 이변량 정규분포의 결합 PDF에 기초한 복잡한 적분을 사용하지 않고도 문제를 깔끔하게 풀 수 있다. 조건부기댓값은</p>
+<p><span class="math display">\[E(W\mid Z)=E(W\mid X)=\rho X+\sqrt{1-\rho^2}E(Y\mid X)=\rho X+\sqrt{1-\rho^2}E(Y)=\rho Z\]</span></p>
+<p>이다. 여기서 <span class="math inline">\(X\)</span>와 <span class="math inline">\(Y\)</span>는 독립이다. 조건부분산은</p>
+<p><span class="math display">\[\operatorname{Var}(W\mid Z)=\operatorname{Var}(W\mid X)=\operatorname{Var}(\sqrt{1-\rho^2}Y\mid X)=(1-\rho^2)\operatorname{Var}(Y)=1-\rho^2\]</span></p>
+<p>이다. <span class="math inline">\(X\)</span>가 주어지면 <span class="math inline">\(\rho X\)</span>는 상수처럼 작용하고 <span class="math inline">\(Y\)</span>는 <span class="math inline">\(X\)</span>와 독립이기 때문이다.</p>
+<p>흥미롭게도 <span class="math inline">\(Z\)</span>와 <span class="math inline">\(W\)</span>의 역할을 바꿔 같은 논리를 적용하면 다음을 얻는다.</p>
+<p><span class="math display">\[E(Z\mid W)=\rho W,\qquad \operatorname{Var}(Z\mid W)=1-\rho^2.\]</span></p>
+<p><span class="math inline">\(Z\)</span>의 관측값에서 <span class="math inline">\(W\)</span>의 예측값을 얻으려면 <span class="math inline">\(\rho\)</span>를 곱하므로, <span class="math inline">\(W\)</span>의 관측값에서 <span class="math inline">\(Z\)</span>의 예측값을 얻으려면 <span class="math inline">\(\rho\)</span>로 나누어야 한다고 생각할 수도 있다. 그러나 위 결과에 따르면 <span class="math inline">\(Z\)</span>로 <span class="math inline">\(W\)</span>를 예측하든 그 반대이든 같은 <span class="math inline">\(\rho\)</span>를 곱한다! 이것은 상관관계가 대칭이라는 사실(<span class="math inline">\(\operatorname{Corr}(Z,W)=\rho=\operatorname{Corr}(W,Z)\)</span>) 및 통계학에서 <strong>평균으로의 회귀</strong>라고 부르는 중요한 개념과 밀접한 관련이 있다. <span class="math inline">\(\square\)</span></p>
+<p>앞 절에서 아담의 법칙이 조건부기댓값과 무조건부기댓값을 연결한다는 것을 배웠다. 아담의 법칙과 짝을 이루는 결과인 <strong>이브의 법칙</strong>은 조건부분산과 무조건부분산을 연결한다.</p>
+<p><strong>정리 9.5.5 (이브의 법칙).</strong> 임의의 확률변수 <span class="math inline">\(X,Y\)</span>에 대하여,</p>
+<p><span class="math display">\[\operatorname{Var}(Y)=E(\operatorname{Var}(Y\mid X))+\operatorname{Var}(E(Y\mid X)).\]</span></p>
+<p>우변에서 <span class="math inline">\(E\)</span>와 <span class="math inline">\(\operatorname{Var}\)</span>의 순서는 EVVE를 이루며, 여기서 이브의 법칙이라는 이름이 유래한다. 이브의 법칙은 <strong>전체 분산의 법칙</strong> 또는 분산 분해 공식이라고도 한다.</p>
+<p><em>증명.</em> <span class="math inline">\(g(X)=E(Y\mid X)\)</span>라고 하자. 아담의 법칙에 의해 <span class="math inline">\(E(g(X))=E(Y)\)</span>이다. 그러면</p>
+<p><span class="math display">\[E(\operatorname{Var}(Y\mid X))=E(E(Y^2\mid X)-g(X)^2)=E(Y^2)-E(g(X)^2),\]</span></p>
+<p><span class="math display">\[\operatorname{Var}(E(Y\mid X))=E(g(X)^2)-(E g(X))^2=E(g(X)^2)-(EY)^2.\]</span></p>
+<p>이 두 식을 더하면 이브의 법칙을 얻는다. <span class="math inline">\(\blacksquare\)</span></p>
+<p>이브의 법칙을 시각화하기 위해 각 사람이 <span class="math inline">\(X\)</span>값과 <span class="math inline">\(Y\)</span>값을 갖는 모집단을 생각하자. 이 모집단을 <span class="math inline">\(X\)</span>의 가능한 값마다 하나씩 부분 모집단으로 나눌 수 있다. 예를 들어 <span class="math inline">\(X\)</span>가 나이이고 <span class="math inline">\(Y\)</span>가 키라면 나이에 따라 사람들을 묶을 수 있다. 그러면 전체 모집단의 키가 변하는 데에는 두 가지 원인이 있다. 첫째, 각 연령 집단 내에서도 사람들의 키가 다르다. 각 연령 집단 내 키의 변동량의 평균은 <strong>집단 내 변동</strong> <span class="math inline">\(E(\operatorname{Var}(Y\mid X))\)</span>이다. 둘째, 연령 집단마다 평균 키가 다르다. 연령 집단들 사이의 평균 키의 분산은 <strong>집단 간 변동</strong> <span class="math inline">\(\operatorname{Var}(E(Y\mid X))\)</span>이다. 이브의 법칙은 이 두 변동을 더하면 <span class="math inline">\(Y\)</span>의 전체 분산을 얻는다고 말한다.</p>
+<p>그림 9.7은 연령 집단이 세 개인 간단한 경우에 이브의 법칙을 보여 준다. <span class="math inline">\(X=1\)</span>, <span class="math inline">\(X=2\)</span>, <span class="math inline">\(X=3\)</span>인 각 집단 내 흩어짐의 평균 정도가 집단 내 변동 <span class="math inline">\(E(\operatorname{Var}(Y\mid X))\)</span>이다. 집단 평균 <span class="math inline">\(E(Y\mid X=1)\)</span>, <span class="math inline">\(E(Y\mid X=2)\)</span>, <span class="math inline">\(E(Y\mid X=3)\)</span>의 분산이 집단 간 변동 <span class="math inline">\(\operatorname{Var}(E(Y\mid X))\)</span>이다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-9-7.png" class="img-fluid figure-img"></p>
+<figcaption>그림 9.7: 이브의 법칙에 따르면 전체 분산은 집단 내 변동과 집단 간 변동의 합이다.</figcaption>
+</figure>
+</div>
+<p>이브의 법칙은 예측의 관점에서도 생각할 수 있다. 나이만을 바탕으로 어떤 사람의 키를 예측하려고 한다면, 각 연령 집단 내의 모든 사람의 키는 정확히 같고 연령 집단마다 키가 다른 상황이 이상적이다. 그러면 나이가 주어졌을 때 키를 완벽하게 예측할 수 있다. 즉 예측에 이상적인 상황은 집단 내 키의 변동이 없는 경우다. 집단 내 변동은 나이의 차이로 설명할 수 없기 때문이다. 이런 이유로 집단 내 변동은 <strong>설명되지 않은 변동</strong>, 집단 간 변동은 <strong>설명된 변동</strong>이라고도 한다. 이브의 법칙에 따르면 <span class="math inline">\(Y\)</span>의 전체 분산은 설명되지 않은 변동과 설명된 변동의 합이다.</p>
+<p>이브의 법칙은 다음과 같이 쓸 수도 있다.</p>
+<p><span class="math display">\[\operatorname{Var}(Y)=\operatorname{Var}(Y-E(Y\mid X))+\operatorname{Var}(E(Y\mid X)),\]</span></p>
+<p>이는 잔차 <span class="math inline">\(Y-E(Y\mid X)\)</span>를 <span class="math inline">\(W\)</span>라 하면 다음이 성립하기 때문이다.</p>
+<p><span class="math display">\[\operatorname{Var}(Y-E(Y\mid X))=E(W^2)=E(E(W^2\mid X))=E(\operatorname{Var}(Y\mid X)).\]</span></p>
+<p>이 역시 분산을 집단 내 변동과 집단 간 변동의 합으로 분해할 수 있다는 뜻이다.</p>
+<p><strong>주의 9.5.6.</strong> <span class="math inline">\(Y\)</span>를 확률변수, <span class="math inline">\(A\)</span>를 사건이라고 하자. 전체 기댓값의 법칙과 비슷해 보이지만 “<span class="math inline">\(\operatorname{Var}(Y)=\operatorname{Var}(Y\mid A)P(A)+\operatorname{Var}(Y\mid A^c)P(A^c)\)</span>”라고 말하는 것은 틀리다. (간단한 반례로 <span class="math inline">\(Y\sim\operatorname{Bern}(1/2)\)</span>이고 <span class="math inline">\(A\)</span>가 사건 <span class="math inline">\(Y=0\)</span>이라고 하자. 그러면 <span class="math inline">\(\operatorname{Var}(Y\mid A)\)</span>와 <span class="math inline">\(\operatorname{Var}(Y\mid A^c)\)</span>는 모두 0이지만 <span class="math inline">\(\operatorname{Var}(Y)=1/4\)</span>이다.)</p>
+<p>대신 <span class="math inline">\(A\)</span>의 발생 여부를 조건으로 삼으려면 이브의 법칙을 사용해야 한다. <span class="math inline">\(A\)</span>의 지시확률변수를 <span class="math inline">\(I\)</span>라 하면</p>
+<p><span class="math display">\[\operatorname{Var}(Y)=E(\operatorname{Var}(Y\mid I))+\operatorname{Var}(E(Y\mid I)).\]</span></p>
+<p>이 식과 “틀린 식” 사이의 관계를 알아보기 위해 다음과 같이 놓자.</p>
+<p><span class="math display">\[p=P(A),\quad q=P(A^c),\quad a=E(Y\mid A),\quad b=E(Y\mid A^c),\quad v=\operatorname{Var}(Y\mid A),\quad w=\operatorname{Var}(Y\mid A^c).\]</span></p>
+<p>그러면 <span class="math inline">\(E(Y\mid I)\)</span>는 확률 <span class="math inline">\(p\)</span>로 <span class="math inline">\(a\)</span>, 확률 <span class="math inline">\(q\)</span>로 <span class="math inline">\(b\)</span>이고, <span class="math inline">\(\operatorname{Var}(Y\mid I)\)</span>는 확률 <span class="math inline">\(p\)</span>로 <span class="math inline">\(v\)</span>, 확률 <span class="math inline">\(q\)</span>로 <span class="math inline">\(w\)</span>이다. 따라서</p>
+<p><span class="math display">\[E(\operatorname{Var}(Y\mid I))=vp+wq=\operatorname{Var}(Y\mid A)P(A)+\operatorname{Var}(Y\mid A^c)P(A^c)\]</span></p>
+<p>로, 이것이 바로 “틀린 식”이다. 그리고 <span class="math inline">\(\operatorname{Var}(Y)\)</span>는 이 값에 다음 항을 더한 것이다.</p>
+<p><span class="math display">\[\operatorname{Var}(E(Y\mid I))=a^2p+b^2q-(ap+bq)^2.\]</span></p>
+<p>집단 내 변동과 집단 간 변동을 모두 고려하는 것이 매우 중요하다.</p>
+</section>
+<section id="아담과-이브의-법칙-예제" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="아담과-이브의-법칙-예제"><span class="header-section-number">9.6</span> 아담과 이브의 법칙 예제</h2>
+<p>이 장을 마치면서, 아담의 법칙과 이브의 법칙을 이용해 복잡한 확률변수의 평균과 분산을 구하는 예제를 몇 가지 살펴보자. 특히 여러 층위의 무작위성이 존재하는 상황에 유용하다.</p>
+<p>첫 번째 예제에서 관심 있는 확률변수는 <strong>무작위 합</strong>, 즉 확률변수의 무작위 개수만큼의 합이다. 따라서 무작위성이 두 층위에서 나타난다. 첫째, 합의 각 항이 확률변수이고, 둘째, 항의 개수도 확률변수이다.</p>
+<p><strong>예제 9.6.1 (무작위 합).</strong> 어느 상점에 하루 동안 <span class="math inline">\(N\)</span>명의 고객이 방문한다. 여기서 <span class="math inline">\(N\)</span>은 평균과 분산이 유한한 확률변수이다. <span class="math inline">\(X_j\)</span>를 <span class="math inline">\(j\)</span>번째 고객이 상점에서 지출한 금액이라고 하자. 각 <span class="math inline">\(X_j\)</span>의 평균은 <span class="math inline">\(\mu\)</span>, 분산은 <span class="math inline">\(\sigma^2\)</span>이고, <span class="math inline">\(N\)</span>과 모든 <span class="math inline">\(X_j\)</span>는 서로 독립이라고 가정한다. 상점의 하루 총매출인 무작위 합 <span class="math inline">\(X=\sum_{j=1}^{N}X_j\)</span>의 평균과 분산을 <span class="math inline">\(\mu,\sigma^2,E(N),\operatorname{Var}(N)\)</span>으로 나타내라.</p>
+<p><strong>풀이.</strong> <span class="math inline">\(X\)</span>는 합이므로 처음에는 “선형성에 의해 <span class="math inline">\(E(X)=N\mu\)</span>이다”라고 말하고 싶을 수 있다. 하지만 안타깝게도 이는 범주 오류이다. <span class="math inline">\(E(X)\)</span>는 숫자이고 <span class="math inline">\(N\mu\)</span>는 확률변수이기 때문이다. 핵심은 <span class="math inline">\(X\)</span>가 단순한 합이 아니라 무작위 합이라는 점이다. 더하는 항의 개수 자체가 무작위인 반면 선형성은 항의 개수가 고정된 합에 적용된다.</p>
+<p>하지만 이 범주 오류는 실제로 올바른 전략을 제시한다. <span class="math inline">\(N\)</span>을 상수로 취급할 수만 있다면 선형성을 적용할 수 있다. 따라서 <span class="math inline">\(N\)</span>을 조건으로 삼자. 조건부기댓값의 선형성에 의해</p>
+<p><span class="math display">\[
+E(X\mid N)=E\left(\left.\sum_{j=1}^{N}X_j\right|N\right)
+=\sum_{j=1}^{N}E(X_j\mid N)=\sum_{j=1}^{N}E(X_j)=N\mu.
+\]</span></p>
+<p>모든 <span class="math inline">\(j\)</span>에 대해 <span class="math inline">\(E(X_j\mid N)=E(X_j)\)</span>라고 할 때 <span class="math inline">\(X_j\)</span>와 <span class="math inline">\(N\)</span>의 독립성을 이용했다. “<span class="math inline">\(E(X\mid N)=N\mu\)</span>”는 등식의 양변이 모두 <span class="math inline">\(N\)</span>의 함수인 확률변수이므로 범주 오류가 아님에 주목하자. 마지막으로 아담의 법칙에 의해</p>
+<p><span class="math display">\[E(X)=E(E(X\mid N))=E(N\mu)=\mu E(N).\]</span></p>
+<p>이는 만족스러운 결과다. 평균 총매출은 고객 한 명의 평균 지출액에 평균 고객 수를 곱한 값이다.</p>
+<p><span class="math inline">\(\operatorname{Var}(X)\)</span>를 구하기 위해 다시 <span class="math inline">\(N\)</span>을 조건으로 삼으면</p>
+<p><span class="math display">\[
+\operatorname{Var}(X\mid N)=\operatorname{Var}\left(\left.\sum_{j=1}^{N}X_j\right|N\right)
+=\sum_{j=1}^{N}\operatorname{Var}(X_j\mid N)
+=\sum_{j=1}^{N}\operatorname{Var}(X_j)=N\sigma^2.
+\]</span></p>
+<p>이제 이브의 법칙으로 <span class="math inline">\(X\)</span>의 무조건부분산을 구한다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Var}(X)&amp;=E(\operatorname{Var}(X\mid N))+\operatorname{Var}(E(X\mid N))\\
+&amp;=E(N\sigma^2)+\operatorname{Var}(N\mu)\\
+&amp;=\sigma^2E(N)+\mu^2\operatorname{Var}(N).
+\end{aligned}
+\]</span></p>
+<p>다음 예제에서는 실험이 두 단계로 진행되므로 무작위성이 두 층위에서 나타난다. 여러 도시 중 한 도시를 표본으로 선택한 다음 그 도시의 주민들을 표본으로 선택한다. 이는 <strong>다층 모형</strong>의 한 예이다.</p>
+<p><strong>예제 9.6.2 (무작위 도시에서 무작위 표본 추출).</strong> 어느 군에 있는 관심 대상 도시들에서 한 질병의 유병률을 조사하기 위해, 도시를 무작위로 하나 선택한 다음 그 도시에서 <span class="math inline">\(n\)</span>명의 사람을 무작위 표본으로 뽑는다. 이는 널리 쓰이는 조사 기법인 <strong>집락표본추출</strong>의 한 형태이다.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></p>
+<p><span class="math inline">\(Q\)</span>를 선택된 도시에서 질병을 가진 사람의 비율, <span class="math inline">\(X\)</span>를 표본에서 질병을 가진 사람의 수라고 하자. 그림 9.8에서 보여 주듯이(흰 점은 건강한 사람, 검은 점은 질병을 가진 사람을 나타낸다) 도시에 따라 유병률이 매우 다를 수 있다. 각 도시는 고유한 유병률을 가지므로 <span class="math inline">\(Q\)</span>는 확률변수이다. <span class="math inline">\(Q\sim\operatorname{Unif}(0,1)\)</span>이라고 하자. 또한 <span class="math inline">\(Q\)</span>가 주어졌을 때 표본의 각 개인이 서로 독립적으로 확률 <span class="math inline">\(Q\)</span>로 질병을 가진다고 가정한다. 선택된 도시에서 복원추출하면 이 가정이 성립하며, 비복원추출하더라도 모집단의 크기가 크면 근사적으로 성립한다. <span class="math inline">\(E(X)\)</span>와 <span class="math inline">\(\operatorname{Var}(X)\)</span>를 구하라.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-9-8.png" class="img-fluid figure-img"></p>
+<figcaption>그림 9.8: 타원형의 어느 군에는 도시가 네 곳 있다. 각 도시에는 건강한 사람(흰 점)과 질병을 가진 사람(검은 점)이 있다. 도시를 무작위로 하나 고른 다음 그 도시 안에서 <span class="math inline">\(n\)</span>명을 무작위 표본으로 선택한다. 표본에서 질병을 가진 사람 수의 변동에는 두 요인이 있다. 도시에 따라 유병률이 다른 데서 오는 변동과 선택된 도시 안에서 표본을 무작위로 추출하는 데서 오는 변동이다.</figcaption>
+</figure>
+</div>
+<p><strong>풀이.</strong> 가정에 의해 <span class="math inline">\(X\mid Q\sim\operatorname{Bin}(n,Q)\)</span>이다. 이 표기는 선택된 도시의 유병률을 알고 있다는 조건 아래 <span class="math inline">\(Q\)</span>를 상수로 취급할 수 있으며, 표본의 각 개인을 성공확률이 <span class="math inline">\(Q\)</span>인 독립적인 베르누이 시행으로 볼 수 있다는 뜻이다. 이항분포의 평균과 분산을 이용하면 <span class="math inline">\(E(X\mid Q)=nQ\)</span>, <span class="math inline">\(\operatorname{Var}(X\mid Q)=nQ(1-Q)\)</span>이다. 또한 표준 균등분포의 적률에 의해 <span class="math inline">\(E(Q)=1/2\)</span>, <span class="math inline">\(E(Q^2)=1/3\)</span>, <span class="math inline">\(\operatorname{Var}(Q)=1/12\)</span>이다. 이제 아담의 법칙과 이브의 법칙을 적용해 <span class="math inline">\(X\)</span>의 무조건부 평균과 분산을 구할 수 있다.</p>
+<p><span class="math display">\[E(X)=E(E(X\mid Q))=E(nQ)=\frac n2,\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Var}(X)&amp;=E(\operatorname{Var}(X\mid Q))+\operatorname{Var}(E(X\mid Q))\\
+&amp;=E(nQ(1-Q))+\operatorname{Var}(nQ)\\
+&amp;=nE(Q)-nE(Q^2)+n^2\operatorname{Var}(Q)\\
+&amp;=\frac n6+\frac{n^2}{12}.
+\end{aligned}
+\]</span></p>
+<p>이 문제의 구조가 베이즈의 당구 이야기와 같다는 점에 주목하자. 따라서 실제로 <span class="math inline">\(X\)</span>의 평균과 분산뿐 아니라 분포도 알고 있다. <span class="math inline">\(X\)</span>는 <span class="math inline">\(\{0,1,2,\ldots,n\}\)</span> 위의 이산균등분포를 따른다. 하지만 <span class="math inline">\(Q\)</span>가 더 복잡한 분포를 따르거나 다층 모형에 더 많은 층위가 있는 경우에도, <span class="math inline">\(X\)</span>의 분포를 구할 수 있는지와 관계없이 아담과 이브의 접근법을 적용할 수 있다. 예를 들어 나라 안의 주, 주 안의 군, 군 안의 도시, 도시 안의 사람을 생각할 수 있다.</p>
+<p>마지막으로, 이전 장의 이야기 8.4.5인 감마-포아송 문제를 다시 살펴보자.</p>
+<p><strong>예제 9.6.3 (감마-포아송 문제 다시 보기).</strong> 프레드가 버스 정류장에서 <span class="math inline">\(t\)</span>시간을 기다리며 버스의 수 <span class="math inline">\(Y\)</span>를 세어 블로치빌의 버스 포아송 과정의 비율을 알아보기로 했음을 떠올리자. 그는 이 자료를 이용해 사전분포 <span class="math inline">\(\lambda\sim\operatorname{Gamma}(r_0,b_0)\)</span>를 갱신했다. 따라서 프레드가 사용한 것은 다음과 같은 2단계 모형이다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\lambda&amp;\sim\operatorname{Gamma}(r_0,b_0),\\
+Y\mid\lambda&amp;\sim\operatorname{Pois}(\lambda t).
+\end{aligned}
+\]</span></p>
+<p>프레드의 모형에서 <span class="math inline">\(Y\)</span>의 주변분포는 모수 <span class="math inline">\(r=r_0\)</span>, <span class="math inline">\(p=b_0/(b_0+t)\)</span>인 음이항분포임을 앞서 확인했다. 특히</p>
+<p><span class="math display">\[E(Y)=\frac{rq}{p}=\frac{r_0t}{b_0},\qquad
+\operatorname{Var}(Y)=\frac{rq}{p^2}=\frac{r_0t(b_0+t)}{b_0^2}.\]</span></p>
+<p>이를 아담의 법칙과 이브의 법칙으로 독립적으로 확인해 보자. 포아송분포의 성질에 의해 <span class="math inline">\(\lambda\)</span>가 주어졌을 때 <span class="math inline">\(Y\)</span>의 조건부 평균과 분산은 <span class="math inline">\(E(Y\mid\lambda)=\operatorname{Var}(Y\mid\lambda)=\lambda t\)</span>이다. 감마분포의 성질에 의해 <span class="math inline">\(\lambda\)</span>의 주변 평균과 분산은 <span class="math inline">\(E(\lambda)=r_0/b_0\)</span>, <span class="math inline">\(\operatorname{Var}(\lambda)=r_0/b_0^2\)</span>이다. 아담과 이브의 법칙을 적용하는 데 필요한 것은 이것이 전부다.</p>
+<p><span class="math display">\[E(Y)=E(E(Y\mid\lambda))=E(\lambda t)=\frac{r_0t}{b_0},\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Var}(Y)&amp;=E(\operatorname{Var}(Y\mid\lambda))+\operatorname{Var}(E(Y\mid\lambda))\\
+&amp;=E(\lambda t)+\operatorname{Var}(\lambda t)\\
+&amp;=\frac{r_0t}{b_0}+\frac{r_0t^2}{b_0^2}
+=\frac{r_0t(b_0+t)}{b_0^2}.
+\end{aligned}
+\]</span></p>
+<p>이는 앞서 구한 답과 일치한다. 차이점은 아담과 이브의 법칙을 이용할 때는 <span class="math inline">\(Y\)</span>가 음이항분포를 따른다는 사실을 알 필요가 없다는 것이다! <span class="math inline">\(Y\)</span>의 주변분포를 유도하기가 너무 귀찮았거나, 운이 좋지 않아 <span class="math inline">\(Y\)</span>가 이름 붙은 분포를 따르지 않았더라도 아담과 이브의 법칙으로 <span class="math inline">\(Y\)</span>의 평균과 분산을 구할 수 있다(단, 확률질량함수는 구할 수 없다).</p>
+<p>마지막으로 2단계 모형에서의 <span class="math inline">\(Y\)</span>의 평균과 분산을, 프레드가 <span class="math inline">\(\lambda\)</span>의 참값을 확실히 알고 있었다면 얻었을 평균과 분산과 비교해 보자. 다시 말해 <span class="math inline">\(\lambda\)</span>를 평균 <span class="math inline">\(E(\lambda)=r_0/b_0\)</span>로 대체하여 확률변수가 아닌 상수로 만든다고 하자. 그러면 버스 수의 주변분포(새 가정 아래에서는 <span class="math inline">\(\widetilde Y\)</span>라고 부르자)는 모수가 <span class="math inline">\(r_0t/b_0\)</span>인 포아송분포가 된다. 따라서</p>
+<p><span class="math display">\[E(\widetilde Y)=\frac{r_0t}{b_0},\qquad
+\operatorname{Var}(\widetilde Y)=\frac{r_0t}{b_0}.\]</span></p>
+<p><span class="math inline">\(E(\widetilde Y)=E(Y)\)</span>이지만 <span class="math inline">\(t&gt;0\)</span>이면 <span class="math inline">\(\operatorname{Var}(\widetilde Y)&lt;\operatorname{Var}(Y)\)</span>임에 주목하자. <span class="math inline">\(t=0\)</span>에서는 두 분산이 모두 0이다. 이브의 법칙에서 나온 추가 항 <span class="math inline">\(r_0t^2/b_0^2\)</span>이 빠져 있다. 직관적으로 <span class="math inline">\(\lambda\)</span>를 그 평균에 고정하면 모형에서 한 층위의 불확실성이 제거되어 무조건부분산이 줄어든다.</p>
+<p>그림 9.9는 두 확률질량함수를 겹쳐 그린 것으로, <span class="math inline">\(Y\sim\operatorname{NBin}(r_0,b_0/(b_0+t))\)</span>는 회색, <span class="math inline">\(\widetilde Y\sim\operatorname{Pois}(r_0t/b_0)\)</span>는 검은색이다. 모수는 임의로 <span class="math inline">\(r_0=5\)</span>, <span class="math inline">\(b_0=1\)</span>, <span class="math inline">\(t=2\)</span>로 선택했다. 두 확률질량함수의 무게중심은 같지만 <span class="math inline">\(Y\)</span>의 확률질량함수가 눈에 띄게 더 퍼져 있다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-9-9.png" class="img-fluid figure-img"></p>
+<figcaption>그림 9.9: <span class="math inline">\(r_0=5\)</span>, <span class="math inline">\(b_0=1\)</span>, <span class="math inline">\(t=2\)</span>일 때 <span class="math inline">\(Y\sim\operatorname{NBin}(r_0,b_0/(b_0+t))\)</span>의 확률질량함수는 회색, <span class="math inline">\(\widetilde Y\sim\operatorname{Pois}(r_0t/b_0)\)</span>의 확률질량함수는 검은색으로 표시되어 있다.</figcaption>
+</figure>
+</div>
+</section>
+<section id="정리" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="정리"><span class="header-section-number">9.7</span> 정리</h2>
+<p>무조건부기댓값을 계산하기 위해 표본공간을 나누고 <strong>전체 기댓값의 법칙</strong>을 사용할 수 있다.</p>
+<p><span class="math display">\[E(Y)=\sum_{i=1}^{n}E(Y\mid A_i)P(A_i).\]</span></p>
+<p>그러나 그다음 단계에서 정보가 사라지지 않도록 주의해야 한다. 예를 들어 긴 계산을 하는 도중에 반드시 조건으로 삼아야 할 것을 잊어버려서는 안 된다. 재귀적인 구조를 가진 문제에서는 기댓값에도 <strong>첫 단계 분석</strong>을 사용할 수 있다.<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a></p>
+<p>조건부기댓값 <span class="math inline">\(E(Y\mid X)\)</span>와 조건부분산 <span class="math inline">\(\operatorname{Var}(Y\mid X)\)</span>는 <span class="math inline">\(X\)</span>의 함수인 확률변수이다. 이들은 <span class="math inline">\(X\)</span>를 마치 알려진 상수처럼 취급하여 얻는다. <span class="math inline">\(X\)</span>와 <span class="math inline">\(Y\)</span>가 독립이면 <span class="math inline">\(E(Y\mid X)=E(Y)\)</span>이고 <span class="math inline">\(\operatorname{Var}(Y\mid X)=\operatorname{Var}(Y)\)</span>이다. 조건부기댓값에는 다음 성질이 있다.</p>
+<p><span class="math display">\[
+E(h(X)Y\mid X)=h(X)E(Y\mid X)
+\]</span></p>
+<p><span class="math display">\[
+E(Y_1+Y_2\mid X)=E(Y_1\mid X)+E(Y_2\mid X).
+\]</span></p>
+<p>이는 무조건부기댓값의 성질 <span class="math inline">\(E(cY)=cE(Y)\)</span>, <span class="math inline">\(E(Y_1+Y_2)=E(Y_1)+E(Y_2)\)</span>에 각각 대응한다. 또한 조건부기댓값 <span class="math inline">\(E(Y\mid X)\)</span>는 잔차 <span class="math inline">\(Y-E(Y\mid X)\)</span>가 <span class="math inline">\(X\)</span>의 모든 함수와 비상관이 되게 하는 확률변수이므로, 이를 기하학적으로 사영으로 해석할 수 있다.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a></p>
+<p>마지막으로 <strong>아담의 법칙</strong>과 <strong>이브의 법칙</strong></p>
+<p><span class="math display">\[E(Y)=E(E(Y\mid X))\]</span></p>
+<p><span class="math display">\[\operatorname{Var}(Y)=E(\operatorname{Var}(Y\mid X))+\operatorname{Var}(E(Y\mid X))\]</span></p>
+<p>은 여러 형태 또는 여러 층위의 무작위성이 등장하는 문제에서 <span class="math inline">\(E(Y)\)</span>와 <span class="math inline">\(\operatorname{Var}(Y)\)</span>를 계산할 때 흔히 도움이 된다.</p>
+<p>그림 9.10은 수 <span class="math inline">\(E(Y\mid X=x)\)</span>가 확률변수 <span class="math inline">\(E(Y\mid X)\)</span>와 어떻게 연결되는지 보여 준다. 아담의 법칙에 따라 이 확률변수의 기댓값은 <span class="math inline">\(E(Y)\)</span>이다. 또한 이브의 법칙에 쓰이는 구성 요소들이 어떻게 만들어지고 결합되는지, 그리고 그것들이 어떻게 <span class="math inline">\(X\)</span>에 조건을 둔 양들을 이용하여 <span class="math inline">\(\operatorname{Var}(Y)\)</span>를 유용하게 분해하는지도 보여 준다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-9-10.png" class="img-fluid figure-img"></p>
+<figcaption>그림 9.10: 조건부기댓값과 조건부분산, 아담의 법칙과 이브의 법칙의 관계.</figcaption>
+</figure>
+</div>
+<p><strong>그림 9.10.</strong> 우리는 종종 확률변수 <span class="math inline">\(X\)</span>를 관측하고, <span class="math inline">\(X\)</span>에 관한 정보를 바탕으로 다른 확률변수 <span class="math inline">\(Y\)</span>를 예측하려고 한다. <span class="math inline">\(X=x\)</span>임을 관측하면 이 사건을 조건으로 삼고 <span class="math inline">\(E(Y\mid X=x)\)</span>를 예측값으로 사용할 수 있다. 조건부기댓값 <span class="math inline">\(E(Y\mid X)\)</span>는 <span class="math inline">\(X=x\)</span>일 때 <span class="math inline">\(E(Y\mid X=x)\)</span>라는 값을 취하는 확률변수이다. 아담의 법칙을 이용하면 조건부기댓값 <span class="math inline">\(E(Y\mid X)\)</span>에서 출발하여 무조건부기댓값 <span class="math inline">\(E(Y)\)</span>를 계산할 수 있다. 마찬가지로 이브의 법칙을 이용하면 <span class="math inline">\(X\)</span>를 조건으로 하는 양들로부터 <span class="math inline">\(\operatorname{Var}(Y)\)</span>를 계산할 수 있다.</p>
+<p>그림의 영어 표현에서 <em>joint distributions</em>, <em>random variables</em>, <em>events</em>, <em>numbers</em>는 각각 결합분포, 확률변수, 사건, 수를 뜻한다. <em>generate</em>는 생성, <em>condition on event</em>는 사건을 조건으로 삼기, <em>condition on r.v.</em>는 확률변수를 조건으로 삼기, <em>function of x</em>와 <em>function of X</em>는 각각 <span class="math inline">\(x\)</span>의 함수와 <span class="math inline">\(X\)</span>의 함수를 뜻한다. <em>expectation</em>은 기댓값, <em>variance</em>는 분산, <em>within group variation</em>은 집단 내 변동, <em>between group variation</em>은 집단 간 변동이다. <em>What can happen?</em>은 ‘어떤 일이 일어날 수 있는가?’를 뜻한다.</p>
+</section>
+<section id="r" class="level2" data-number="9.8">
+<h2 data-number="9.8" class="anchored" data-anchor-id="r"><span class="header-section-number">9.8</span> R</h2>
+<section id="정체를-모르는-상품-시뮬레이션" class="level3" data-number="9.8.1">
+<h3 data-number="9.8.1" class="anchored" data-anchor-id="정체를-모르는-상품-시뮬레이션"><span class="header-section-number">9.8.1</span> 정체를 모르는 상품 시뮬레이션</h3>
+<p>시뮬레이션을 이용하면 가치가 알려져 있지 않은 정체를 모르는 상품에 입찰하는 예제 9.1.7에서, 양의 금액으로 입찰이 수락된 경우의 평균 순수익이 음수라는 결과를 살펴볼 수 있다.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> 먼저 입찰액 <span class="math inline">\(b\)</span>를 고른다. 여기서는 0.6을 택했다. 그런 다음 가상의 상품을 많이 시뮬레이션하여 그 가치를 <code>v</code>에 저장한다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>nsim <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">5</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">runif</span>(nsim)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>입찰이 받아들여지는 조건은 <code>b &gt; (2/3)*v</code>이다. 입찰이 수락되었다는 조건 아래의 평균 이익을 얻기 위해 대괄호로 조건을 만족하는 <code>v</code>의 값만 남긴다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(v[b <span class="sc">&gt;</span> (<span class="dv">2</span><span class="sc">/</span><span class="dv">3</span>)<span class="sc">*</span>v]) <span class="sc">-</span> b</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>이론적인 조건부 평균은 양의 <span class="math inline">\(b\)</span>에서 음수이며, 시뮬레이션 결과는 표본 오차가 있어 보통 그 근처에 놓인다. <span class="math inline">\(b\)</span>의 값을 바꾸어 실험해 볼 수 있다.</p>
+</section>
+<section id="hh와-ht가-나올-때까지의-시간" class="level3" data-number="9.8.2">
+<h3 data-number="9.8.2" class="anchored" data-anchor-id="hh와-ht가-나올-때까지의-시간"><span class="header-section-number">9.8.2</span> HH와 HT가 나올 때까지의 시간</h3>
+<p>예제 9.1.9의 결과를 확인하려면 먼저 공정한 동전 던지기의 긴 수열을 생성할 수 있다. <code>sample</code> 명령을 사용한다. <code>paste</code>에 <code>collapse=""</code> 인자를 주면 던진 결과들이 H와 T로 이루어진 하나의 문자열이 된다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"H"</span>,<span class="st">"T"</span>),<span class="dv">100</span>,<span class="at">replace=</span><span class="cn">TRUE</span>),<span class="at">collapse=</span><span class="st">""</span>)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>길이 100인 수열이면 HH와 HT가 각각 적어도 한 번 나타날 것이 사실상 확실하다.<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a></p>
+<p>HH와 HT를 볼 때까지 평균적으로 동전을 몇 번 던져야 하는지 알아보려면 동전 던지기 수열을 많이 생성해야 한다. 이를 위해 익숙한 <code>replicate</code>를 사용한다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">10</span><span class="sc">^</span><span class="dv">3</span>,<span class="fu">paste</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"H"</span>,<span class="st">"T"</span>),<span class="dv">100</span>,<span class="at">replace=</span>T),</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">collapse=</span><span class="st">""</span>))</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>이제 <code>r</code>에는 길이 100인 동전 던지기 수열 1,000개가 들어 있다. 이 수열 각각에서 HH가 처음 나타나는 위치를 찾으려면 <code>stringr</code> 패키지의 <code>str_locate</code> 명령을 사용할 수 있다. 패키지를 설치하고 불러온 후,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">str_locate</span>(r,<span class="st">"HH"</span>)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>를 실행하면 두 열로 이루어진 표 <code>t</code>가 생성된다. 두 열에는 각각 동전 던지기 수열마다 HH가 처음 나타나는 시작 위치와 끝 위치가 들어 있다. <code>head(t)</code>를 사용하면 표의 처음 몇 행을 표시해 결과가 어떤 모습인지 살펴볼 수 있다.</p>
+<p>우리가 원하는 것은 두 번째 열에 있는 끝 위치이다. 특히 두 번째 열의 평균값을 구하면 HH를 기다리는 평균 시간의 근삿값을 얻는다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(t[,<span class="dv">2</span>])</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>답이 6에 가까운가? 이번에는 <code>"HH"</code> 대신 <code>"HT"</code>를 넣어 다시 시도하면 답이 4에 가까운가?</p>
+</section>
+<section id="선형회귀" class="level3" data-number="9.8.3">
+<h3 data-number="9.8.3" class="anchored" data-anchor-id="선형회귀"><span class="header-section-number">9.8.3</span> 선형회귀</h3>
+<p>예제 9.3.10에서 설명변수를 이용해 반응변수를 예측하는 데 사용할 수 있는 선형회귀 모형의 기울기와 절편에 관한 공식을 유도했다. 시뮬레이션한 데이터에 이 공식들을 적용해 보자.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">+</span> <span class="dv">5</span><span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>벡터 <code>x</code>에는 확률변수 <span class="math inline">\(X\sim\mathcal N(0,1)\)</span>의 실현값 100개가 들어 있고, 벡터 <code>y</code>에는 <span class="math inline">\(\epsilon\sim\mathcal N(0,1)\)</span>일 때 확률변수 <span class="math inline">\(Y=a+bX+\epsilon\)</span>의 실현값 100개가 들어 있다. 보듯이 이 데이터에서 실제 <span class="math inline">\(a\)</span>와 <span class="math inline">\(b\)</span>의 값은 각각 3과 5이다. <code>plot(x,y)</code>로 데이터를 산점도로 나타낼 수 있다.</p>
+<p>이제 예제 9.3.10의 공식을 이용해 실제 <span class="math inline">\(a\)</span>와 <span class="math inline">\(b\)</span>를 잘 추정할 수 있는지 살펴보자.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">cov</span>(x,y) <span class="sc">/</span> <span class="fu">var</span>(x)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">mean</span>(y) <span class="sc">-</span> b<span class="sc">*</span><span class="fu">mean</span>(x)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>여기서 <code>cov(x,y)</code>, <code>var(x)</code>, <code>mean(x)</code>는 각각 표본공분산, 표본분산, 표본평균을 제공하며, 각각 <span class="math inline">\(\operatorname{Cov}(X,Y)\)</span>, <span class="math inline">\(\operatorname{Var}(X)\)</span>, <span class="math inline">\(E(X)\)</span>를 추정한다. 앞 장들에서 표본평균과 표본분산을 자세히 다루었다. 표본공분산은 유사한 방식으로 정의되며 실제 공분산을 추정하는 자연스러운 방법이다.</p>
+<p><code>b</code>는 5에, <code>a</code>는 3에 가까울 것이다. 추정한 이 값들이 <strong>최적 적합 직선</strong>을 결정한다. <code>abline</code> 명령으로 산점도 위에 최적 적합 직선을 그릴 수 있다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x,y)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span>a,<span class="at">b=</span>b)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>abline</code>의 첫 번째 인자는 직선의 절편이고, 두 번째 인자는 기울기이다.</p>
+</section>
+</section>
+<section id="연습문제" class="level2" data-number="9.9">
+<h2 data-number="9.9" class="anchored" data-anchor-id="연습문제"><span class="header-section-number">9.9</span> 연습문제</h2>
+<p>ⓢ 표시가 있는 문제의 자세한 풀이는 <a href="http://stat110.net" class="uri">http://stat110.net</a>에서 볼 수 있다.</p>
+<section id="사건이-주어졌을-때의-조건부기댓값" class="level3" data-number="9.9.1">
+<h3 data-number="9.9.1" class="anchored" data-anchor-id="사건이-주어졌을-때의-조건부기댓값"><span class="header-section-number">9.9.1</span> 사건이 주어졌을 때의 조건부기댓값</h3>
+<ol type="1">
+<li><p>프레드는 블로치빌에서 블리스빌로 이동하려고 세 가지 선택지 중 하나를 고르려 한다. 선택지마다 경로나 교통수단이 다르다. <span class="math inline">\(j\)</span>번째 선택지로 이동하는 시간의 평균은 <span class="math inline">\(\mu_j\)</span>시간, 표준편차는 <span class="math inline">\(\sigma_j\)</span>시간이다. 프레드는 세 선택지 중 하나를 같은 확률로 무작위로 고른다. 이동 시간을 <span class="math inline">\(T\)</span>라 하자.</p>
+<ol type="a">
+<li><span class="math inline">\(E(T)\)</span>를 구하라. 단순히 기댓값들의 평균 <span class="math inline">\((\mu_1+\mu_2+\mu_3)/3\)</span>인가?</li>
+<li><span class="math inline">\(\operatorname{Var}(T)\)</span>를 구하라. 단순히 분산들의 평균 <span class="math inline">\((\sigma_1^2+\sigma_2^2+\sigma_3^2)/3\)</span>인가?</li>
+</ol></li>
+<li><p>어느 날 밤 프레드가 자는 동안 정상 이메일 <span class="math inline">\(X\)</span>개와 스팸 이메일 <span class="math inline">\(Y\)</span>개가 도착한다. <span class="math inline">\(X,Y\)</span>는 독립이고 <span class="math inline">\(X\sim\operatorname{Pois}(10)\)</span>, <span class="math inline">\(Y\sim\operatorname{Pois}(40)\)</span>이라 하자. 그가 깨어났을 때 받은 편지함에 새 이메일이 30개 있는 것을 보았다. 이 정보가 주어졌을 때 새 정상 이메일 수의 기댓값은 얼마인가?</p></li>
+<li><p>여성 21명과 남성 14명이 의학 연구에 등록되어 있다. 각 사람은 서로 독립적으로 확률 <span class="math inline">\(p\)</span>로 어떤 질병을 갖는다. 매우 신뢰할 수 있는 검사 결과 정확히 5명이 그 질병을 가진 것으로 밝혀졌다. 이 정보가 주어졌을 때 질병을 가진 여성 수의 기댓값은 얼마인가?</p></li>
+<li><p>범죄를 연구하는 연구자는 사람들이 얼마나 자주 체포되었는지에 관심이 있다. 무작위로 뽑은 사람이 지난 10년 동안 체포된 횟수를 <span class="math inline">\(X\sim\operatorname{Pois}(\lambda)\)</span>라 하자. 그런데 연구에 경찰 기록을 사용하므로 지난 10년 동안 한 번도 체포되지 않은 사람은 기록에 나타나지 않는다. 다시 말해 경찰 기록에는 <strong>선택 편향</strong>이 있다. 지난 10년 동안 체포된 사람에 관한 정보만 들어 있기 때문이다.</p>
+<p>따라서 경찰 기록에 있는 사람들의 체포 횟수를 평균해도 <span class="math inline">\(E(X)\)</span>를 직접 추정할 수 없다. 경찰 기록은 지난 10년 동안 적어도 한 번 체포되었다는 조건 아래 체포 횟수의 조건부분포에 관한 정보를 준다고 생각하는 것이 더 타당하다. <span class="math inline">\(X\ge1\)</span>이 주어졌을 때 <span class="math inline">\(X\)</span>의 조건부분포를 <strong>절단 포아송 분포</strong>라고 한다. 이 분포의 다른 예는 3장 연습문제 14를 보라.</p>
+<ol type="a">
+<li><span class="math inline">\(E(X\mid X\ge1)\)</span>을 구하라.</li>
+<li><span class="math inline">\(\operatorname{Var}(X\mid X\ge1)\)</span>을 구하라.</li>
+</ol></li>
+<li><p>공정한 20면체 주사위를 도박사가 멈추기로 결정할 때까지 반복해 던진다. 도박사는 한 번 던질 때마다 1달러를 지불하고, 멈출 때 주사위에 나온 눈의 수만큼 달러를 받는다. 예를 들어 7번 던지고 마지막에 18이 나와 멈춘다면 순지급액은 18달러−7달러=11달러이다. 도박사가 <span class="math inline">\(m\)</span> 이상의 눈이 나올 때까지 계속 던진 후 멈추는 전략을 쓴다고 하자. 여기서 <span class="math inline">\(m\)</span>은 1 이상 20 이하의 고정된 정수이다.</p>
+<ol type="a">
+<li>순지급액의 기댓값은 얼마인가? <strong>힌트:</strong> 연속된 정수 <span class="math inline">\(a,a+1,\ldots,a+n\)</span>의 평균은 처음과 마지막 수의 평균과 같다. 급수에 관해서는 수학 부록을 보라.</li>
+<li>R이나 다른 소프트웨어를 사용하여 최적인 <span class="math inline">\(m\)</span>을 구하라.</li>
+</ol></li>
+<li><p><span class="math inline">\(X\sim\operatorname{Expo}(\lambda)\)</span>라 하자. <span class="math inline">\(E(X\mid X&lt;1)\)</span>을 다음 두 방법으로 구하라.</p>
+<ol type="a">
+<li><span class="math inline">\(X&lt;1\)</span>이 주어졌을 때의 조건부 확률밀도함수를 이용해 미적분으로 구한다.</li>
+<li>전체 기댓값의 법칙으로 <span class="math inline">\(E(X)\)</span>를 전개하여 미적분 없이 구한다.</li>
+</ol></li>
+<li><p>정체를 모르는 상이 들어 있는 상자에 입찰할 기회를 얻었다! 상의 가치는 적어도 0달러이고 최대 100만 달러라는 사실 외에는 전혀 알려져 있지 않다. 따라서 상의 실제 가치 <span class="math inline">\(V\)</span>는 100만 달러를 단위로 하여 <span class="math inline">\([0,1]\)</span> 위의 균등분포를 따른다고 본다.</p>
+<p>음이 아닌 입찰액 <span class="math inline">\(b\)</span>를 자유롭게 선택할 수 있다. 단위는 역시 100만 달러이다. <span class="math inline">\(b&lt;V/4\)</span>이면 입찰은 거절되고 얻거나 잃는 것이 없다. <span class="math inline">\(b\ge V/4\)</span>이면 입찰은 받아들여지고, 가치 <span class="math inline">\(V\)</span>인 상을 받기 위해 <span class="math inline">\(b\)</span>를 지불하므로 순지급액은 <span class="math inline">\(V-b\)</span>이다. 지급액의 기댓값을 <span class="math inline">\(b\)</span>의 함수로 구하되 모든 <span class="math inline">\(b\ge0\)</span>에 대해 명시하라. 이어서 이 기댓값을 최대화하는 최적 입찰액 <span class="math inline">\(b\)</span>를 구하라.</p></li>
+<li><p>ⓢ 양의 금액이 적힌 수표가 각각 들어 있는 두 봉투 중 하나를 고른다. 두 봉투 역설과는 달리 한 봉투의 금액이 다른 봉투의 두 배라는 사실은 주어지지 않는다. 대신 두 금액은 양의 실수 위의 어떤 분포에서 독립적으로 생성되었다고 가정하며, 그 분포에 관한 정보는 없다.<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a></p>
+<p>봉투를 고른 뒤 열어서 안에 든 금액을 확인하고 그 값을 <span class="math inline">\(x\)</span>라 하자. 그다음 다른 봉투로 바꿀 수 있다. 분포에 관한 정보가 없으므로 더 큰 금액이 든 봉투를 고를 확률을 50%보다 높이는 것은 불가능해 보일 수 있다. 직관적으로 <span class="math inline">\(x\)</span>가 “작으면” 바꾸고 “크면” 바꾸지 않으려 할 수도 있지만, 가능한 모든 분포를 통틀어 “작다”와 “크다”를 어떻게 정의할 수 있을까? 마지막 문장은 수사적 질문이다.</p>
+<p>봉투를 바꿀지 결정하기 위해 다음 전략을 생각하자. 임계값 <span class="math inline">\(T\sim\operatorname{Expo}(1)\)</span>을 생성하고 관찰한 값 <span class="math inline">\(x\)</span>가 <span class="math inline">\(T\)</span>보다 작을 때 그리고 그때에만 봉투를 바꾼다. 이 전략으로 더 큰 금액을 고를 확률이 엄격히 <span class="math inline">\(1/2\)</span>보다 큼을 보여라.</p>
+<p><strong>힌트:</strong> <span class="math inline">\(\operatorname{Expo}(1)\)</span> 분포에서 무작위 추출하여 생성한 <span class="math inline">\(T\)</span>의 값을 <span class="math inline">\(t\)</span>라 하자. 먼저 <span class="math inline">\(t\)</span>가 우연히 두 봉투의 금액 사이에 있으면 전략이 왜 매우 잘 작동하는지, 그리고 어떤 경우에도 해가 되지 않는 이유, 즉 성공 확률이 엄격히 <span class="math inline">\(1/2\)</span>보다 작아지는 경우가 없는 이유를 설명하라.</p></li>
+<li><p>두 봉투에 각각 <span class="math inline">\(\operatorname{Unif}(0,1)\)</span> 금액의 수표가 들어 있다. 금액의 단위는 1,000달러이며 두 금액은 독립이다. 봉투 하나를 골라 열어 본 후 그 금액을 그대로 갖거나 다른 봉투로 바꾸어 거기에 든 금액을 받을 수 있다.</p>
+<p>다음 전략을 쓴다고 하자. 봉투를 고르고 열어 본다. 관찰한 값이 <span class="math inline">\(U\)</span>이면 확률 <span class="math inline">\(U\)</span>로 그 봉투를 유지하고 확률 <span class="math inline">\(1-U\)</span>로 다른 봉투로 바꾼다.</p>
+<ol type="a">
+<li>두 금액 중 더 큰 쪽을 받을 확률을 구하라.</li>
+<li>받게 되는 금액의 기댓값을 구하라.</li>
+</ol></li>
+<li><p><span class="math inline">\(n\)</span>명이 경매에 나온 정체불명의 상에 입찰한다고 하자. 입찰은 비밀리에 제출하며 가장 높은 금액을 제출한 사람이 상을 받는다. <span class="math inline">\(i\)</span>번째 입찰자는 신호 <span class="math inline">\(X_i\)</span>를 받으며 <span class="math inline">\(X_1,\ldots,X_n\)</span>은 i.i.d.이다. 상의 가치 <span class="math inline">\(V\)</span>는 입찰자들의 신호의 합으로 정의한다.</p>
+<p><span class="math display">\[V=X_1+\cdots+X_n.\]</span></p>
+<p>경제학에서 이를 <strong>지갑 게임</strong>이라고 한다. <span class="math inline">\(n\)</span>명이 각자 지갑에 든 돈의 총액을 놓고 입찰하며 각 사람의 신호는 자신의 지갑에 든 돈이라고 상상할 수 있다. 물론 지갑은 비유이며, 두 회사가 서로를 인수하려고 입찰하고 각 회사는 자신의 가치는 알지만 상대 회사의 가치는 모르는 기업 인수 등도 이 게임으로 모형화할 수 있다. 이 문제에서는 <span class="math inline">\(X_i\)</span>들이 i.i.d. <span class="math inline">\(\operatorname{Unif}(0,1)\)</span>이라고 가정한다.</p>
+<ol type="a">
+<li>신호를 받기 전 입찰자 1의 <span class="math inline">\(V\)</span>에 대한 무조건부기댓값은 얼마인가?</li>
+<li>신호 <span class="math inline">\(X_1=x_1\)</span>을 받았다는 조건 아래 입찰자 1의 <span class="math inline">\(V\)</span>에 대한 기댓값은 얼마인가?</li>
+<li>각 입찰자가 자신의 신호에 대한 <span class="math inline">\(V\)</span>의 조건부기댓값을 입찰한다고 하자. 즉 입찰자 <span class="math inline">\(i\)</span>는 <span class="math inline">\(E(V\mid X_i=x_i)\)</span>를 입찰한다. 신호 <span class="math inline">\(X_1=x_1\)</span>을 받고 경매에서 이겼다는 조건 아래 입찰자 1의 <span class="math inline">\(V\)</span>에 대한 기댓값은 얼마인가? 이 값이 (b)에서 계산한 값보다 항상 작은 이유를 직관적으로 설명하라.<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a></li>
+</ol></li>
+<li><p>ⓢ 앞면 확률이 <span class="math inline">\(p\)</span>인 동전을 반복해서 던진다. (a), (b)에서는 <span class="math inline">\(0&lt;p&lt;1\)</span>인 알려진 상수 <span class="math inline">\(p\)</span>를 가정한다.</p>
+<ol type="a">
+<li>패턴 HT가 관측될 때까지 던지는 횟수의 기댓값은 얼마인가?</li>
+<li>패턴 HH가 관측될 때까지 던지는 횟수의 기댓값은 얼마인가?</li>
+<li>이제 <span class="math inline">\(p\)</span>를 모르므로 불확실성을 반영하기 위해 <span class="math inline">\(\operatorname{Beta}(a,b)\)</span> 사전분포를 사용한다고 하자. <span class="math inline">\(a,b\)</span>는 알려진 상수이고 둘 다 2보다 크다. 이 경우 (a), (b)에 대응하는 답을 <span class="math inline">\(a,b\)</span>로 나타내라.</li>
+</ol></li>
+<li><p>앞면 확률이 <span class="math inline">\(p\)</span>인 동전을 반복해서 던진다. 단 <span class="math inline">\(0&lt;p&lt;1\)</span>이다. 결과 수열은 H들의 묶음이나 T들의 묶음인 연속 구간으로 나눌 수 있다. 예를 들어 HHHTTTTHTTTHH는 HHH TTTT H TTT HH로 나뉘어 길이가 각각 3, 4, 1, 3, 2인 연속 구간이 다섯 개 있다. 적어도 세 번째 연속 구간이 시작할 때까지 동전을 던진다고 가정한다.</p>
+<ol type="a">
+<li>첫 번째 연속 구간의 길이의 기댓값을 구하라.</li>
+<li>두 번째 연속 구간의 길이의 기댓값을 구하라.</li>
+</ol></li>
+<li><p>공정한 6면체 주사위를 한 번 던진다. 첫 번째 눈보다 크거나 같은 눈을 얻기 위해 추가로 던져야 하는 횟수의 기댓값을 구하라.</p></li>
+<li><p>공정한 6면체 주사위를 반복해서 던진다.</p>
+<ol type="a">
+<li>1이 나온 직후 2가 나오기까지 필요한 던지기 횟수의 기댓값을 구하라. <strong>힌트:</strong> 첫 번째 눈이 1인지 아닌지를 조건으로 삼는 것부터 시작하라.</li>
+<li>1이 두 번 연속 나올 때까지 필요한 던지기 횟수의 기댓값을 구하라.</li>
+<li>같은 값이 <span class="math inline">\(n\)</span>번 연속 나오기까지 필요한 던지기 횟수의 기댓값을 <span class="math inline">\(a_n\)</span>이라 하자. 즉 미리 지정되지 않은 어떤 값 <span class="math inline">\(j\)</span>가 연속해서 <span class="math inline">\(n\)</span>번 나오는 경우이다. <span class="math inline">\(a_{n+1}\)</span>을 <span class="math inline">\(a_n\)</span>으로 나타내는 재귀식을 구하라. <strong>힌트:</strong> 같은 값이 <span class="math inline">\(n+1\)</span>번 연속 나오기까지의 시간을 같은 값이 <span class="math inline">\(n\)</span>번 연속 나오기까지의 시간과 나머지 시간으로 나누어라.</li>
+<li>모든 <span class="math inline">\(n\ge1\)</span>에 대해 <span class="math inline">\(a_n\)</span>을 간단한 명시적 공식으로 나타내라. <span class="math inline">\(a_7\)</span>의 수치는 얼마인가?</li>
+</ol></li>
+</ol>
+</section>
+<section id="확률변수가-주어졌을-때의-조건부기댓값-1" class="level3" data-number="9.9.2">
+<h3 data-number="9.9.2" class="anchored" data-anchor-id="확률변수가-주어졌을-때의-조건부기댓값-1"><span class="header-section-number">9.9.2</span> 확률변수가 주어졌을 때의 조건부기댓값</h3>
+<ol start="15" type="1">
+<li><p>ⓢ <span class="math inline">\(X_1,X_2\)</span>가 i.i.d.이고 <span class="math inline">\(\bar X=\frac12(X_1+X_2)\)</span>가 표본평균이라 하자. 통계학의 많은 문제에서 <span class="math inline">\(\bar X\)</span>가 주어졌을 때의 조건부기댓값을 구하면 유용하거나 중요하다. 한 예로 <span class="math inline">\(E(w_1X_1+w_2X_2\mid\bar X)\)</span>를 구하라. 여기서 <span class="math inline">\(w_1,w_2\)</span>는 <span class="math inline">\(w_1+w_2=1\)</span>인 상수이다.</p></li>
+<li><p><span class="math inline">\(X_1,X_2,\ldots\)</span>를 평균이 0인 i.i.d. 확률변수라 하고 <span class="math inline">\(S_n=X_1+\cdots+X_n\)</span>이라 하자. 예제 9.3.6에서 보였듯 처음 <span class="math inline">\(n\)</span>개 항의 합이 주어졌을 때 첫 항의 기댓값은 <span class="math inline">\(E(X_1\mid S_n)=S_n/n\)</span>이다. 모든 양의 정수 <span class="math inline">\(k,n\)</span>에 대해 <span class="math inline">\(E(S_k\mid S_n)\)</span>을 구하여 이 결과를 일반화하라.</p></li>
+<li><p>ⓢ 어느 대학에 룸메이트 <span class="math inline">\(n\)</span>쌍이 있다. 따라서 학생은 <span class="math inline">\(2n\)</span>명이다. 이 학생들 각각은 어떤 강좌를 수강할지 서로 독립적으로 무작위로 결정하며 성공 확률은 <span class="math inline">\(p\)</span>이다. 여기서 “성공”은 그 강좌를 수강한다는 뜻이다.</p>
+<p><span class="math inline">\(N\)</span>을 <span class="math inline">\(2n\)</span>명의 학생 중 강좌를 수강하는 사람의 수라 하고, <span class="math inline">\(X\)</span>를 두 룸메이트가 모두 강좌를 수강하는 룸메이트 쌍의 수라 하자. <span class="math inline">\(E(X)\)</span>와 <span class="math inline">\(E(X\mid N)\)</span>을 구하라.</p></li>
+<li><p>ⓢ <span class="math inline">\(E((Y-E(Y\mid X))^2\mid X)=E(Y^2\mid X)-(E(Y\mid X))^2\)</span>임을 보여 두 표현이 <span class="math inline">\(\operatorname{Var}(Y\mid X)\)</span>에 대해 일치함을 확인하라. <strong>분산에 관한 힌트:</strong> 상수 또는 상수처럼 작용하는 것을 더해도 분산은 변하지 않는다.</p></li>
+<li><p><span class="math inline">\(X\)</span>를 무작위로 고른 성인 남성의 키, <span class="math inline">\(Y\)</span>를 그 아버지의 키라 하자. <span class="math inline">\(X,Y\)</span>는 평균 0, 표준편차 1이 되도록 표준화되어 있다. <span class="math inline">\((X,Y)\)</span>가 이변량 정규분포이고 <span class="math inline">\(X,Y\sim\mathcal N(0,1)\)</span>이며 <span class="math inline">\(\operatorname{Corr}(X,Y)=\rho\)</span>라고 가정한다.</p>
+<ol type="a">
+<li><span class="math inline">\(y=ax+b\)</span>를 <span class="math inline">\(X\)</span>로부터 <span class="math inline">\(Y\)</span>를 예측하는 최적 직선의 방정식이라 하자. 최적이라는 것은 평균제곱오차를 최소화한다는 뜻이다. 예를 들어 <span class="math inline">\(X=1.3\)</span>을 관측하면 <span class="math inline">\(Y\)</span>를 <span class="math inline">\(1.3a+b\)</span>로 예측한다. 이제 <span class="math inline">\(X\)</span>로 <span class="math inline">\(Y\)</span>를 예측하는 대신 <span class="math inline">\(Y\)</span>로 <span class="math inline">\(X\)</span>를 예측하고자 한다. <span class="math inline">\(Y\)</span>로 <span class="math inline">\(X\)</span>를 예측하는 최적 직선의 기울기가 무엇일지 직관적으로 추측하고 설명하라.</li>
+<li><span class="math inline">\(Y=cX+V\)</span>이고 <span class="math inline">\(V\)</span>가 <span class="math inline">\(X\)</span>와 독립이도록 상수 <span class="math inline">\(c\)</span>를 <span class="math inline">\(\rho\)</span>로 구하고 확률변수 <span class="math inline">\(V\)</span>를 구하라. <strong>힌트:</strong> <span class="math inline">\(\operatorname{Cov}(X,Y-cX)=0\)</span>이 되는 <span class="math inline">\(c\)</span>부터 구하라.</li>
+<li><span class="math inline">\(X=dY+W\)</span>이고 <span class="math inline">\(W\)</span>가 <span class="math inline">\(Y\)</span>와 독립이도록 상수 <span class="math inline">\(d\)</span>를 <span class="math inline">\(\rho\)</span>로 구하고 확률변수 <span class="math inline">\(W\)</span>를 구하라.</li>
+<li><span class="math inline">\(E(Y\mid X)\)</span>와 <span class="math inline">\(E(X\mid Y)\)</span>를 구하라.</li>
+<li>(a)의 직관적 추측이 (d)의 결과가 뜻하는 바와 달랐다면 둘을 조화시켜라. <span class="math inline">\(X\)</span>로 <span class="math inline">\(Y\)</span>를 예측하는 최적 직선의 기울기와 <span class="math inline">\(Y\)</span>로 <span class="math inline">\(X\)</span>를 예측하는 최적 직선의 기울기 사이 관계를 명확하고 올바르게 직관적으로 설명하라.</li>
+</ol></li>
+<li><p><span class="math inline">\(X\sim\operatorname{Mult}_5(n,\mathbf p)\)</span>라 하자.</p>
+<ol type="a">
+<li><span class="math inline">\(E(X_1\mid X_2)\)</span>와 <span class="math inline">\(\operatorname{Var}(X_1\mid X_2)\)</span>를 구하라.</li>
+<li><span class="math inline">\(E(X_1\mid X_2+X_3)\)</span>을 구하라.</li>
+</ol></li>
+<li><p><span class="math inline">\(Y\)</span>를 이산확률변수, <span class="math inline">\(A\)</span>를 <span class="math inline">\(0&lt;P(A)&lt;1\)</span>인 사건, <span class="math inline">\(I_A\)</span>를 <span class="math inline">\(A\)</span>의 지시확률변수라 하자.</p>
+<ol type="a">
+<li>확률변수 <span class="math inline">\(E(Y\mid I_A)\)</span>가 두 수 <span class="math inline">\(E(Y\mid A)\)</span> 및 <span class="math inline">\(E(Y\mid A^c)\)</span>와 어떻게 관련되는지 정확히 설명하라.</li>
+<li>기댓값과 조건부기댓값의 정의를 직접 이용해 <span class="math inline">\(E(Y\mid A)=E(YI_A)/P(A)\)</span>임을 보여라. <strong>힌트:</strong> <span class="math inline">\(X=YI_A\)</span>로 놓고 <span class="math inline">\(X\)</span>의 확률질량함수를 나타내라.</li>
+<li>(b)를 사용하여 <span class="math inline">\(E(Y)=E(Y\mid A)P(A)+E(Y\mid A^c)P(A^c)\)</span>임을 짧게 증명하라.</li>
+</ol></li>
+<li><p>7.1절에서 살펴본 다음 형태의 전체 확률의 법칙도 아담의 법칙에서 나온다는 것을 보여라. 임의의 사건 <span class="math inline">\(A\)</span>와 확률밀도함수 <span class="math inline">\(f_X\)</span>를 갖는 연속확률변수 <span class="math inline">\(X\)</span>에 대해</p>
+<p><span class="math display">\[P(A)=\int_{-\infty}^{\infty}P(A\mid X=x)f_X(x)\,dx.\]</span></p>
+<p><strong>힌트:</strong> <span class="math inline">\(E(I(A)\mid X=x)\)</span>를 생각하라.</p></li>
+<li><p>ⓢ <span class="math inline">\(X,Y\)</span>를 분산이 유한한 확률변수라 하고 <span class="math inline">\(W=Y-E(Y\mid X)\)</span>라 하자. 이것은 <strong>잔차</strong>, 즉 실제 <span class="math inline">\(Y\)</span> 값과 <span class="math inline">\(X\)</span>를 바탕으로 예측한 <span class="math inline">\(Y\)</span> 값의 차이이다.</p>
+<ol type="a">
+<li><span class="math inline">\(E(W)\)</span>와 <span class="math inline">\(E(W\mid X)\)</span>를 계산하라.</li>
+<li><span class="math inline">\(X\sim\mathcal N(0,1)\)</span>이고 <span class="math inline">\(W\mid X\sim\mathcal N(0,X^2)\)</span>인 경우 <span class="math inline">\(\operatorname{Var}(W)\)</span>를 계산하라.</li>
+</ol></li>
+<li><p>ⓢ 겉모습이 같은 동전 두 개 중 하나를 모자에서 무작위로 고른다. 한 동전의 앞면 확률은 <span class="math inline">\(p_1\)</span>, 다른 동전의 앞면 확률은 <span class="math inline">\(p_2\)</span>이다. 고른 동전을 <span class="math inline">\(n\)</span>번 던져 나온 앞면 수를 <span class="math inline">\(X\)</span>라 하자. <span class="math inline">\(X\)</span>의 평균과 분산을 구하라.</p></li>
+<li><p>켈리가 일련의 내기 <span class="math inline">\(n\)</span>번을 한다. 각 내기에서 이길 확률은 서로 독립적으로 <span class="math inline">\(p\)</span>이다. 처음 가진 돈은 <span class="math inline">\(x_0\)</span>달러이다. <span class="math inline">\(j\)</span>번째 내기를 정산한 직후 가진 돈을 <span class="math inline">\(X_j\)</span>라 하자. <span class="math inline">\(f\in(0,1)\)</span>을 <strong>베팅 비율</strong>이라는 상수라 하자. 켈리는 매 내기에서 자신의 재산 중 비율 <span class="math inline">\(f\)</span>만큼을 걸고 그 금액만큼 이기거나 잃는다. 예를 들어 가진 돈이 100달러이고 <span class="math inline">\(f=0.25\)</span>이면 25달러를 걸고 25달러를 얻거나 잃는다. <span class="math inline">\(p&gt;1/2\)</span>일 때 유명한 선택인 <span class="math inline">\(f=2p-1\)</span>을 <strong>켈리 기준</strong>이라고 한다. <span class="math inline">\(E(X_n)\)</span>을 <span class="math inline">\(n,p,f,x_0\)</span>로 구하라. <strong>힌트:</strong> 먼저 <span class="math inline">\(E(X_{j+1}\mid X_j)\)</span>를 구하라.</p></li>
+<li><p>내년에 개봉할 영화 수를 <span class="math inline">\(N\sim\operatorname{Pois}(\lambda_1)\)</span>이라 하자. 각 영화의 판매 티켓 수는 다른 영화 및 <span class="math inline">\(N\)</span>과 독립이고 <span class="math inline">\(\operatorname{Pois}(\lambda_2)\)</span> 분포를 따른다고 하자. 내년에 판매될 영화 티켓 수의 평균과 분산을 구하라.</p></li>
+<li><p>어느 날 저녁 8시부터 자정까지 파티가 열리며 <span class="math inline">\(N\sim\operatorname{Pois}(\lambda)\)</span>명이 참석한다. 이들은 파티가 진행되는 동안 서로 독립적으로, 또 <span class="math inline">\(N\)</span>과 독립적으로 균등하게 무작위인 시각에 도착한다.</p>
+<ol type="a">
+<li>적어도 한 명이 도착한다는 조건 아래 첫 번째 사람이 도착하는 시각의 기댓값을 구하라. 저녁 8시 이후 경과한 분 단위로 <span class="math inline">\(\lambda\)</span>를 이용한 정확한 답을 구하고, <span class="math inline">\(\lambda=20\)</span>일 때는 가장 가까운 분으로 반올림하여 오후 8시 20분과 같은 시각 표기로 답하라.</li>
+<li>적어도 한 명이 도착한다는 조건 아래 마지막 사람이 도착하는 시각의 기댓값을 구하라. (a)와 마찬가지로 정확한 답과 <span class="math inline">\(\lambda=20\)</span>일 때 가장 가까운 분으로 반올림한 답을 구하라.</li>
+</ol></li>
+<li><p>ⓢ 앞으로 관측할 확률변수 <span class="math inline">\(X\)</span>를 바탕으로 알려지지 않은 모수 <span class="math inline">\(\theta\)</span>를 추정하려고 한다. 베이즈주의 관점에서처럼 <span class="math inline">\(X\)</span>와 <span class="math inline">\(\theta\)</span>가 결합분포를 갖는다고 가정한다. 추정량을 <span class="math inline">\(\hat\theta\)</span>라 하자. 추정량은 <span class="math inline">\(X\)</span>의 함수이다. <span class="math inline">\(E(\hat\theta\mid\theta)=\theta\)</span>이면 <strong>불편</strong>이라고 하고, <span class="math inline">\(E(\theta\mid X)=\hat\theta\)</span>이면 <strong>베이즈 절차</strong>라고 한다.</p>
+<ol type="a">
+<li><span class="math inline">\(\hat\theta\)</span>가 불편하다고 하자. 추정량과 참값 <span class="math inline">\(\theta\)</span> 사이 차이의 제곱의 평균인 <span class="math inline">\(E(\hat\theta-\theta)^2\)</span>을 <span class="math inline">\(\hat\theta\)</span>와 <span class="math inline">\(\theta\)</span>의 주변적률로 나타내라. <strong>힌트:</strong> <span class="math inline">\(\theta\)</span>를 조건으로 삼아라.</li>
+<li>(a)를 반복하되 이번에는 불편하다고 가정하는 대신 <span class="math inline">\(\hat\theta\)</span>가 베이즈 절차라고 하자. <strong>힌트:</strong> <span class="math inline">\(X\)</span>를 조건으로 삼아라.</li>
+<li><span class="math inline">\(X\)</span>를 관찰하여 <span class="math inline">\(\theta\)</span>를 완벽하게 알 수 있는 시시한 문제를 제외하면 <span class="math inline">\(\hat\theta\)</span>가 베이즈 절차이면서 동시에 불편할 수 없음을 보여라. <strong>힌트:</strong> 음이 아닌 확률변수 <span class="math inline">\(Y\)</span>의 평균이 0이면 <span class="math inline">\(P(Y=0)=1\)</span>이다.</li>
+</ol></li>
+<li><p><span class="math inline">\(E(Y\mid X)=c\)</span>가 상수이면 <span class="math inline">\(X,Y\)</span>가 비상관임을 보여라. <strong>힌트:</strong> 아담의 법칙을 이용해 <span class="math inline">\(E(Y)\)</span>와 <span class="math inline">\(E(XY)\)</span>를 구하라.</p></li>
+<li><p>비상관인 <span class="math inline">\(X,Y\)</span>에 대해 <span class="math inline">\(E(Y\mid X)\)</span>가 상수가 아닐 수 있음을 예를 들어 보여라. <strong>힌트:</strong> 표준정규 확률변수와 그 제곱을 생각하라.</p></li>
+<li><p>ⓢ 이메일이 받은 편지함에 한 번에 하나씩 도착한다. <span class="math inline">\(n\)</span>번째 이메일이 도착하는 시각을 <span class="math inline">\(T_n\)</span>이라 하고 어떤 시작 시점부터 연속적인 척도로 측정한다. 이메일 사이의 대기시간은 i.i.d. <span class="math inline">\(\operatorname{Expo}(\lambda)\)</span>라고 하자. 즉 <span class="math inline">\(T_1,T_2-T_1,T_3-T_2,\ldots\)</span>가 i.i.d. <span class="math inline">\(\operatorname{Expo}(\lambda)\)</span>이다.</p>
+<p>각 이메일이 스팸이 아닐 확률은 <span class="math inline">\(p\)</span>, 스팸일 확률은 <span class="math inline">\(q=1-p\)</span>이며, 다른 이메일과 대기시간에 독립이다. 첫 번째 스팸이 아닌 이메일이 도착하는 시각을 <span class="math inline">\(X\)</span>라 하자. 따라서 <span class="math inline">\(X\)</span>는 연속확률변수이며 첫 이메일이 스팸이 아니면 <span class="math inline">\(X=T_1\)</span>, 첫 이메일은 스팸이지만 두 번째가 스팸이 아니면 <span class="math inline">\(X=T_2\)</span>이다.</p>
+<ol type="a">
+<li><span class="math inline">\(X\)</span>의 평균과 분산을 구하라.</li>
+<li><span class="math inline">\(X\)</span>의 적률생성함수를 구하라. 이로부터 <span class="math inline">\(X\)</span>가 어떤 유명한 분포를 따른다고 할 수 있는가? 모숫값도 반드시 제시하라.</li>
+</ol>
+<p><strong>두 소문항에 대한 힌트:</strong> 첫 번째 스팸이 아닌 이메일까지의 이메일 수를 그 이메일을 포함하여 <span class="math inline">\(N\)</span>이라 하고 <span class="math inline">\(X\)</span>를 <span class="math inline">\(N\)</span>개 항의 합으로 쓴 다음 <span class="math inline">\(N\)</span>을 조건으로 삼아라.</p></li>
+<li><p>고객이 시간당 <span class="math inline">\(\lambda\)</span>명의 비율인 포아송 과정에 따라 상점에 도착한다. 고객은 각자 독립적으로 확률 <span class="math inline">\(p\)</span>로 구매한다. 고객이 구매한다는 조건 아래 지출액의 평균은 <span class="math inline">\(\mu\)</span>달러, 분산은 <span class="math inline">\(\sigma^2\)</span>이다.</p>
+<ol type="a">
+<li>무작위 고객의 지출액의 평균과 분산을 구하라. 고객은 아무것도 쓰지 않을 수 있다는 점에 유의하라.</li>
+<li>(a)와 이 장의 결과를 이용해 8시간 동안 상점이 얻는 매출의 평균과 분산을 구하라.</li>
+<li>닭과 달걀 이야기와 이 장의 결과를 이용해 8시간 동안 상점이 얻는 매출의 평균과 분산을 구하라.</li>
+</ol></li>
+<li><p>프레드가 아끼는 컴퓨터는 고장 날 때까지 <span class="math inline">\(\operatorname{Expo}(\lambda)\)</span> 시간 동안 작동한다. 고장이 나면 프레드는 수리를 시도한다. 확률 <span class="math inline">\(p\)</span>로 수리할 수 있다. 수리에 성공하면 컴퓨터는 새것처럼 되어 다음 고장까지 추가로 독립적인 <span class="math inline">\(\operatorname{Expo}(\lambda)\)</span> 시간 동안 작동한다. 그때도 확률 <span class="math inline">\(p\)</span>로 수리할 수 있고, 이후에도 마찬가지이다. 어느 고장 후 수리할 수 없으면 새 컴퓨터를 산다. 프레드가 새 컴퓨터를 살 때까지 걸리는 시간의 기댓값을 구하라. 컴퓨터 진단, 수리 및 구매에 쓰는 시간은 무시할 수 있다고 가정한다.</p></li>
+<li><p>초록색 주사위를 처음 1이 나올 때까지 던진다. 주황색 주사위는 처음 6이 나올 때까지 던진다. 두 주사위는 공정한 6면체이다. <span class="math inline">\(T_1\)</span>을 마지막의 1을 포함하여 초록색 주사위에서 나온 눈의 합, <span class="math inline">\(T_6\)</span>을 마지막의 6을 포함하여 주황색 주사위에서 나온 눈의 합이라 하자. 두 학생이 <span class="math inline">\(E(T_1)=E(T_6)\)</span>인지 아니면 <span class="math inline">\(E(T_1)&lt;E(T_6)\)</span>인지 토론한다. 두 학생은 여기에서 자신의 논증을 인용하도록 친절히 허락해 주었다.</p>
+<p><strong>학생 A:</strong> <span class="math inline">\(E(T_1)=E(T_6)\)</span>이다. 아담의 법칙에 따라 주사위 눈의 합의 기댓값은 던진 횟수의 기댓값과 한 번 던진 눈의 기댓값의 곱이며, 두 주사위에서 이 두 인수는 각각 같다. 자세히는 초록색 주사위와 주황색 주사위의 던지기 횟수를 각각 <span class="math inline">\(N_1,N_6\)</span>이라 하자. 아담의 법칙과 선형성에 따라</p>
+<p><span class="math display">\[E(T_1)=E(E(T_1\mid N_1))=E(3.5N_1)=3.5E(N_1),\]</span></p>
+<p>이고 주황색 주사위에 같은 방법을 적용하면 <span class="math inline">\(3.5E(N_6)\)</span>을 얻는다. 이는 <span class="math inline">\(3.5E(N_1)\)</span>과 같다.</p>
+<p><strong>학생 B:</strong> 실제로는 <span class="math inline">\(E(T_1)&lt;E(T_6)\)</span>이다. 두 주사위에서 던지기 횟수의 기댓값이 같다는 점에는 동의하지만, 핵심 차이는 마지막 눈이 초록색은 1이고 주황색은 6임을 안다는 것이다. 각각 마지막 눈을 제외한 합의 기댓값은 두 주사위에서 같고, 마지막 눈을 포함하면 <span class="math inline">\(E(T_1)&lt;E(T_6)\)</span>이 된다.</p>
+<ol type="a">
+<li>학생 A의 논증이 어느 정도 설득력 있고 올바른지 말로 논의하라.</li>
+<li>학생 B의 논증이 어느 정도 설득력 있고 올바른지 말로 논의하라.</li>
+<li><span class="math inline">\(E(T_1)\)</span>과 <span class="math inline">\(E(T_6)\)</span>을 주의 깊게 유도하라.</li>
+</ol></li>
+<li><p>ⓢ 유디트가 선수 생활 동안 출전하는 체스 대회 수는 모두 <span class="math inline">\(N\sim\operatorname{Geom}(s)\)</span>이다. 각 대회에서 서로 독립적으로 확률 <span class="math inline">\(p\)</span>로 우승한다고 하자. 선수 생활 동안 우승한 대회의 수를 <span class="math inline">\(T\)</span>라 하자.</p>
+<ol type="a">
+<li><span class="math inline">\(T\)</span>의 평균과 분산을 구하라.</li>
+<li><span class="math inline">\(T\)</span>의 적률생성함수를 구하라. 이 분포의 이름과 모수는 무엇인가?</li>
+</ol></li>
+<li><p>이야기 8.4.5에서 다른 사실들과 함께 <span class="math inline">\(\lambda\sim\operatorname{Gamma}(r_0,b_0)\)</span>이고 <span class="math inline">\(Y\mid\lambda\sim\operatorname{Pois}(\lambda)\)</span>이면 <span class="math inline">\(Y\)</span>의 주변분포가 <span class="math inline">\(\operatorname{NBin}(r_0,b_0/(b_0+1))\)</span>임을 보였다. 아담의 법칙과 적률생성함수를 이용해 이 결과를 유도하라. <strong>힌트:</strong> <span class="math inline">\(Y\mid\lambda\)</span>의 조건부 적률생성함수를 생각하라.</p></li>
+<li><p><span class="math inline">\(X_1,\ldots,X_n\)</span>을 평균 <span class="math inline">\(\mu\)</span>, 분산 <span class="math inline">\(\sigma^2\)</span>인 i.i.d. 확률변수라 하고 <span class="math inline">\(n\ge2\)</span>라 하자. <span class="math inline">\(X_1,\ldots,X_n\)</span>의 <strong>부트스트랩 표본</strong>은 <span class="math inline">\(X_j\)</span>들에서 같은 확률로 복원추출하여 구성한 확률변수 <span class="math inline">\(n\)</span>개 <span class="math inline">\(X_1^*,\ldots,X_n^*\)</span>이다. 부트스트랩 표본의 표본평균을 다음과 같이 <span class="math inline">\(\bar X^*\)</span>로 나타내자.</p>
+<p><span class="math display">\[\bar X^*=\frac1n(X_1^*+\cdots+X_n^*).\]</span></p>
+<ol type="a">
+<li>각 <span class="math inline">\(j\)</span>에 대해 <span class="math inline">\(E(X_j^*)\)</span>와 <span class="math inline">\(\operatorname{Var}(X_j^*)\)</span>를 계산하라.</li>
+<li><span class="math inline">\(E(\bar X^*\mid X_1,\ldots,X_n)\)</span>과 <span class="math inline">\(\operatorname{Var}(\bar X^*\mid X_1,\ldots,X_n)\)</span>을 계산하라. <strong>힌트:</strong> <span class="math inline">\(X_1,\ldots,X_n\)</span>이 주어졌을 때 <span class="math inline">\(X_j^*\)</span>들은 독립이며 <span class="math inline">\(X_1,\ldots,X_n\)</span> 각 점에 확률 <span class="math inline">\(1/n\)</span>을 부여하는 확률질량함수를 갖는다. 확인 차원에서 답은 <span class="math inline">\(X_1,\ldots,X_n\)</span>의 함수인 확률변수여야 한다.</li>
+<li><span class="math inline">\(E(\bar X^*)\)</span>와 <span class="math inline">\(\operatorname{Var}(\bar X^*)\)</span>를 계산하라.</li>
+<li><span class="math inline">\(\operatorname{Var}(\bar X)&lt;\operatorname{Var}(\bar X^*)\)</span>인 이유를 직관적으로 설명하라.<a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a></li>
+</ol></li>
+<li><p>어느 보험회사가 이웃한 두 지역 <span class="math inline">\(R_1,R_2\)</span>의 재해를 보장한다. 각각 <span class="math inline">\(R_1,R_2\)</span>가 보험 대상 재해를 입었는지를 나타내는 지시확률변수를 <span class="math inline">\(I_1,I_2\)</span>라 하자. 두 지시확률변수는 종속일 수 있다. <span class="math inline">\(j=1,2\)</span>에 대해 <span class="math inline">\(p_j=E(I_j)\)</span>이고 <span class="math inline">\(p_{12}=E(I_1I_2)\)</span>라 하자.</p>
+<p>회사가 이 지역들에 배상하는 총비용은 <span class="math inline">\(C=I_1T_1+I_2T_2\)</span>이며 <span class="math inline">\(T_j\)</span>의 평균은 <span class="math inline">\(\mu_j\)</span>, 분산은 <span class="math inline">\(\sigma_j^2\)</span>이다. <span class="math inline">\(T_1,T_2\)</span>는 서로 독립이고 <span class="math inline">\((T_1,T_2)\)</span>는 <span class="math inline">\((I_1,I_2)\)</span>와 독립이라고 가정한다.</p>
+<ol type="a">
+<li><span class="math inline">\(E(C)\)</span>를 구하라.</li>
+<li><span class="math inline">\(\operatorname{Var}(C)\)</span>를 구하라.</li>
+</ol></li>
+<li><p>ⓢ 어떤 주식은 날에 따라 변동성이 낮거나 높다. 변동성이 낮은 날일 확률은 <span class="math inline">\(p\)</span>, 높은 날일 확률은 <span class="math inline">\(q=1-p\)</span>라 하자. 변동성이 낮은 날 주가의 백분율 변화는 <span class="math inline">\(\mathcal N(0,\sigma_1^2)\)</span>이고, 높은 날에는 <span class="math inline">\(\mathcal N(0,\sigma_2^2)\)</span>이며 <span class="math inline">\(\sigma_1&lt;\sigma_2\)</span>라고 하자. 어느 날 그 주식의 백분율 변화를 <span class="math inline">\(X\)</span>라 하자. 이 분포는 두 정규분포의 혼합분포라 하며, <span class="math inline">\(X=I_1X_1+I_2X_2\)</span>로 나타내면 편리하다. 여기서 <span class="math inline">\(I_1\)</span>은 변동성이 낮은 날의 지시확률변수이고 <span class="math inline">\(I_2=1-I_1\)</span>, <span class="math inline">\(X_j\sim\mathcal N(0,\sigma_j^2)\)</span>이며 <span class="math inline">\(I_1,X_1,X_2\)</span>는 서로 독립이다.</p>
+<ol type="a">
+<li>이브의 법칙을 사용하는 방법과 공분산의 성질로 <span class="math inline">\(\operatorname{Cov}(I_1X_1+I_2X_2,I_1X_1+I_2X_2)\)</span>를 계산하는 방법, 두 가지로 <span class="math inline">\(\operatorname{Var}(X)\)</span>를 구하라.</li>
+<li>6장에서 평균이 <span class="math inline">\(\mu\)</span>이고 표준편차가 <span class="math inline">\(\sigma\)</span>인 확률변수 <span class="math inline">\(Y\)</span>의 첨도를 <span class="math inline">\(\operatorname{Kurt}(Y)=E(Y-\mu)^4/\sigma^4-3\)</span>으로 정의했음을 떠올리자. <span class="math inline">\(X\)</span>의 첨도를 <span class="math inline">\(p,q,\sigma_1^2,\sigma_2^2\)</span>로 구해 완전히 간단히 하라. 결과는 모든 정규분포의 첨도가 0인데도 <span class="math inline">\(X\)</span>의 첨도는 양수이며 모숫값에 따라 매우 클 수 있음을 보여 준다.<a href="#fn22" class="footnote-ref" id="fnref22" role="doc-noteref"><sup>22</sup></a></li>
+</ol></li>
+<li><p><span class="math inline">\(X_1,X_2,Y\)</span>를 확률변수라 하고 <span class="math inline">\(Y\)</span>의 분산이 유한하다고 하자. <span class="math inline">\(A=E(Y\mid X_1)\)</span>, <span class="math inline">\(B=E(Y\mid X_1,X_2)\)</span>로 놓자. <span class="math inline">\(\operatorname{Var}(A)\le\operatorname{Var}(B)\)</span>임을 보여라. 또한 <span class="math inline">\(Y\)</span>가 <span class="math inline">\(X_1\)</span>과 독립인 극단적인 경우와 어떤 함수 <span class="math inline">\(h\)</span>에 대해 <span class="math inline">\(Y=h(X_2)\)</span>인 극단적인 경우에 이 결과가 타당한지 확인하라. <strong>힌트:</strong> <span class="math inline">\(B\)</span>에 이브의 법칙을 적용하라.</p></li>
+<li><p>임의의 확률변수 <span class="math inline">\(X,Y\)</span>에 대해 다음을 보여라.</p>
+<p><span class="math display">\[E(Y\mid E(Y\mid X))=E(Y\mid X).\]</span></p>
+<p><span class="math inline">\(E(Y\mid X)\)</span>를 <span class="math inline">\(X\)</span>를 바탕으로 <span class="math inline">\(Y\)</span>를 예측할 때 사용하는 값으로 생각하면 이는 직관적인 해석을 갖는다. <span class="math inline">\(X\)</span>로부터 <span class="math inline">\(Y\)</span>를 예측할 때 사용할 예측값이 주어지면, 더 이상 <span class="math inline">\(Y\)</span>를 예측하기 위해 <span class="math inline">\(X\)</span>를 알 필요 없이 이미 가진 예측값을 사용하면 된다!</p>
+<p>예를 들어 <span class="math inline">\(E(Y\mid X)=g(X)\)</span>로 놓고 <span class="math inline">\(g(X)=7\)</span>을 관찰했다고 하자. <span class="math inline">\(g\)</span>가 일대일 함수가 아닐 수도 있으므로 <span class="math inline">\(X\)</span>가 무엇인지는 알 수도 있고 모를 수도 있다. 하지만 <span class="math inline">\(X\)</span>를 몰라도 <span class="math inline">\(X\)</span>를 바탕으로 한 <span class="math inline">\(Y\)</span>의 예측값이 7임은 안다. <strong>힌트:</strong> 추가 조건이 있는 아담의 법칙을 사용하라.</p></li>
+<li><p>어느 연구자가 조건염이라는 질병의 새 치료법이 표준 치료법보다 효과가 더 좋은지 알고자 한다. 안타깝게도 무작위 실험을 수행할 수는 없지만 새 치료를 받은 환자들과 표준 치료를 받은 환자들의 의무기록은 가지고 있다. 그러나 의사들이 더 젊고 건강한 환자에게 새 치료법을 주는 경향이 있을까 봐 걱정한다. 그렇다면 두 집단 환자의 결과를 단순히 비교하는 것은 사과와 오렌지를 비교하는 것과 같을 것이다.</p>
+<p>각 환자는 나이, 키와 몸무게, 과거 건강 상태에 관한 측정값 등일 수 있는 배경 변수 <span class="math inline">\(X\)</span>를 갖는다고 하자. <span class="math inline">\(Z\)</span>는 새 치료를 받는 사건의 지시확률변수라 하자. 연구자는 <span class="math inline">\(Z\)</span>가 <span class="math inline">\(X\)</span>에 종속일 수 있다고, 즉 <span class="math inline">\(Z=1\)</span>이 주어졌을 때의 <span class="math inline">\(X\)</span> 분포가 <span class="math inline">\(Z=0\)</span>이 주어졌을 때의 <span class="math inline">\(X\)</span> 분포와 다를 수 있다고 우려한다.</p>
+<p>사과와 사과를 비교하기 위해 연구자는 새 치료를 받은 모든 환자에게 배경 변수가 비슷하면서 표준 치료를 받은 환자를 한 명씩 짝지어 주려고 한다. 하지만 <span class="math inline">\(X\)</span>는 고차원 확률벡터일 수 있으므로 <span class="math inline">\(X\)</span>의 값이 비슷한 짝을 찾기가 매우 어려운 경우가 많다.</p>
+<p><strong>성향점수</strong>는 고차원일 수 있는 배경 변수 벡터를 하나의 수로 줄인다. 그러면 <span class="math inline">\(X\)</span>의 값이 비슷한 사람을 찾기보다 성향점수가 비슷한 사람을 찾기가 훨씬 쉽다. 배경 특성이 <span class="math inline">\(X\)</span>인 사람의 성향점수는 <span class="math inline">\(S=E(Z\mid X)\)</span>로 정의한다.</p>
+<p>근본적인 연결에 따라 성향점수는 배경 특성이 주어졌을 때 그 사람이 새 치료를 받을 확률이다. <span class="math inline">\(S\)</span>가 주어졌을 때 치료 지시확률변수 <span class="math inline">\(Z\)</span>가 배경 변수 <span class="math inline">\(X\)</span>와 독립임을 보여라. <strong>힌트:</strong> 이 문제는 앞 문제와 관련이 있다. <span class="math inline">\(P(Z=1\mid S,X)=P(Z=1\mid S)\)</span>임을 보여라. 이는 <span class="math inline">\(E(Z\mid S,X)=E(Z\mid S)\)</span>임을 보이는 것과 동치이다.</p></li>
+<li><p>이 문제에서는 기댓값에 대한 아담의 법칙이나 분산에 대한 이브의 법칙과 유사한 정신을 가진 유용한 공분산 항등식을 개발한다. 먼저 조건부분산을 정의한 방식과 유사하게 <strong>조건부 공분산</strong>을 정의한다.</p>
+<p><span class="math display">\[\operatorname{Cov}(X,Y\mid Z)=E\left((X-E(X\mid Z))(Y-E(Y\mid Z))\mid Z\right).\]</span></p>
+<ol type="a">
+<li>다음을 보여라.</li>
+</ol>
+<p><span class="math display">\[\operatorname{Cov}(X,Y\mid Z)=E(XY\mid Z)-E(X\mid Z)E(Y\mid Z).\]</span></p>
+<p>이는 <span class="math inline">\(\operatorname{Cov}(X,Y)=E(XY)-E(X)E(Y)\)</span>의 조건부 형태이고 조건부확률은 확률이므로 참이어야 하지만, 이 문제에서는 기댓값과 조건부기댓값의 성질을 이용해 직접 증명하라.</p>
+<ol start="2" type="a">
+<li>ECCE, 즉 <strong>전체 공분산의 법칙</strong>은 다음과 같다.</li>
+</ol>
+<p><span class="math display">\[\operatorname{Cov}(X,Y)=E(\operatorname{Cov}(X,Y\mid Z))+\operatorname{Cov}(E(X\mid Z),E(Y\mid Z)).\]</span></p>
+<p>즉 <span class="math inline">\(X,Y\)</span>의 공분산은 조건부 공분산의 기댓값과 조건부기댓값들의 공분산의 합이며, 이 조건부 양들은 모두 <span class="math inline">\(Z\)</span>를 조건으로 한다. 이 항등식을 증명하라. <strong>힌트:</strong> 확률변수에 상수를 더해도 다른 확률변수와의 공분산이 변하지 않으므로 일반성을 잃지 않고 <span class="math inline">\(E(X)=E(Y)=0\)</span>이라고 가정할 수 있다. 그런 다음 우변의 공분산들을 전개하고 아담의 법칙을 적용하라.</p></li>
+</ol>
+</section>
+<section id="종합-연습" class="level3" data-number="9.9.3">
+<h3 data-number="9.9.3" class="anchored" data-anchor-id="종합-연습"><span class="header-section-number">9.9.3</span> 종합 연습</h3>
+<ol start="44" type="1">
+<li><p><span class="math inline">\(n\)</span>명의 친구가 자주 함께 저녁을 먹는다. 저녁마다 누가 계산할지를 정하기 위해 “신용카드 룰렛”을 한다. 이는 매 저녁 한 사람을 균등하게 무작위로 골라 전체 계산서를 내게 한다는 뜻이며, 다른 저녁에 무슨 일이 일어나는지와 독립이다.</p>
+<ol type="a">
+<li>저녁을 <span class="math inline">\(k\)</span>번 먹는 동안 두 번 이상 계산해야 하는 사람이 없을 확률을 구하라. <span class="math inline">\(k\le n\)</span>인 경우는 답을 간단히 하지 말고, <span class="math inline">\(k&gt;n\)</span>인 경우는 완전히 간단히 하라.</li>
+<li>모든 사람이 적어도 한 번 계산할 때까지 필요한 저녁 횟수의 기댓값을 구하라. 간단한 항들의 유한합으로 남겨도 된다.</li>
+<li>앨리스와 밥이 친구들 중 두 사람이다. <span class="math inline">\(k\)</span>번의 저녁에서 앨리스가 계산하는 횟수와 밥이 계산하는 횟수의 공분산을 구하라.</li>
+</ol></li>
+<li><p>앞 문제처럼 <span class="math inline">\(n\)</span>명의 친구가 저녁 식사 때 신용카드 룰렛을 한다. 이 문제에서는 저녁 횟수가 <span class="math inline">\(\operatorname{Pois}(\lambda)\)</span> 확률변수이다.</p>
+<ol type="a">
+<li>앨리스는 친구들 중 한 명이다. 앨리스가 계산하는 저녁 횟수와 앨리스가 공짜로 먹는 저녁 횟수의 상관계수를 구하라.</li>
+<li>저녁 식사 비용은 i.i.d. <span class="math inline">\(\operatorname{Gamma}(a,b)\)</span> 확률변수이며 식사 횟수와 독립이다. 전체 비용의 평균과 분산을 구하라.</li>
+</ol></li>
+<li><p>조는 내년에 <span class="math inline">\(N\sim\operatorname{Pois}(\lambda)\)</span>권의 책을 읽는다. 각 책의 페이지 수는 <span class="math inline">\(\operatorname{Pois}(\mu)\)</span>이며 책의 길이들은 서로 독립이고 <span class="math inline">\(N\)</span>과도 독립이다.</p>
+<ol type="a">
+<li>조가 내년에 읽을 책의 총 페이지 수의 기댓값을 구하라.</li>
+<li>조가 내년에 읽을 책의 총 페이지 수의 분산을 구하라.</li>
+<li>조는 <span class="math inline">\(N\)</span>권 각각에 대해 서로 독립적으로 확률 <span class="math inline">\(p\)</span>로 그 책을 좋아하고 확률 <span class="math inline">\(1-p\)</span>로 싫어한다. 정확히 <span class="math inline">\(d\)</span>권을 싫어했다는 조건 아래 <span class="math inline">\(N\)</span>권 중 좋아한 책 수의 조건부분포를 구하라.</li>
+</ol></li>
+<li><p>버스가 어떤 정류장에 비율 <span class="math inline">\(\lambda\)</span>인 포아송 과정에 따라 도착한다. 버스에는 좌석 <span class="math inline">\(n\)</span>개가 있으며 정류장에 도착하는 순간 탑승객 수는 <span class="math inline">\(\operatorname{Bin}(n,p)\)</span>이다. 서로 다른 버스의 탑승객 수는 서로 독립이고 버스 도착 시각과도 독립이라고 가정한다.</p>
+<p><span class="math inline">\(N_t\)</span>를 시간 구간 <span class="math inline">\([0,t]\)</span> 동안 도착하는 버스 수, <span class="math inline">\(X_t\)</span>를 이 구간에 도착하는 버스들의 총탑승객 수라 하자.</p>
+<ol type="a">
+<li><span class="math inline">\(N_t\)</span>의 평균과 분산을 구하라.</li>
+<li><span class="math inline">\(X_t\)</span>의 평균과 분산을 구하라.</li>
+<li>정류장에 도착할 때 탑승객이 정확히 <span class="math inline">\(n\)</span>명인 버스를 만원 버스라 한다. <span class="math inline">\([0,t]\)</span>에 정확히 <span class="math inline">\(a+b\)</span>대가 도착하고 그중 <span class="math inline">\(a\)</span>대는 만원이며 <span class="math inline">\(b\)</span>대는 만원이 아닐 확률을 구하라.</li>
+</ol></li>
+<li><p>폴과 다른 주자 <span class="math inline">\(n\)</span>명이 마라톤에서 경쟁한다. 이들의 기록은 서로 독립인 연속확률변수이며 누적분포함수는 <span class="math inline">\(F\)</span>이다.</p>
+<ol type="a">
+<li><span class="math inline">\(j=1,2,\ldots,n\)</span>에 대해 <span class="math inline">\(A_j\)</span>를 익명의 주자 <span class="math inline">\(j\)</span>가 폴보다 빨리 완주하는 사건이라 하자. 사건 <span class="math inline">\(A_j\)</span>들이 독립인지, 폴의 완주 시간이 주어졌을 때 조건부 독립인지 설명하라.</li>
+<li>이 문제의 나머지에서는 폴보다 빨리 완주하는 주자 수를 <span class="math inline">\(N\)</span>이라 하자. <span class="math inline">\(E(N)\)</span>을 구하라. 폴의 기록도 확률변수이므로 답은 <span class="math inline">\(n\)</span>에만 의존해야 한다.</li>
+<li>폴의 마라톤 완주 시간이 <span class="math inline">\(t\)</span>라는 조건 아래 <span class="math inline">\(N\)</span>의 조건부분포를 구하라.</li>
+<li><span class="math inline">\(\operatorname{Var}(N)\)</span>을 구하라. 폴의 기록도 확률변수이므로 답은 <span class="math inline">\(n\)</span>에만 의존해야 한다. <strong>힌트:</strong> 폴의 기록을 <span class="math inline">\(T\)</span>라 하고 이브의 법칙을 이용해 <span class="math inline">\(T\)</span>를 조건으로 삼아라. 또는 지시확률변수를 사용하라.</li>
+</ol></li>
+<li><p>이메일이 시간당 <span class="math inline">\(\lambda\)</span>개의 비율인 포아송 과정에 따라 받은 편지함에 도착한다.</p>
+<ol type="a">
+<li>8시간 동안 정확히 <span class="math inline">\(n\)</span>개의 이메일이 도착했다는 조건 아래 처음 2시간 동안 도착한 이메일 수의 조건부분포의 이름과 모수를 구하라.</li>
+<li>각 이메일은 서로 독립적으로 확률 <span class="math inline">\(p\)</span>로 정상 이메일이고 확률 <span class="math inline">\(q=1-p\)</span>로 스팸이다. 8시간 동안 정확히 <span class="math inline">\(s\)</span>개의 스팸이 도착했다는 조건 아래 그 8시간 동안 도착한 정상 이메일 수의 조건부분포의 이름과 모수를 구하라.</li>
+<li>이메일 하나를 읽는 데 걸리는 시간은 평균 <span class="math inline">\(\mu\)</span>시간, 표준편차 <span class="math inline">\(\sigma\)</span>시간인 무작위 시간이다. 이 읽기 시간들은 i.i.d.이고 이메일 도착 과정과 독립이다. 8시간 동안 도착한 이메일을 모두 읽는 데 드는 총시간의 무조건부 평균과 분산을 구하라.</li>
+</ol></li>
+<li><p>보험계리사가 프레드라는 사람의 보험 청구 횟수 및 청구액과 관련된 여러 양을 추정하려 한다. 프레드가 내년에 할 청구 횟수를 <span class="math inline">\(N\mid\lambda\sim\operatorname{Pois}(\lambda)\)</span>라 하자. 그러나 <span class="math inline">\(\lambda\)</span>는 알려져 있지 않으므로 베이즈주의 관점을 취하는 보험계리사는 과거 경험을 바탕으로 <span class="math inline">\(\lambda\)</span>에 사전분포를 부여한다. 구체적으로 사전분포는 <span class="math inline">\(\lambda\sim\operatorname{Expo}(1)\)</span>이다. 청구 한 건의 달러 금액은 모수가 <span class="math inline">\(\mu,\sigma^2\)</span>인 로그정규분포를 따른다. 여기서 <span class="math inline">\(\mu,\sigma^2\)</span>은 바탕이 되는 정규분포의 평균과 분산이고 알려져 있다. 청구액들은 i.i.d.이고 <span class="math inline">\(N\)</span>과 독립이다.</p>
+<ol type="a">
+<li>조건부기댓값의 성질을 사용해 <span class="math inline">\(E(N)\)</span>과 <span class="math inline">\(\operatorname{Var}(N)\)</span>을 구하라. <span class="math inline">\(\lambda\)</span>는 알려져 있지 않아 확률변수로 취급하므로 답은 <span class="math inline">\(\lambda\)</span>에 의존해서는 안 된다!</li>
+<li>모든 청구의 총달러 금액의 평균과 분산을 구하라.</li>
+<li><span class="math inline">\(N\)</span>의 분포를 구하라. 이미 배운 이름 붙은 분포라면 이름과 모수를 제시하라.</li>
+<li>프레드가 내년에 <span class="math inline">\(N=n\)</span>건의 청구를 한다는 것이 관측되었을 때 <span class="math inline">\(\lambda\)</span>의 사후분포를 구하라. 이미 배운 이름 붙은 분포라면 이름과 모수를 제시하라.</li>
+</ol></li>
+<li><p>ⓢ <span class="math inline">\(X_1,X_2,X_3\)</span>은 서로 독립이고 <span class="math inline">\(X_i\sim\operatorname{Expo}(\lambda_i)\)</span>라 하자. 따라서 비율이 서로 다를 수 있다. 7장에서</p>
+<p><span class="math display">\[P(X_1&lt;X_2)=\frac{\lambda_1}{\lambda_1+\lambda_2}\]</span></p>
+<p>임을 떠올리자.</p>
+<ol type="a">
+<li><span class="math inline">\(E(X_1+X_2+X_3\mid X_1&gt;1,X_2&gt;2,X_3&gt;3)\)</span>을 <span class="math inline">\(\lambda_1,\lambda_2,\lambda_3\)</span>으로 구하라.</li>
+<li>세 지수 확률변수 중 첫 번째가 가장 작을 확률 <span class="math inline">\(P(X_1=\min(X_1,X_2,X_3))\)</span>를 구하라. <strong>힌트:</strong> <span class="math inline">\(X_1\)</span>과 <span class="math inline">\(\min(X_2,X_3)\)</span>을 이용해 다시 표현하라.</li>
+<li><span class="math inline">\(\lambda_1=\lambda_2=\lambda_3=1\)</span>인 경우 <span class="math inline">\(\max(X_1,X_2,X_3)\)</span>의 확률밀도함수를 구하라. 이는 우리가 배운 중요한 분포 중 하나인가?</li>
+</ol></li>
+<li><p>ⓢ 어떤 작업을 두 사람 중 한 사람에게 각각 확률 <span class="math inline">\(1/2\)</span>로 무작위 배정한다. 첫 번째 사람에게 배정되면 작업을 마치는 데 <span class="math inline">\(\operatorname{Expo}(\lambda_1)\)</span> 시간이 걸리고, 두 번째 사람에게 배정되면 <span class="math inline">\(\operatorname{Expo}(\lambda_2)\)</span> 시간이 걸린다. 시간의 단위는 시간이며, 두 번째 사람이 걸릴 시간은 첫 번째 사람이 걸렸을 시간과 독립이다. 작업에 걸린 시간을 <span class="math inline">\(T\)</span>라 하자.</p>
+<ol type="a">
+<li><span class="math inline">\(T\)</span>의 평균과 분산을 구하라.</li>
+<li>대신 두 사람 모두에게 작업을 배정하고 두 사람이 독립적으로 일한다고 하자. 먼저 완성하는 사람이 작업을 마치기까지의 시간을 <span class="math inline">\(X\)</span>라 하자. 24시간이 지난 뒤에도 작업이 완성되지 않았다는 것이 관측되었다. 이 정보가 주어졌을 때 <span class="math inline">\(X\)</span>의 기댓값은 얼마인가?</li>
+</ol></li>
+<li><p>이 문제에서는 “실제 IQ”가 실체화된 사회적 구성물이 아니라 의미 있는 개념이라고 가정하자. 미국 인구에서 실제 IQ의 분포는 평균 100, 표준편차 15인 정규분포라고 하자. 이 인구에서 무작위로 한 사람을 골라 IQ 검사를 실시한다. 검사는 실제 능력을 잡음이 섞인 방식으로 측정한다. 평균적으로는 정확하지만 표준편차 5인 정규 측정오차가 있다.</p>
+<p>그 사람의 실제 IQ를 확률변수 <span class="math inline">\(\mu\)</span>로 보고 IQ 검사 점수를 <span class="math inline">\(Y\)</span>라 하자. 그러면</p>
+<p><span class="math display">\[Y\mid\mu\sim\mathcal N(\mu,5^2),\qquad \mu\sim\mathcal N(100,15^2).\]</span></p>
+<ol type="a">
+<li><span class="math inline">\(Y\)</span>의 무조건부 평균과 분산을 구하라.</li>
+<li><span class="math inline">\(Y\)</span>의 주변분포를 구하라. 한 가지 방법은 적률생성함수를 사용하는 것이다.</li>
+<li><span class="math inline">\(\operatorname{Cov}(\mu,Y)\)</span>를 구하라.</li>
+</ol></li>
+<li><p>ⓢ 어떤 유전적 특성에 관심이 있다. 이 특성은 수치로 측정할 수 있다. 쌍둥이 남자아이 두 명의 유전적 특성 값을 각각 <span class="math inline">\(X_1,X_2\)</span>라 하자. 일란성 쌍둥이라는 조건 아래 <span class="math inline">\(X_1=X_2\)</span>이고 <span class="math inline">\(X_1\)</span>의 평균은 0, 분산은 <span class="math inline">\(\sigma^2\)</span>이다. 이란성 쌍둥이라는 조건 아래 <span class="math inline">\(X_1,X_2\)</span>의 평균은 0, 분산은 <span class="math inline">\(\sigma^2\)</span>, 상관계수는 <span class="math inline">\(\rho\)</span>이다. 일란성 쌍둥이일 확률은 <span class="math inline">\(1/2\)</span>이다. <span class="math inline">\(\operatorname{Cov}(X_1,X_2)\)</span>를 <span class="math inline">\(\rho,\sigma^2\)</span>으로 구하라.</p></li>
+<li><p>ⓢ 매사추세츠의 Mass Cash 복권은 매일 <span class="math inline">\(1,2,\ldots,35\)</span> 중에서 숫자 5개를 무작위로 고른다. 한 번에 고르는 5개 안에서는 반복이 없다. 모든 숫자가 적어도 한 번 선택될 때까지 얼마나 걸릴지 알고 싶다고 하자. 아직 나오지 않은 숫자가 <span class="math inline">\(j\)</span>개일 때 추가로 필요한 날의 평균을 <span class="math inline">\(a_j\)</span>라 하자. 따라서 <span class="math inline">\(a_0=0\)</span>이고 <span class="math inline">\(a_{35}\)</span>는 35개를 모두 모으는 데 걸리는 날의 평균이다. <span class="math inline">\(a_j\)</span>에 대한 재귀식을 구하라.</p></li>
+<li><p>두 체스 선수 비시와 매그너스가 여러 판의 경기를 한다. <span class="math inline">\(p\)</span>가 주어졌을 때 경기 결과는 i.i.d.이며 비시가 이길 확률은 <span class="math inline">\(p\)</span>, 매그너스가 이길 확률은 <span class="math inline">\(q=1-p\)</span>이다. 각 경기는 둘 중 한 사람의 승리로 끝난다고 가정한다. 그러나 <span class="math inline">\(p\)</span>는 알려지지 않아 확률변수로 취급한다. <span class="math inline">\(p\)</span>에 대한 불확실성을 반영하기 위해 사전분포 <span class="math inline">\(p\sim\operatorname{Beta}(a,b)\)</span>를 사용한다. 여기서 <span class="math inline">\(a,b\)</span>는 알려진 양의 정수이고 <span class="math inline">\(a\ge2\)</span>이다.</p>
+<ol type="a">
+<li>비시가 한 판을 이길 때까지 필요한 경기 수의 기댓값을 승리한 경기를 포함하여 구하라. 완전히 간단히 하여 최종 답에 계승이나 <span class="math inline">\(\Gamma\)</span>가 나오지 않도록 하라.</li>
+<li>(a)의 답과 <span class="math inline">\(G\sim\operatorname{Geom}(a/(a+b))\)</span>에 대한 <span class="math inline">\(1+E(G)\)</span> 사이 부등호의 방향을 독립과 조건부 독립의 관점에서 설명하라.</li>
+<li>처음 10판 중 비시가 정확히 7판을 이겼다는 조건 아래 <span class="math inline">\(p\)</span>의 조건부분포를 구하라.</li>
+</ol></li>
+<li><p><strong>라플라스의 계승 법칙</strong>은 <span class="math inline">\(p\)</span>가 주어졌을 때 <span class="math inline">\(X_1,X_2,\ldots,X_{n+1}\)</span>이 조건부 독립인 <span class="math inline">\(\operatorname{Bern}(p)\)</span> 확률변수이지만 <span class="math inline">\(p\)</span>의 값에 대한 무지를 반영해 <span class="math inline">\(p\)</span>에 <span class="math inline">\(\operatorname{Unif}(0,1)\)</span> 사전분포를 부여하면 다음이 성립한다는 것이다.</p>
+<p><span class="math display">\[P(X_{n+1}=1\mid X_1+\cdots+X_n=k)=\frac{k+1}{n+2}.\]</span></p>
+<p>예로 라플라스는 기록된 역사의 <span class="math inline">\(n\)</span>일 동안 매번 해가 떴다는 사실이 주어졌을 때 내일도 해가 뜰지 예측하는 문제를 논했다. 위 공식은 내일 해가 뜰 확률로 <span class="math inline">\((n+1)/(n+2)\)</span>를 준다. 물론 <span class="math inline">\(p\)</span>가 시간에 따라 변하지 않는 독립 시행을 가정하는 것은 일출 문제에 매우 부적절한 모형일 수 있다.</p>
+<ol type="a">
+<li><span class="math inline">\(X_1=x_1,X_2=x_2,\ldots,X_n=x_n\)</span>이 주어졌을 때 <span class="math inline">\(p\)</span>의 사후분포를 구하고, 이 분포가 <span class="math inline">\(x_j\)</span>들의 합에만 의존함을 보여라. 즉 사후분포를 얻는 데 <span class="math inline">\(n\)</span>개 자료점 전부가 아니라 일차원 양 <span class="math inline">\(x_1+\cdots+x_n\)</span>만 필요하다.</li>
+<li>전체 확률의 법칙의 한 형태를 사용하여 <span class="math inline">\(p\)</span>를 조건으로 삼아 <span class="math inline">\(P(X_{n+1}=1\mid X_1+\cdots+X_n=k)\)</span>를 구함으로써 라플라스의 계승 법칙을 증명하라. 밀접하게 관련된 다음 연습문제에는 이와 동치인 아담의 법칙을 이용한 증명이 포함되어 있다.</li>
+</ol></li>
+<li><p>농구팀 A와 B가 <span class="math inline">\(n\)</span>경기 대결을 한다. <span class="math inline">\(X_j\)</span>를 A팀이 <span class="math inline">\(j\)</span>번째 경기에서 이기는 사건의 지시확률변수라 하자. <span class="math inline">\(p\)</span>가 주어졌을 때 <span class="math inline">\(X_1,\ldots,X_n\)</span>은 i.i.d.이고 <span class="math inline">\(X_j\mid p\sim\operatorname{Bern}(p)\)</span>이다. 그러나 <span class="math inline">\(p\)</span>는 알려지지 않아 확률변수로 취급한다. 사전분포를 <span class="math inline">\(p\sim\operatorname{Unif}(0,1)\)</span>로 두고 A팀의 승리 횟수를 <span class="math inline">\(X\)</span>라 하자.</p>
+<ol type="a">
+<li><span class="math inline">\(E(X)\)</span>와 <span class="math inline">\(\operatorname{Var}(X)\)</span>를 구하라.</li>
+<li>아담의 법칙을 이용하여 처음 <span class="math inline">\(j\)</span>경기에서 정확히 <span class="math inline">\(a\)</span>승을 했다는 조건 아래 A팀이 <span class="math inline">\(j+1\)</span>번째 경기에서 이길 확률을 구하라. 밀접하게 관련된 앞 연습문제에는 이와 동치인 전체 확률의 법칙을 이용한 증명이 포함되어 있다. <strong>힌트:</strong> <span class="math inline">\(C\)</span>를 A팀이 처음 <span class="math inline">\(j\)</span>경기에서 정확히 <span class="math inline">\(a\)</span>승을 한 사건이라 하면</li>
+</ol>
+<p><span class="math display">\[P(X_{j+1}=1\mid C)=E(X_{j+1}\mid C)=E(E(X_{j+1}\mid C,p)\mid C)=E(p\mid C).\]</span></p>
+<ol start="3" type="a">
+<li><span class="math inline">\(X\)</span>의 확률질량함수를 구하라. 앞 장의 결과를 바탕으로 매우 빠르게 알아보는 방법을 포함해 여러 방법이 있다.</li>
+<li>2002년 퍼트넘 시험에는 다음 문제가 나왔다.</li>
+</ol>
+<p>샤닐 오킬은 농구장에서 자유투를 던진다. 첫 번째는 성공하고 두 번째는 실패했으며, 이후 매번 다음 슛을 성공할 조건부확률은 지금까지 던진 슛 중 성공한 슛의 비율과 같다. 처음 100번의 슛 중 정확히 50번 성공할 확률은 얼마인가?</p>
+<p>(c)의 결과를 적용하여 이 퍼트넘 문제를 풀어라. 예를 들어 사전분포에 대한 언급은 물론 <span class="math inline">\(\operatorname{Unif}(0,1)\)</span> 사전분포에 대한 언급도 없는 등 같은 모형을 사용하지 않는 것처럼 보이는데도 그 결과를 적용해도 되는 이유를 반드시 설명하라.</p></li>
+<li><p><span class="math inline">\(X\mid p\sim\operatorname{Bin}(n,p)\)</span>이고 <span class="math inline">\(p\sim\operatorname{Beta}(a,b)\)</span>라 하자. 그러면 이야기 8.3.3과 예제 8.5.3에서 언급했듯 <span class="math inline">\(X\)</span>는 <strong>베타-이항분포</strong>를 따른다. <span class="math inline">\(E(X)\)</span>와 <span class="math inline">\(\operatorname{Var}(X)\)</span>를 구하라.</p></li>
+<li><p>선거가 열린다. 후보는 A와 B 두 명이고 유권자는 <span class="math inline">\(n\)</span>명이다. 후보 A에게 투표할 확률은 도시마다 다르다. 도시가 <span class="math inline">\(m\)</span>개 있고 <span class="math inline">\(1,2,\ldots,m\)</span>으로 번호가 붙어 있다. <span class="math inline">\(j\)</span>번째 도시의 유권자 수는 <span class="math inline">\(n_j\)</span>명이므로 <span class="math inline">\(n_1+n_2+\cdots+n_m=n\)</span>이다. <span class="math inline">\(j\)</span>번째 도시에서 후보 A에게 투표하는 사람 수를 <span class="math inline">\(X_j\)</span>라 하고 <span class="math inline">\(X_j\mid p_j\sim\operatorname{Bin}(n_j,p_j)\)</span>라 하자. 도시별 투표 확률에 대한 불확실성을 반영하기 위해 <span class="math inline">\(p_1,\ldots,p_m\)</span>을 확률변수로 취급하고 이들이 i.i.d. <span class="math inline">\(\operatorname{Unif}(0,1)\)</span>이라는 사전분포를 사용한다. <span class="math inline">\(X_1,\ldots,X_m\)</span>은 무조건부로도, <span class="math inline">\(p_1,\ldots,p_m\)</span>이 주어진 조건 아래에서도 독립이라고 가정한다. 후보 A의 총득표수를 <span class="math inline">\(X\)</span>라 하자.</p>
+<ol type="a">
+<li><span class="math inline">\(X_1\)</span>의 주변분포와 <span class="math inline">\(p_1\mid(X_1=k_1)\)</span>의 사후분포를 구하라.</li>
+<li><span class="math inline">\(s=n_1^2+n_2^2+\cdots+n_m^2\)</span>일 때 <span class="math inline">\(E(X)\)</span>와 <span class="math inline">\(\operatorname{Var}(X)\)</span>를 <span class="math inline">\(n,s\)</span>로 구하라.</li>
+</ol></li>
+</ol>
+
+
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>옮긴이 주: 이 책의 유한 기댓값 관례에서는 해당 조건부 가중 절댓값의 합 또는 적분이 유한해야 한다. 연속형에서 <span class="math inline">\(P(A\mid Y=y)\)</span>와 밀도의 비율은 조건부분포의 버전으로 이해하며 일반적으로 <span class="math inline">\(Y\)</span>의 분포에 관해 거의 모든 <span class="math inline">\(y\)</span>에서 정해진다.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>옮긴이 주: 엄격한 부등식에는 30세 미만에 사망할 양의 확률과 기대수명의 유한성 등 추가 조건이 필요하다. 모든 사람이 30세 이상 산다면 양변은 같을 수 있다.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>옮긴이 주: <span class="math inline">\(b=0\)</span>에서는 수락 사건의 확률이 0이므로 해당 조건부기댓값은 정의되지 않는다. 이때 이익은 거의 확실하게 0이며, 위 식의 값도 0으로 별도 처리한다.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>옮긴이 주: 세 사건을 이용한 두 번째 풀이는 <span class="math inline">\(0&lt;b&lt;2/3\)</span>에서 각 조건의 확률이 양수인 경우에 적용한다. <span class="math inline">\(b=0\)</span>과 <span class="math inline">\(b\ge2/3\)</span>은 앞에서 별도로 다루었다.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>옮긴이 주: 아래 첫 단계 분해에서 두 조건부기댓값을 모두 정의하려면 <span class="math inline">\(0&lt;p&lt;1\)</span>이어야 한다. 퇴화 경계 <span class="math inline">\(p=1\)</span>을 허용하면 첫 뒷면 사건의 확률은 0이고 <span class="math inline">\(X=0\)</span>을 별도로 다룬다.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>옮긴이 주: <span class="math inline">\(P(X=x)&gt;0\)</span>이면 앞서 정의한 사건에 대한 조건부기댓값을 직접 사용할 수 있다. 연속형 <span class="math inline">\(X\)</span>처럼 <span class="math inline">\(P(X=x)=0\)</span>인 경우에는 조건부 밀도 또는 정규 조건부분포가 필요하며, 그 값은 일반적으로 <span class="math inline">\(X\)</span>의 분포에 대해 거의 모든 <span class="math inline">\(x\)</span>에서 정해진다. 기댓값이 유한하게 존재한다는 조건도 필요하다.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>옮긴이 주: 이 절의 조건부기댓값은 통상 해당 확률변수가 적분가능한 경우에 정의하며, 확률변수의 등식은 거의 확실한 등식이다. 알려진 것을 추출할 때는 <span class="math inline">\(h(X)Y\)</span>도 적분가능해야 한다. 사영·비상관·평균제곱오차 해석은 보통 <span class="math inline">\(Y\)</span>와 <span class="math inline">\(h(X)\)</span>가 유한한 2차 적률을 갖는 경우에 적용한다.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>옮긴이 주: 연속형 <span class="math inline">\(X\)</span>에서 <span class="math inline">\(X=x\)</span>는 영확률 사건일 수 있으므로, 정규 조건부분포에 의한 진술을 <span class="math inline">\(X\)</span>의 분포에 대해 거의 모든 <span class="math inline">\(x\)</span>에서 이해해야 한다. 조건부기댓값의 버전을 적절히 선택해 표현할 수도 있다.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>옮긴이 주: 아래 기울기 공식은 <span class="math inline">\(\operatorname{Var}(X)&gt;0\)</span>이고 관련 2차 적률이 유한할 때 적용한다. <span class="math inline">\(X\)</span>가 거의 확실하게 상수이면 기울기 <span class="math inline">\(b\)</span>는 이 식으로 결정되지 않는다.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>옮긴이 주: 여기서의 공간은 유한한 이차적률을 갖는 확률변수들을 거의 확실한 같음에 따라 동일시한 <span class="math inline">\(L^2\)</span> 공간이다. 이하의 <span class="math inline">\(Y\)</span>와 비교 대상 <span class="math inline">\(h(X),g(X)\)</span>도 유한한 이차적률을 갖는 경우로 이해한다.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>옮긴이 주: 각과 상관계수는 두 확률변수의 분산이 모두 양수일 때 정의된다.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>옮긴이 주: 직교성과 최적성은 유한한 이차적률을 갖는 <span class="math inline">\(X\)</span>의 함수에 대해 성립하며, 조건부기댓값과 최적 예측량은 거의 확실하게 같은 경우를 동일하게 본다.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>옮긴이 주: 이 절에서 차이로 쓰는 분산 공식과 이브의 법칙은 <span class="math inline">\(E(Y^2)&lt;\infty\)</span>인 경우에 적용한다. 또한 <span class="math inline">\(\operatorname{Var}(h(Z)\mid Z)\)</span>의 같은 해석에는 <span class="math inline">\(h(Z)\)</span>가 제곱적분 가능하다고 가정한다.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>옮긴이 주: 뒤의 연속적인 균등분포 가정은 도시 간 유병률을 이상화한 모형이다. 유한 개 도시에서 실제로 하나를 선택하는 분포는 이산형이며 네 도시 그림은 도식이다.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>옮긴이 주: 위의 합은 양의 확률을 갖는 사건 <span class="math inline">\(A_i\)</span>들이 표본공간을 분할하고 관련 기댓값이 존재할 때의 표현이다. 확률이 0인 분할 원소는 합에서 제외할 수 있다.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>옮긴이 주: 조건부기댓값은 일반적으로 거의 확실한 동일성을 기준으로 정의된다. 이브의 법칙과 사영·비상관 해석에는 제곱적분 가능성이 필요하며, ‘<span class="math inline">\(X\)</span>의 모든 함수’는 해당 내적 또는 공분산이 정의되는 함수로 이해한다. 곱의 추출 성질에도 관련 기댓값의 존재가 필요하다.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>옮긴이 주: 원문의 ‘어떤 입찰액에서도 평균 이익이 음수’라는 설명은 <span class="math inline">\(b=0\)</span>에서 전체 이익이 0이라는 경계 사례를 빠뜨린다. 아래 코드는 수락된 경우만 조건으로 한 평균을 계산한다. 수락되지 않을 때 이익을 0으로 포함한 전체 평균은 예를 들어 <code>mean(ifelse(b &gt;= (2/3)*v, v-b, 0))</code>으로 구한다. <span class="math inline">\(b=0\)</span>이면 수락 사건의 확률이 0이어서 수락을 조건으로 한 평균은 정의되지 않으며, 시뮬레이션에서도 평균은 <code>NaN</code>이다. 원문의 코드에 쓰인 <code>&gt;</code>와 이론의 <code>&gt;=</code>는 연속 모형에서 확률 0인 경계에서만 다르다.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>옮긴이 주: 길이가 유한한 수열에서는 해당 패턴이 한 번도 나오지 않을 확률이 0이 아니다. 그 경우 <code>str_locate</code>의 결과에는 <code>NA</code>가 들어가고, 기본 <code>mean</code>은 <code>NA</code>를 반환한다. 단순히 결측값을 제외하면 해당 길이 안에 패턴이 나타난 수열에 대한 평균이 되므로, 전체 대기시간을 추정할 때는 수열을 늘리거나 출현할 때까지 생성하는 방법이 필요하다.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>옮긴이 주: 엄격히 큰 금액을 고를 확률이 <span class="math inline">\(1/2\)</span>을 넘는다는 주장은 두 금액이 같을 확률이 0이고 <span class="math inline">\(T\)</span>가 봉투의 금액 및 선택과 독립이라는 조건에서 성립한다. 원문의 일반적 분포는 같은 금액을 허용한다.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>옮긴이 주: 엄격한 비교는 <span class="math inline">\(n\ge2\)</span>이고 승리 가능성이 양수인 <span class="math inline">\(0&lt;x_1&lt;1\)</span>에서 성립한다. <span class="math inline">\(n=1\)</span> 또는 <span class="math inline">\(x_1=1\)</span>에서는 같아진다.<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>옮긴이 주: 이 엄격한 부등식에는 <span class="math inline">\(\sigma^2&gt;0\)</span>이 필요하다. <span class="math inline">\(\sigma^2=0\)</span>이면 양쪽 분산은 모두 0이다.<a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>옮긴이 주: 초과첨도가 양수라는 결론에는 <span class="math inline">\(0&lt;p&lt;1\)</span>과 양의 분산 등 비퇴화 조건이 필요하다. <span class="math inline">\(p=0\)</span> 또는 <span class="math inline">\(1\)</span>이면 정규분포가 되어 초과첨도는 0이다.<a href="#fnref22" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "복사완료!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "복사완료!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./08-변환.html" class="pagination-link" aria-label="변환">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">변환</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./10-부등식과-극한정리.html" class="pagination-link" aria-label="부등식과 극한정리">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">부등식과 극한정리</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

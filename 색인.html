@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>색인 – 확률론 입문 — 한국어 번역</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./참고문헌.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7d8ad657b878717df1156ab40fed854c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./A-수학.html">Appendices</a></li><li class="breadcrumb-item"><a href="./색인.html">색인</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="검색" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">확률론 입문 — 한국어 번역</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">번역 안내</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./서문.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">헌정사와 서문</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-확률과-경우의-수.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">확률과 경우의 수</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-조건부확률.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">조건부확률</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-확률변수와-분포.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">확률변수와 그 분포</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-기댓값.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">기댓값</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-연속확률변수.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">연속확률변수</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-적률.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">적률</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-결합분포.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">결합분포</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-변환.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">변환</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-조건부기댓값.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">조건부기댓값</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-부등식과-극한정리.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">부등식과 극한정리</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-마르코프-연쇄.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">마르코프 연쇄</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-마르코프-연쇄-몬테카를로.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">마르코프 연쇄 몬테카를로</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-포아송-과정.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">포아송 과정</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A-수학.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">수학</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./B-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./C-분포표.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">분포표</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./참고문헌.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">참고문헌</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./색인.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">색인</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./A-수학.html">Appendices</a></li><li class="breadcrumb-item"><a href="./색인.html">색인</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">색인</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>원문의 영어 표제어 순서를 따랐다.</p>
+<ul>
+<li><p><strong>2차원 LOTUS</strong> (2D LOTUS), 324</p></li>
+<li><p><strong>2차원 포아송 과정</strong> (2D Poisson process), 573</p></li>
+<li><p><strong>68-95-99.7% 법칙</strong> (68-95-99.7% rule), 236</p></li>
+<li><p><strong>아담의 법칙</strong> (Adam’s law), 426</p></li>
+<li><p><strong>중복 계산의 보정</strong> (adjusting for overcounting), 15</p></li>
+<li><p><strong>자료의 집계</strong> (aggregation of data), 76</p></li>
+<li><p><strong>비주기적 마르코프 연쇄</strong> (aperiodic Markov chain), 505</p></li>
+<li><p><strong>확률의 공리</strong> (axioms of probability), 22</p></li>
+<li><p><strong>은행과 우체국 이야기</strong> (bank–post office story), 396</p></li>
+<li><p><strong>베이즈의 당구</strong> (Bayes’ billiards), 382</p></li>
+<li><p><strong>베이즈 정리</strong> (Bayes’ rule), 53</p>
+<ul>
+<li>정합성, 67</li>
+<li>네 가지 형태, 316</li>
+<li>오즈 형태, 54</li>
+<li>추가 조건이 있는 경우, 60</li>
+</ul></li>
+<li><p><strong>확률의 베이즈주의적 관점</strong> (Bayesian view of probability), 22, 383</p></li>
+<li><p><strong>베르누이 분포</strong> (Bernoulli distribution), 112</p>
+<ul>
+<li>적률생성함수, 279</li>
+<li>확률변수의 합, 131</li>
+</ul></li>
+<li><p><strong>베르누이 시행</strong> (Bernoulli trial), 112</p></li>
+<li><p><strong>베타 분포</strong> (Beta distribution), 380</p>
+<ul>
+<li>이항분포와의 관계, 383</li>
+<li>감마분포와의 관계, 396</li>
+<li>균등분포의 순서통계량의 분포로서의 베타 분포, 402</li>
+<li>기댓값, 397</li>
+<li>확률밀도함수, 397</li>
+<li>시뮬레이션, 539</li>
+</ul></li>
+<li><p><strong>베타-이항분포</strong> (Beta-Binomial distribution), 398</p></li>
+<li><p><strong>이진 엔트로피 함수</strong> (binary entropy function), 186</p></li>
+<li><p><strong>이항계수</strong> (binomial coefficient), 15</p></li>
+<li><p><strong>이항분포</strong> (Binomial distribution), 112</p>
+<ul>
+<li>베타 분포와의 관계, 383</li>
+<li>초기하분포와의 관계, 118, 133</li>
+<li>포아송 분포와의 관계, 181</li>
+<li>합이 주어졌을 때의 조건부분포, 133</li>
+<li>기댓값, 156</li>
+<li>적률생성함수, 281</li>
+<li>정규근사, 475</li>
+<li>확률질량함수, 113</li>
+<li>확률변수의 합, 131</li>
+<li>대칭성, 115</li>
+<li>분산, 174</li>
+</ul></li>
+<li><p><strong>이항정리</strong> (binomial theorem), 16</p></li>
+<li><p><strong>출생-사멸 연쇄</strong> (birth-death chain), 518</p></li>
+<li><p><strong>생일 문제</strong> (birthday problem), 12, 136</p>
+<ul>
+<li>생일이 같은 쌍의 기댓값, 166</li>
+<li>포아송 근사, 179</li>
+<li>일반적인 확률을 사용한 경우, 43</li>
+<li>생일이 근접한 경우도 일치로 세는 경우, 179</li>
+</ul></li>
+<li><p><strong>이변량 정규분포</strong> (Bivariate Normal distribution), 337, 433</p>
+<ul>
+<li>생성, 342</li>
+<li>결합확률밀도함수, 374</li>
+<li>모수, 338</li>
+<li>두 변수의 합과 차, 341</li>
+</ul></li>
+<li><p><strong>블리스빌</strong> (Blissville), 242</p></li>
+<li><p><strong>블로치빌</strong> (Blotchville), 242, 393, 438</p></li>
+<li><p><strong>아메바 보보</strong> (Bobo the amoeba), 71</p></li>
+<li><p><strong>보네페로니 부등식</strong> (Bonferroni’s inequality), 165</p></li>
+<li><p><strong>불 부등식</strong> (Boole’s inequality), 165</p></li>
+<li><p><strong>보스-아인슈타인</strong> (Bose-Einstein), 18</p></li>
+<li><p><strong>확률의 경계</strong> (bound on a probability), 457</p></li>
+<li><p><strong>정규분포 꼬리확률의 경계 예제</strong> (bounds on a Normal tail probability example), 466</p></li>
+<li><p><strong>박스-뮐러 변환</strong> (Box-Muller transformation), 373</p></li>
+<li><p><strong>분지 과정</strong> (branching process), 71</p></li>
+<li><p><strong>버스 대기 시간 예제</strong> (bus waiting time example), 242</p></li>
+<li><p><strong>포획-재포획</strong> (capture-recapture), 117, 134</p></li>
+<li><p><strong>집합의 기수</strong> (cardinality of a set), 583</p></li>
+<li><p><strong>고속도로 위 자동차 예제</strong> (cars on a highway example), 571</p></li>
+<li><p><strong>범주 오류</strong> (category error), 127, 436</p></li>
+<li><p><strong>코시 분포</strong> (Cauchy distribution), 320, 371, 476</p></li>
+<li><p><strong>코시-슈바르츠 부등식</strong> (Cauchy-Schwarz inequality), 458</p></li>
+<li><p><strong>CDF</strong>: 누적분포함수 참조</p></li>
+<li><p><strong>중심극한정리</strong> (central limit theorem), 471</p></li>
+<li><p><strong>중심적률</strong> (central moment), 272</p></li>
+<li><p><strong>변수변환</strong> (change of variables)</p>
+<ul>
+<li>다차원, 372</li>
+<li>일차원, 369</li>
+<li>위치-척도 변환 예제, 372</li>
+</ul></li>
+<li><p><strong>체비쇼프 부등식</strong> (Chebyshev’s inequality), 465</p></li>
+<li><p><strong>체르노프 경계</strong> (Chernoff’s bound), 466</p></li>
+<li><p><strong>카이제곱분포</strong> (Chi-Square distribution), 477</p>
+<ul>
+<li>감마분포로 표현, 477</li>
+<li>기댓값, 477</li>
+<li>적률생성함수, 477</li>
+<li>확률밀도함수, 370</li>
+<li>분산, 477</li>
+</ul></li>
+<li><p><strong>닭과 달걀 이야기</strong> (chicken-egg story), 310, 552, 569</p></li>
+<li><p><strong>학급 크기 역설</strong> (class size paradox), 244</p></li>
+<li><p><strong>CLT</strong>: 중심극한정리 참조</p></li>
+<li><p><strong>잡음이 있는 통신로에서 통신하기 위한 부호</strong> (code for communication across a noisy channel), 185</p></li>
+<li><p><strong>암호 해독 예제</strong> (code-breaking example), 541</p></li>
+<li><p><strong>동전 던지기: HH와 HT가 나올 때까지의 대기</strong> (coin-tossing: waiting for HH vs.&nbsp;HT), 421</p></li>
+<li><p><strong>포아송 과정의 색칠</strong> (coloring of a Poisson process), 570</p></li>
+<li><p><strong>위원회 선정 예제</strong> (committee-choosing example), 15</p></li>
+<li><p><strong>잡음이 있는 통신로를 통한 통신</strong> (communicating over a noisy channel), 185</p></li>
+<li><p><strong>경쟁 위험 예제</strong> (competing risks example), 566</p></li>
+<li><p><strong>여집합</strong> (complement), 582</p></li>
+<li><p><strong>복리 공식</strong> (compound interest formula), 589</p></li>
+<li><p><strong>오목함수</strong> (concave function), 461, 588</p></li>
+<li><p><strong>조건부기댓값</strong> (conditional expectation), 415</p>
+<ul>
+<li>아담의 법칙, 427</li>
+<li>독립인 것의 제거, 426</li>
+<li>사건이 주어진 경우, 416</li>
+<li>확률변수가 주어진 경우, 425</li>
+<li>사영으로 해석, 429</li>
+<li>성질, 426</li>
+<li>알려진 것의 추출, 426</li>
+</ul></li>
+<li><p><strong>조건부 독립</strong> (conditional independence)</p>
+<ul>
+<li>독립을 뜻하지 않음, 65, 133</li>
+<li>사건이 주어진 경우와 그 여사건이 주어진 경우, 65</li>
+<li>독립이라고 해서 성립하는 것은 아님, 66, 133</li>
+<li>사건의 조건부 독립, 65</li>
+<li>확률변수의 조건부 독립, 132</li>
+</ul></li>
+<li><p><strong>조건부 확률밀도함수</strong> (conditional PDF), 313</p></li>
+<li><p><strong>조건부 확률질량함수</strong> (conditional PMF), 306</p></li>
+<li><p><strong>조건부확률</strong> (conditional probability), 46</p>
+<ul>
+<li>확률 계산의 도구로서, 54, 68</li>
+<li>확률로서의 조건부확률, 59</li>
+<li>베이즈 정리: 베이즈 정리 참조</li>
+<li>정합성, 67</li>
+<li>둘 이상의 사건을 조건으로 삼기, 62</li>
+<li>첫 단계에 조건부로 생각하기, 71</li>
+<li>알면 좋을 것에 조건부로 생각하기, 68</li>
+</ul></li>
+<li><p><strong>조건부분산</strong> (conditional variance), 432</p></li>
+<li><p><strong>조건염 예제</strong> (conditionitis example), 56</p></li>
+<li><p><strong>교란변수</strong> (confounding variable), 76, 310</p></li>
+<li><p><strong>켤레 사전분포</strong> (conjugate prior), 383, 392, 544</p></li>
+<li><p><strong>분할표</strong> (contingency table), 308</p></li>
+<li><p><strong>연속성 보정</strong> (continuity correction), 475</p></li>
+<li><p><strong>연속확률변수</strong> (continuous random variable), 213</p></li>
+<li><p><strong>볼록함수</strong> (convex function), 461, 588</p></li>
+<li><p><strong>합성곱</strong> (convolution), 376</p>
+<ul>
+<li>베르누이 확률변수, 131</li>
+<li>이항 확률변수, 131</li>
+<li>이산균등 확률변수, 109</li>
+<li>지수 확률변수, 378, 390</li>
+<li>감마 확률변수, 392</li>
+<li>기하 확률변수, 161</li>
+<li>정규 확률변수, 287</li>
+<li>포아송 확률변수, 181, 287</li>
+<li>균등 확률변수, 378</li>
+</ul></li>
+<li><p><strong>상관계수</strong> (correlation), 329</p>
+<ul>
+<li>−1과 1 사이에 있음, 330</li>
+</ul></li>
+<li><p><strong>개수-시간 이중성</strong> (count-time duality), 245, 573</p></li>
+<li><p><strong>가산집합</strong> (countable set), 585</p></li>
+<li><p><strong>쿠폰 수집가 문제</strong> (coupon collector problem), 161</p>
+<ul>
+<li>마르코프 연쇄로 표현, 505</li>
+</ul></li>
+<li><p><strong>공분산</strong> (covariance), 326</p>
+<ul>
+<li>성질, 327</li>
+</ul></li>
+<li><p><strong>누적분포함수</strong> (cumulative distribution function), 121</p>
+<ul>
+<li>경험적 누적분포함수, 470</li>
+<li>결합 누적분포함수, 304</li>
+<li>유효성, 121</li>
+</ul></li>
+<li><p><strong>다윈의 핀치 예제</strong> (Darwin’s finches example), 551</p></li>
+<li><p><strong>드 몽모르의 짝맞추기 문제</strong> (de Montmort’s matching problem), 25, 165</p></li>
+<li><p><strong>드모르간의 법칙</strong> (De Morgan’s laws), 4, 583</p></li>
+<li><p><strong>변호인의 오류</strong> (defense attorney’s fallacy), 75</p></li>
+<li><p><strong>노드의 차수</strong> (degree of a node), 516</p></li>
+<li><p><strong>상세 균형 조건</strong> (detailed balance condition), 514</p></li>
+<li><p><strong>영어와 집합 사이의 번역 사전</strong> (dictionary translating between English and sets), 6</p></li>
+<li><p><strong>차분방정식</strong> (difference equation), 73, 592</p></li>
+<li><p><strong>미분방정식</strong> (differential equation), 593</p></li>
+<li><p><strong>이산확률변수</strong> (discrete random variable), 106, 213</p>
+<ul>
+<li>확률질량함수, 107</li>
+<li>지지집합, 106</li>
+</ul></li>
+<li><p><strong>이산균등분포</strong> (Discrete Uniform distribution), 118</p>
+<ul>
+<li>확률변수의 합, 109</li>
+</ul></li>
+<li><p><strong>질병 검사 예제</strong> (disease testing example), 56, 67</p></li>
+<li><p><strong>분포</strong> (distribution), 107</p>
+<ul>
+<li>청사진으로서의 분포, 128, 137</li>
+<li>조건부분포, 132, 133, 182, 221, 306, 313, 393, 501, 561, 562</li>
+<li>결합분포, 304</li>
+<li>첨도, 275</li>
+<li>주변분포, 305, 313, 501</li>
+<li>중앙값, 267</li>
+<li>최빈값, 267</li>
+<li>모수, 112</li>
+<li>사후분포, 383</li>
+<li>사전분포, 383</li>
+<li>왜도, 273</li>
+<li>대칭성, 273</li>
+</ul></li>
+<li><p><strong>이중확률행렬</strong> (doubly stochastic matrix), 515</p></li>
+<li><p><strong>독립인 것의 제거</strong> (dropping what’s independent), 426</p></li>
+<li><p><strong>DUnif</strong>: 이산균등분포 참조</p></li>
+<li><p><strong>에렌페스트 연쇄</strong> (Ehrenfest chain), 518</p></li>
+<li><p><strong>고윳값</strong> (eigenvalue), 591</p></li>
+<li><p><strong>고유벡터</strong> (eigenvector), 592</p></li>
+<li><p><strong>엘크 문제</strong> (elk problem), 117, 134</p></li>
+<li><p><strong>포아송 과정에 끼워 넣기</strong> (embedding into a Poisson process), 567</p></li>
+<li><p><strong>경험적 누적분포함수</strong> (empirical CDF), 470</p></li>
+<li><p><strong>공집합</strong> (empty set), 581</p></li>
+<li><p><strong>엔트로피</strong> (entropy), 462</p></li>
+<li><p><strong>이브의 법칙</strong> (Eve’s law), 434</p></li>
+<li><p><strong>사건</strong> (event), 3</p></li>
+<li><p><strong>확률과 기댓값을 이용한 존재 증명</strong> (existence proofs using probability and expectation), 184</p></li>
+<li><p><strong>기댓값</strong> (expectation)</p>
+<ul>
+<li>질량중심으로서의 기댓값, 151, 219, 273</li>
+<li>분포에 의해 결정됨, 151</li>
+<li>기댓값만으로 분포가 결정되지는 않음, 152</li>
+<li>확률과의 근본적인 연결, 164</li>
+<li>선형성, 152, 426</li>
+<li>평균제곱오차를 최소화함, 269</li>
+<li>단조성, 157</li>
+<li>연속확률변수의 기댓값, 219</li>
+<li>이산확률변수의 기댓값, 149</li>
+<li>두 정규 확률변수 사이 거리의 기댓값, 325</li>
+<li>두 균등 확률변수 사이 거리의 기댓값, 324</li>
+<li>아담의 법칙을 이용한 계산, 427</li>
+<li>꼬리확률의 합을 이용한 계산, 169</li>
+<li>생존함수를 이용한 계산, 169</li>
+</ul></li>
+<li><p><strong>기대값</strong> (expected value): 기댓값 참조</p></li>
+<li><p><strong>지수분포</strong> (Exponential distribution), 238</p>
+<ul>
+<li>모든 차수의 적률, 283</li>
+<li>누적분포함수, 238</li>
+<li>최댓값과 최솟값 사이의 상관계수, 330</li>
+<li>평균, 239</li>
+<li>무기억성: 지수분포의 무기억성 참조</li>
+<li>적률생성함수, 282</li>
+<li>독립인 확률변수들의 최솟값, 246</li>
+<li>확률밀도함수, 238</li>
+<li>한 확률변수가 다른 확률변수보다 작을 확률, 319</li>
+<li>첫 성공 분포를 따르는 개수만큼의 확률변수의 합, 569</li>
+<li>확률변수의 합, 378, 390</li>
+<li>분산, 239</li>
+</ul></li>
+<li><p><strong>지수함수</strong> (exponential function), 589</p></li>
+<li><p><strong>계승</strong> (factorial), 12, 590</p></li>
+<li><p><strong>첫 성공 분포</strong> (First Success distribution), 159</p>
+<ul>
+<li>기댓값, 160</li>
+<li>첫 성공 분포를 따르는 개수만큼의 지수 확률변수의 합, 569</li>
+</ul></li>
+<li><p><strong>첫 단계 분석</strong> (first-step analysis), 71</p></li>
+<li><p><strong>피셔의 정확검정</strong> (Fisher exact test), 133</p></li>
+<li><p><strong>접힌 정규분포</strong> (Folded Normal distribution), 237</p></li>
+<li><p><strong>확률의 빈도주의적 관점</strong> (frequentist view of probability), 22, 48</p></li>
+<li><p><strong>FS</strong>: 첫 성공 분포 참조</p></li>
+<li><p><strong>함수</strong> (function), 585</p>
+<ul>
+<li>오목, 461, 588</li>
+<li>연속, 585</li>
+<li>볼록, 461, 588</li>
+<li>정의역, 585</li>
+<li>짝함수, 587</li>
+<li>증가, 586</li>
+<li>역함수, 586</li>
+<li>홀함수, 587</li>
+<li>일대일, 586</li>
+<li>치역, 585</li>
+<li>우연속, 585</li>
+<li>엄격히 증가, 586</li>
+<li>공역, 585</li>
+</ul></li>
+<li><p><strong>확률변수의 함수</strong> (function of a random variable), 123, 367</p></li>
+<li><p><strong>근본적인 연결</strong> (fundamental bridge), 164</p></li>
+<li><p><strong>도박사의 파산 문제</strong> (gambler’s ruin problem), 72</p>
+<ul>
+<li>마르코프 연쇄로 표현, 504</li>
+</ul></li>
+<li><p><strong>감마분포</strong> (Gamma distribution), 388</p>
+<ul>
+<li>포아송 과정과의 관계, 392, 393, 438</li>
+<li>베타 분포와의 관계, 396</li>
+<li>기댓값, 388</li>
+<li>적률, 390</li>
+<li>정규근사, 475</li>
+<li>확률밀도함수, 388</li>
+<li>확률변수의 합, 392</li>
+<li>분산, 390</li>
+</ul></li>
+<li><p><strong>감마함수</strong> (gamma function), 387, 590</p></li>
+<li><p><strong>생성함수</strong> (generating function), 279</p></li>
+<li><p><strong>기하분포</strong> (Geometric distribution), 157</p>
+<ul>
+<li>누적분포함수, 158</li>
+<li>기댓값, 159, 170, 421</li>
+<li>일시 상태로 돌아오는 횟수에 대한 기하분포, 503</li>
+<li>적률생성함수, 280</li>
+<li>확률질량함수, 157</li>
+<li>확률변수의 합, 161</li>
+<li>분산, 173</li>
+</ul></li>
+<li><p><strong>등비급수</strong> (geometric series), 597</p></li>
+<li><p><strong>깁스 표본추출기</strong> (Gibbs sampler), 548</p></li>
+<li><p><strong>좋은 점수 원리</strong> (good score principle), 184</p></li>
+<li><p><strong>구글 페이지랭크</strong> (Google PageRank), 511</p></li>
+<li><p><strong>그래프 색칠 예제</strong> (graph coloring example), 550</p></li>
+<li><p><strong>해밍 거리</strong> (Hamming distance), 186</p></li>
+<li><p><strong>조화급수</strong> (harmonic series), 598</p></li>
+<li><p><strong>HGeom</strong>: 초기하분포 참조</p></li>
+<li><p><strong>계층 모형</strong> (hierarchical model), 437</p></li>
+<li><p><strong>초기하분포</strong> (Hypergeometric distribution), 115</p>
+<ul>
+<li>이항분포와의 관계, 118, 133</li>
+<li>기댓값, 156</li>
+<li>확률질량함수, 116</li>
+<li>대칭성, 117</li>
+<li>두 종류의 표식으로 해석, 117</li>
+<li>분산, 331</li>
+</ul></li>
+<li><p><strong>i.i.d.</strong>: 독립이고 동일한 분포 참조</p></li>
+<li><p><strong>아이스크림 콘 예제</strong> (ice cream cones example), 10</p></li>
+<li><p><strong>포함배제</strong> (inclusion-exclusion), 25, 165</p></li>
+<li><p><strong>독립</strong> (independence)</p>
+<ul>
+<li>조건부 독립, 65</li>
+<li>독립이라고 해서 조건부 독립이 성립하는 것은 아님, 66, 133</li>
+<li>조건부 독립이라고 해서 독립이 성립하는 것은 아님, 65, 133</li>
+<li>여러 사건의 독립, 65</li>
+<li>여러 확률변수의 독립, 129</li>
+<li>독립인 확률변수는 비상관이지만 그 역은 성립하지 않음, 327</li>
+<li>두 사건의 독립, 63</li>
+<li>두 확률변수의 독립, 129</li>
+<li>쌍별 독립, 64</li>
+</ul></li>
+<li><p><strong>두 확률변수의 독립</strong> (independence of two random variables), 309</p></li>
+<li><p><strong>두 확률변수의 독립</strong> (independence of two random variables), 316</p></li>
+<li><p><strong>독립이고 동일한 분포</strong> (independent and identically distributed), 130</p>
+<ul>
+<li>대칭성, 248</li>
+</ul></li>
+<li><p><strong>지시확률변수</strong> (indicator random variable), 112, 164, 167</p></li>
+<li><p><strong>확률에 관한 부등식</strong> (inequalities for probabilities), 457</p></li>
+<li><p><strong>정보이론</strong> (information theory), 185, 462</p></li>
+<li><p><strong>확률변수의 내적</strong> (inner product of random variables), 431</p></li>
+<li><p><strong>교집합</strong> (intersection), 582</p></li>
+<li><p><strong>기약 마르코프 연쇄</strong> (irreducible Markov chain), 503</p></li>
+<li><p><strong>야코비 행렬</strong> (Jacobian matrix), 372, 374, 396, 596</p></li>
+<li><p><strong>옌센 부등식</strong> (Jensen’s inequality), 461</p></li>
+<li><p><strong>결합 누적분포함수</strong> (joint CDF), 304</p></li>
+<li><p><strong>결합분포</strong> (joint distribution), 304</p>
+<ul>
+<li>연속형인 경우, 312</li>
+<li>이산형인 경우, 304</li>
+<li>혼합형인 경우, 322, 393</li>
+</ul></li>
+<li><p><strong>결합 적률생성함수</strong> (joint MGF), 339, 460</p></li>
+<li><p><strong>결합확률밀도함수</strong> (joint PDF), 312</p></li>
+<li><p><strong>결합확률질량함수</strong> (joint PMF), 304</p></li>
+<li><p><strong>높이뛰기 선수 예제</strong> (jumpers example), 249</p></li>
+<li><p><strong>체스판 위의 나이트 예제</strong> (knight on a chessboard example), 517</p></li>
+<li><p><strong>첨도</strong> (kurtosis), 275</p></li>
+<li><p><strong>대상에 이름 붙이기</strong> (labeling objects), 14</p></li>
+<li><p><strong>큰 수의 법칙</strong> (law of large numbers), 467</p></li>
+<li><p><strong>희귀 사건의 법칙</strong> (law of rare events), 177</p></li>
+<li><p><strong>무의식적 통계학자의 법칙</strong> (law of the unconscious statistician)</p>
+<ul>
+<li>2차원 LOTUS, 324</li>
+<li>연속형인 경우, 220</li>
+<li>이산형인 경우, 170</li>
+</ul></li>
+<li><p><strong>전체 기댓값의 법칙</strong> (law of total expectation), 417</p></li>
+<li><p><strong>전체 확률의 법칙</strong> (law of total probability), 54, 376, 418</p>
+<ul>
+<li>네 가지 형태, 316</li>
+<li>추가 조건이 있는 경우, 60</li>
+</ul></li>
+<li><p><strong>전체 분산의 법칙</strong> (law of total variance), 434</p></li>
+<li><p><strong>라이프니츠의 실수</strong> (Leibniz’s mistake), 14</p></li>
+<li><p><strong>길이 편향 표본추출</strong> (length-biased sampling), 244</p></li>
+<li><p><strong>기대수명 예제</strong> (life expectancy example), 417</p></li>
+<li><p><strong>등대 예제</strong> (lighthouse example), 371</p></li>
+<li><p><strong>선형회귀 예제</strong> (linear regression example), 430</p></li>
+<li><p><strong>조건부기댓값의 선형성</strong> (linearity of conditional expectation), 427</p></li>
+<li><p><strong>기댓값의 선형성</strong> (linearity of expectation), 152</p></li>
+<li><p><strong>리틀의 법칙</strong> (Little’s law), 563</p></li>
+<li><p><strong>LLN</strong>: 큰 수의 법칙 참조</p></li>
+<li><p><strong>위치</strong> (location), 222</p></li>
+<li><p><strong>위치-척도 변환</strong> (location-scale transformation), 222, 235, 251, 282</p>
+<ul>
+<li>확률밀도함수, 372</li>
+</ul></li>
+<li><p><strong>로그 확률 점수 예제</strong> (log probability scoring example), 464</p></li>
+<li><p><strong>로그정규분포</strong> (Log-Normal distribution), 270, 284</p>
+<ul>
+<li>모든 차수의 적률, 284</li>
+<li>적률생성함수가 존재하지 않음, 284</li>
+<li>확률밀도함수, 370</li>
+</ul></li>
+<li><p><strong>로그</strong> (logarithm), 589</p></li>
+<li><p><strong>로지스틱 분포</strong> (Logistic distribution), 215, 226</p></li>
+<li><p><strong>LOTP</strong>: 전체 확률의 법칙 참조</p></li>
+<li><p><strong>LOTUS</strong>: 무의식적 통계학자의 법칙 참조</p></li>
+<li><p><strong>주변분포</strong> (marginal distribution), 305, 313, 393</p></li>
+<li><p><strong>주변 확률밀도함수</strong> (marginal PDF), 313</p></li>
+<li><p><strong>주변 확률질량함수</strong> (marginal PMF), 305</p></li>
+<li><p><strong>마르코프 연쇄</strong> (Markov chain), 497</p>
+<ul>
+<li>기약성, 503</li>
+<li>주기, 505</li>
+<li>정상분포, 507</li>
+</ul></li>
+<li><p><strong>마르코프 연쇄 몬테카를로</strong> (Markov chain Monte Carlo), 536</p></li>
+<li><p><strong>마르코프 성질</strong> (Markov property), 498</p></li>
+<li><p><strong>마르코프 부등식</strong> (Markov’s inequality), 465</p></li>
+<li><p><strong>동전 맞추기 예제</strong> (matching pennies example), 133</p></li>
+<li><p><strong>짝맞추기 문제</strong> (matching problem), 25, 165</p></li>
+<li><p><strong>행렬</strong> (matrix), 590</p></li>
+<li><p><strong>주사위를 두 번 던져 얻은 최댓값 예제</strong> (maximum of two die rolls example), 126</p></li>
+<li><p><strong>MCMC</strong>, 536</p></li>
+<li><p><strong>평균</strong> (mean)</p>
+<ul>
+<li>산술평균, 149</li>
+<li>확률변수의 평균: 기댓값 참조</li>
+<li>가중평균, 149</li>
+</ul></li>
+<li><p><strong>중앙값</strong> (median), 267</p>
+<ul>
+<li>평균절대오차를 최소화함, 269</li>
+</ul></li>
+<li><p><strong>지수분포의 무기억성</strong> (memoryless property of the Exponential), 240, 241, 330</p></li>
+<li><p><strong>메트로폴리스-헤이스팅스 알고리즘</strong> (Metropolis-Hastings algorithm), 537</p></li>
+<li><p><strong>MGF</strong>: 적률생성함수 참조</p></li>
+<li><p><strong>밀스 부등식</strong> (Mills’ inequality), 259</p></li>
+<li><p><strong>최빈값</strong> (mode), 267</p></li>
+<li><p><strong>적률</strong> (moment), 272</p></li>
+<li><p><strong>적률생성함수</strong> (moment generating function), 279</p>
+<ul>
+<li>분포를 결정함, 280</li>
+<li>적률 계산에 사용, 280</li>
+<li>결합분포로 일반화한 결합 적률생성함수, 339</li>
+<li>위치-척도 변환의 적률생성함수, 282</li>
+<li>합의 적률생성함수, 281</li>
+</ul></li>
+<li><p><strong>몬테카를로</strong> (Monte Carlo), 469, 535</p></li>
+<li><p><strong>몬티 홀 문제</strong> (Monty Hall problem), 68</p></li>
+<li><p><strong>다층 모형</strong> (multilevel model), 437</p></li>
+<li><p><strong>다항분포</strong> (Multinomial distribution), 332</p>
+<ul>
+<li>조건부분포, 334</li>
+<li>성분 사이의 공분산, 334</li>
+<li>결합확률질량함수, 332</li>
+<li>범주를 합치는 성질, 333</li>
+<li>주변분포, 333</li>
+</ul></li>
+<li><p><strong>곱셈법칙</strong> (multiplication rule), 8</p></li>
+<li><p><strong>다변량 정규분포</strong> (Multivariate Normal distribution), 337</p>
+<ul>
+<li>벡터를 이어 붙이는 성질, 338</li>
+<li>공분산행렬, 338</li>
+<li>결합 적률생성함수, 339</li>
+<li>이변량인 경우의 결합확률밀도함수, 374</li>
+<li>평균벡터, 338</li>
+<li>모수, 338</li>
+<li>부분벡터의 성질, 338</li>
+<li>다변량 정규 확률벡터 안에서 비상관이면 독립임, 339</li>
+</ul></li>
+<li><p><strong>살인 사건의 증거 예제</strong> (murder evidence example), 75</p></li>
+<li><p><strong>정체를 모르는 상대 예제</strong> (mystery opponent example), 133</p></li>
+<li><p><strong>정체를 모르는 상품 예제</strong> (mystery prize example), 419</p></li>
+<li><p><strong>확률의 고전적 정의</strong> (naive definition of probability), 6</p></li>
+<li><p><strong>NBin</strong>: 음이항분포 참조</p></li>
+<li><p><strong>생일 근접 문제</strong> (near-birthday problem), 179</p></li>
+<li><p><strong>가장 가까운 별 예제</strong> (nearest star example), 574</p></li>
+<li><p><strong>음이항분포</strong> (Negative Binomial distribution), 160</p>
+<ul>
+<li>포아송 분포의 감마 혼합분포로 표현, 568</li>
+<li>기댓값, 161</li>
+<li>적률생성함수, 281</li>
+<li>확률질량함수, 160</li>
+<li>분산, 173</li>
+</ul></li>
+<li><p><strong>음초기하분포</strong> (Negative Hypergeometric distribution), 168, 384</p></li>
+<li><p><strong>네트워크</strong> (network), 516</p></li>
+<li><p><strong>뉴턴-피프스 문제</strong> (Newton-Pepys problem), 17</p></li>
+<li><p><strong>NHGeom</strong>: 음초기하분포 참조</p></li>
+<li><p><strong>정규분포</strong> (Normal distribution), 232, 235</p>
+<ul>
+<li>68-95-99.7% 법칙, 236</li>
+<li>표준정규분포의 모든 차수의 적률, 283</li>
+<li>누적분포함수, 236</li>
+<li>중심극한정리, 471</li>
+<li>표본분산의 분포, 478</li>
+<li>기댓값, 234</li>
+<li>표본평균과 표본분산의 독립성, 342</li>
+<li>적률생성함수, 282</li>
+<li>정규화 상수, 233</li>
+<li>확률밀도함수, 236</li>
+<li>확률변수의 합, 287</li>
+<li>대칭성, 232</li>
+<li>분산, 235</li>
+<li>평균의 사전분포가 정규분포인 경우, 544</li>
+</ul></li>
+<li><p><strong>사건의 발생</strong> (occurrence of an event), 3</p></li>
+<li><p><strong>오즈</strong> (odds), 53</p></li>
+<li><p><strong>순서통계량</strong> (order statistics), 399</p>
+<ul>
+<li>누적분포함수, 400</li>
+<li>균등분포의 순서통계량, 402</li>
+<li>주변 확률밀도함수, 401</li>
+</ul></li>
+<li><p><strong>실험의 결과</strong> (outcome of an experiment), 3</p></li>
+<li><p><strong>페이지랭크</strong> (PageRank), 511</p></li>
+<li><p><strong>쌍별 독립</strong> (pairwise independence), 64</p></li>
+<li><p><strong>분포의 모수</strong> (parameter of a distribution), 112</p></li>
+<li><p><strong>편도함수</strong> (partial derivative), 594</p></li>
+<li><p><strong>집합의 분할</strong> (partition of a set), 583</p></li>
+<li><p><strong>짝짓기 예제</strong> (partnerships example), 21</p></li>
+<li><p><strong>패턴 인식</strong> (pattern recognition), 394, 599</p></li>
+<li><p><strong>PDF</strong>: 확률밀도함수 참조</p></li>
+<li><p><strong>조약돌 세계</strong> (Pebble World), 3, 48</p></li>
+<li><p><strong>시험 백분위수 예제</strong> (percentiles on an exam example), 225</p></li>
+<li><p><strong>상태의 주기</strong> (period of a state), 505</p></li>
+<li><p><strong>순열</strong> (permutation)</p>
+<ul>
+<li><span class="math inline">\(1,2,\ldots,n\)</span>의 순열, 12</li>
+<li>단어의 순열, 16</li>
+<li>무작위 순열, 249</li>
+</ul></li>
+<li><p><strong>페론-프로베니우스 정리</strong> (Perron-Frobenius theorem), 509, 592</p></li>
+<li><p><strong>PGF</strong>: 확률생성함수 참조</p></li>
+<li><p><strong>PMF</strong>: 확률질량함수 참조</p></li>
+<li><p><strong>포아송 분포</strong> (Poisson distribution), 175</p>
+<ul>
+<li>이항분포와의 관계, 181</li>
+<li>근사로서의 포아송 분포, 177</li>
+<li>닭과 달걀 이야기, 310</li>
+<li>합이 주어졌을 때의 조건부분포, 182</li>
+<li>기댓값, 175</li>
+<li>포아송 분포의 감마 혼합분포는 음이항분포임, 568</li>
+<li>정규근사, 475</li>
+<li>확률질량함수, 175</li>
+<li>확률변수의 합, 181, 287</li>
+<li>분산, 175</li>
+</ul></li>
+<li><p><strong>포아송 패러다임</strong> (Poisson paradigm), 177</p></li>
+<li><p><strong>포아송 과정</strong> (Poisson process), 244, 392, 438, 559</p>
+<ul>
+<li>감마분포와의 관계, 393, 438</li>
+<li>색칠, 570</li>
+<li>개수의 조건부분포, 561</li>
+<li>시간의 조건부분포, 562</li>
+<li>개수-시간 이중성, 245</li>
+<li>끼워 넣기 전략, 567</li>
+<li>생성 이야기, 560, 563</li>
+<li>다차원에서의 포아송 과정, 573</li>
+<li>중첩된 과정을 이산시간에 사영하기, 567</li>
+<li>중첩 성질, 564</li>
+<li>솎아내기, 568</li>
+</ul></li>
+<li><p><strong>포커 확률</strong> (poker probabilities), 17</p></li>
+<li><p><strong>검사의 양성 예측도</strong> (positive predictive value of a test), 88</p></li>
+<li><p><strong>가능성 원리</strong> (possibility principle), 184</p></li>
+<li><p><strong>사후분포</strong> (posterior distribution), 383, 393</p></li>
+<li><p><strong>사후평균</strong> (posterior mean), 393, 545</p></li>
+<li><p><strong>사후확률</strong> (posterior probability), 46</p></li>
+<li><p><strong>사후분산</strong> (posterior variance), 393, 545</p></li>
+<li><p><strong>사전분포</strong> (prior distribution), 383</p></li>
+<li><p><strong>사전확률</strong> (prior probability), 46</p></li>
+<li><p><strong>확률적 방법</strong> (probabilistic method), 184</p></li>
+<li><p><strong>확률</strong> (probability), 1–579</p>
+<ul>
+<li>조건부확률로서의 확률, 59</li>
+<li>공리, 22</li>
+<li>베이즈주의적 관점, 22, 383</li>
+<li>확률의 경계, 457</li>
+<li>확률론의 네 가지 기본 대상, 137, 192, 252, 293, 345, 403, 441, 482, 521</li>
+<li>빈도주의적 관점, 22, 48</li>
+<li>기댓값과의 근본적인 연결, 164</li>
+<li>일반적인 정의, 22</li>
+<li>고전적 정의, 6</li>
+<li>합집합의 확률, 25</li>
+<li>교집합의 확률, 53</li>
+<li>성질, 23</li>
+</ul></li>
+<li><p><strong>확률밀도함수</strong> (probability density function), 214</p>
+<ul>
+<li>조건부 확률밀도함수, 313</li>
+<li>직관적 해석, 217</li>
+<li>결합확률밀도함수, 312</li>
+<li>주변 확률밀도함수, 313</li>
+<li>단위, 218</li>
+</ul></li>
+<li><p><strong>확률생성함수</strong> (probability generating function), 287</p></li>
+<li><p><strong>확률적분변환</strong> (probability integral transform): 균등분포의 보편성 참조</p></li>
+<li><p><strong>확률질량함수</strong> (probability mass function), 107</p>
+<ul>
+<li>조건부인 경우, 132, 133, 182</li>
+<li>조건부 확률질량함수, 306</li>
+<li>결합확률질량함수, 304</li>
+<li>주변 확률질량함수, 305</li>
+<li>유효성, 110</li>
+</ul></li>
+<li><p><strong>확률 점수 예제</strong> (probability scoring example), 464</p></li>
+<li><p><strong>검사의 오류</strong> (prosecutor’s fallacy), 74</p></li>
+<li><p><strong>퍼트넘 문제</strong> (Putnam problem), 167</p></li>
+<li><p><strong>분위수 함수</strong> (quantile function), 224</p></li>
+<li><p><strong>R</strong>, 29</p></li>
+<li><p><strong>r.v.</strong>: 확률변수 참조</p></li>
+<li><p><strong>무작위 동전 예제</strong> (random coin example), 55, 60, 65</p></li>
+<li><p><strong>무작위 도시에서 무작위 표본을 추출하는 예제</strong> (random sample from a random city example), 437</p></li>
+<li><p><strong>무작위 순회 깁스 표본추출기</strong> (random scan Gibbs sampler), 548</p></li>
+<li><p><strong>무작위 부호</strong> (random sign), 133, 337</p></li>
+<li><p><strong>무작위 쪽지 예제</strong> (random slips of paper example), 119</p></li>
+<li><p><strong>확률변수의 무작위 개수만큼의 합</strong> (random sum of random variables), 436, 569</p></li>
+<li><p><strong>확률변수</strong> (random variable), 104</p>
+<ul>
+<li>연속형: 연속확률변수 참조</li>
+<li>확률변수의 합성곱: 합성곱 참조</li>
+<li>이산형: 이산확률변수 참조</li>
+<li>분포, 107</li>
+<li>확률변수의 함수, 123, 367</li>
+<li>지시확률변수: 지시확률변수 참조</li>
+<li>첨도, 275</li>
+<li>중앙값, 267</li>
+<li>최빈값, 267</li>
+<li>적률, 272</li>
+<li>왜도, 273</li>
+<li>무작위성의 원천, 106</li>
+<li>무작위 개수만큼의 확률변수의 합, 436</li>
+<li>확률변수의 합: 합성곱 참조</li>
+<li>대칭성, 273</li>
+</ul></li>
+<li><p><strong>임의보행</strong> (random walk), 72, 125, 126, 423, 516</p></li>
+<li><p><strong>무방향 네트워크 위의 임의보행</strong> (random walk on an undirected network), 516</p></li>
+<li><p><strong>숫자 목록의 순위</strong> (ranks of a list of numbers), 249</p></li>
+<li><p><strong>레일리 분포</strong> (Rayleigh distribution), 216, 227</p></li>
+<li><p><strong>기록 경신 예제</strong> (records example), 249</p></li>
+<li><p><strong>재귀 상태</strong> (recurrent state), 503</p></li>
+<li><p><strong>마르코프 연쇄의 가역성</strong> (reversibility of a Markov chain), 514</p></li>
+<li><p><strong>ROC 곡선</strong> (receiver operator characteristic curve), 364</p></li>
+<li><p><strong>샐리 클라크 사건</strong> (Sally Clark case), 74</p></li>
+<li><p><strong>표본평균</strong> (sample mean), 276, 467, 535</p>
+<ul>
+<li>평균과 분산, 277</li>
+</ul></li>
+<li><p><strong>표본적률</strong> (sample moment), 276</p></li>
+<li><p><strong>표본공간</strong> (sample space), 3</p></li>
+<li><p><strong>표본표준편차</strong> (sample standard deviation), 277</p></li>
+<li><p><strong>표본분산</strong> (sample variance), 277, 535</p>
+<ul>
+<li>정규분포인 경우의 분포, 478</li>
+<li>불편성, 278</li>
+</ul></li>
+<li><p><strong>표본추출</strong> (sampling)</p>
+<ul>
+<li>복원추출, 11, 119, 168</li>
+<li>성공 횟수를 고정한 표본추출, 168</li>
+<li>시행 횟수를 고정한 표본추출, 168</li>
+<li>비복원추출, 12, 119, 168</li>
+</ul></li>
+<li><p><strong>척도</strong> (scale), 222</p></li>
+<li><p><strong>이차적률 방법</strong> (second moment method), 459</p></li>
+<li><p><strong>검사의 민감도</strong> (sensitivity of a test), 56</p></li>
+<li><p><strong>집합</strong> (set), 581</p></li>
+<li><p><strong>섀넌의 정리</strong> (Shannon’s theorem), 185</p></li>
+<li><p><strong>단순임의추출</strong> (simple random sampling), 7</p></li>
+<li><p><strong>심슨의 역설</strong> (Simpson’s paradox), 76</p></li>
+<li><p><strong>모의 담금질</strong> (simulated annealing), 544</p></li>
+<li><p><strong>손가락이 여섯 개인 사람 예제</strong> (six-fingered man example), 58</p></li>
+<li><p><strong>집합의 크기</strong> (size of a set), 583</p></li>
+<li><p><strong>왜도</strong> (skewness), 273</p></li>
+<li><p><strong>SLLN</strong>: 강한 큰 수의 법칙 참조</p></li>
+<li><p><strong>통계학의 핵심</strong> (soul of statistics), 46</p></li>
+<li><p><strong>검사의 특이도</strong> (specificity of a test), 56</p></li>
+<li><p><strong>상트페테르부르크의 역설</strong> (St.&nbsp;Petersburg paradox), 163</p></li>
+<li><p><strong>표준편차</strong> (standard deviation), 171</p></li>
+<li><p><strong>표준정규분포</strong> (standard Normal distribution), 232</p></li>
+<li><p><strong>표준화된 적률</strong> (standardized moment), 272</p></li>
+<li><p><strong>정상분포</strong> (stationary distribution), 536</p>
+<ul>
+<li>정상분포로의 수렴, 509</li>
+</ul></li>
+<li><p><strong>마르코프 연쇄의 정상분포</strong> (stationary distribution of a Markov chain), 507</p>
+<ul>
+<li>존재성과 유일성, 509</li>
+</ul></li>
+<li><p><strong>스탯우먼 예제</strong> (Statwoman example), 335</p></li>
+<li><p><strong>막대 부러뜨리기 예제</strong> (stick-breaking example), 425</p></li>
+<li><p><strong>스털링 공식</strong> (Stirling’s formula), 590</p></li>
+<li><p><strong>이야기</strong> (story)</p>
+<ul>
+<li>베이즈의 당구, 382</li>
+<li>은행과 우체국, 396</li>
+<li>베타 분포와 이항분포, 383</li>
+<li>베타 분포와 감마분포, 396</li>
+<li>이항분포, 112, 131</li>
+<li>포획하고 재포획한 엘크, 117</li>
+<li>닭과 달걀, 310, 552, 569</li>
+<li>이산균등분포, 118</li>
+<li>지수분포, 241</li>
+<li>첫 성공 분포, 159, 162</li>
+<li>기하분포, 157, 503</li>
+<li>초기하분포, 115</li>
+<li>음이항분포, 160</li>
+<li>음초기하분포, 168</li>
+<li>정규분포, 471</li>
+<li>포아송 분포, 177</li>
+<li>포아송 과정과 감마분포, 392, 438</li>
+<li>균등분포, 251</li>
+</ul></li>
+<li><p><strong>이야기를 이용한 증명</strong> (story proof)</p>
+<ul>
+<li>경우의 수에 관한 증명, 20</li>
+<li>분포에 관한 증명, 118, 132</li>
+</ul></li>
+<li><p><strong>강한 큰 수의 법칙</strong> (strong law of large numbers), 467</p></li>
+<li><p><strong>스튜던트 t분포</strong> (Student-t distribution), 479</p></li>
+<li><p><strong>부분집합</strong> (subset), 582</p></li>
+<li><p><strong>부분집합 예제</strong> (subsets example), 11</p></li>
+<li><p><strong>주사위를 던져 얻은 눈의 합 예제</strong> (sum of die rolls example), 109, 111, 288</p></li>
+<li><p><strong>확률변수의 합</strong> (sum of random variables): 합성곱 참조</p></li>
+<li><p><strong>포아송 과정의 중첩</strong> (superposition of Poisson processes), 564</p></li>
+<li><p><strong>생존함수</strong> (survival function), 169</p></li>
+<li><p><strong>대칭분포</strong> (symmetric distribution), 273</p></li>
+<li><p><strong>독립이고 동일한 분포를 따르는 확률변수의 대칭성</strong> (symmetry of i.i.d. random variables), 248</p></li>
+<li><p><strong>유감주술</strong> (sympathetic magic), 127, 223, 507</p></li>
+<li><p><strong>체계적 순회 깁스 표본추출기</strong> (systematic scan Gibbs sampler), 548</p></li>
+<li><p><strong>t분포</strong>: 스튜던트 t분포 참조</p></li>
+<li><p><strong>알려진 것의 추출</strong> (taking out what’s known), 426</p></li>
+<li><p><strong><span class="math inline">\(e^x\)</span>의 테일러 급수</strong> (Taylor series for <span class="math inline">\(e^x\)</span>), 598</p></li>
+<li><p><strong>팀 주장 예제</strong> (team captain example), 20</p></li>
+<li><p><strong>포아송 과정의 솎아내기</strong> (thinning of a Poisson process), 568</p></li>
+<li><p><strong>장난감 수집가 문제</strong> (toy collector problem), 161</p></li>
+<li><p><strong>추적도</strong> (trace plot), 547</p></li>
+<li><p><strong>변환</strong> (transformation), 123, 367</p></li>
+<li><p><strong>일시 상태</strong> (transient state), 503</p></li>
+<li><p><strong>마르코프 연쇄의 전이행렬</strong> (transition matrix of a Markov chain), 498</p></li>
+<li><p><strong>영어와 집합 사이의 번역</strong> (translating between English and sets), 6</p></li>
+<li><p><strong>나무그림</strong> (tree diagram), 8, 69</p></li>
+<li><p><strong>삼각분포</strong> (Triangle distribution), 379</p></li>
+<li><p><strong>진음성률</strong> (true negative rate), 56</p></li>
+<li><p><strong>진양성률</strong> (true positive rate), 56</p></li>
+<li><p><strong>카드 두 장 예제</strong> (two cards example), 46</p></li>
+<li><p><strong>두 자녀 예제</strong> (two children example)</p>
+<ul>
+<li>적어도 한 명이 여자아이, 49</li>
+<li>적어도 한 명이 겨울에 태어난 여자아이, 51</li>
+<li>무작위로 고른 자녀가 여자아이, 50</li>
+</ul></li>
+<li><p><strong>동전 두 번 던지기 예제</strong> (two coin tosses example), 105, 107, 115</p></li>
+<li><p><strong>두 친구 예제</strong> (two friends example), 66, 133</p></li>
+<li><p><strong>두 봉투 역설</strong> (two-envelope paradox), 418</p></li>
+<li><p><strong>추정량의 불편성</strong> (unbiasedness of an estimator), 278</p></li>
+<li><p><strong>비상관</strong> (uncorrelated), 327</p>
+<ul>
+<li>독립이면 비상관이지만 비상관이라고 해서 독립인 것은 아님, 327</li>
+<li>다변량 정규 확률벡터 안에서의 비상관, 339</li>
+</ul></li>
+<li><p><strong>비가산집합</strong> (uncountable set), 585</p></li>
+<li><p><strong>균등분포</strong> (Uniform distribution), 220</p>
+<ul>
+<li>누적분포함수, 220</li>
+<li>조건부분포, 221</li>
+<li>길이에 비례하는 확률, 220</li>
+<li>평균, 222</li>
+<li>적률생성함수, 280</li>
+<li>평면의 영역 위에서의 균등분포, 317</li>
+<li>순서통계량, 402</li>
+<li>확률밀도함수, 220</li>
+<li>확률변수의 합, 378</li>
+<li>보편성, 224, 372</li>
+<li>분산, 222</li>
+</ul></li>
+<li><p><strong>합집합</strong> (union), 582</p></li>
+<li><p><strong>단위</strong> (units)</p>
+<ul>
+<li>단위 변환, 367</li>
+<li>변수변환에서의 단위, 369</li>
+<li>확률밀도함수의 단위, 218</li>
+</ul></li>
+<li><p><strong>균등분포의 보편성</strong> (universality of the Uniform), 224, 372</p>
+<ul>
+<li>지수 확률변수 생성에 사용, 539</li>
+</ul></li>
+<li><p><strong>웹사이트 방문자 예제</strong> (users visiting a website example), 563</p></li>
+<li><p><strong>유효성</strong> (validity)</p>
+<ul>
+<li>누적분포함수, 121</li>
+<li>결합확률밀도함수, 312</li>
+<li>결합확률질량함수, 304</li>
+<li>확률밀도함수, 215</li>
+<li>확률질량함수, 110</li>
+</ul></li>
+<li><p><strong>반데르몽드 항등식</strong> (Vandermonde’s identity), 21, 131</p></li>
+<li><p><strong>분산</strong> (variance), 171</p>
+<ul>
+<li>관성모멘트로서의 분산, 273</li>
+<li>성질, 172</li>
+<li>이브의 법칙을 이용한 계산, 434</li>
+</ul></li>
+<li><p><strong>확률변수의 벡터공간</strong> (vector space of random variables), 431</p></li>
+<li><p><strong>변동성이 큰 주식 예제</strong> (volatile stock example), 475</p></li>
+<li><p><strong>HH와 HT가 나올 때까지의 대기 시간</strong> (waiting time until HH vs.&nbsp;HT), 421</p></li>
+<li><p><strong>약한 큰 수의 법칙</strong> (weak law of large numbers), 467</p></li>
+<li><p><strong>와이블 분포</strong> (Weibull distribution), 241, 285, 574</p></li>
+<li><p><strong>승자의 저주</strong> (winner’s curse), 421</p></li>
+<li><p><strong>희망적 사고</strong> (wishful thinking), 68, 310, 418, 423</p></li>
+<li><p><strong>WLLN</strong>: 약한 큰 수의 법칙 참조</p></li>
+<li><p><strong>지프 분포</strong> (Zipf distribution), 538</p></li>
+</ul>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "복사완료!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "복사완료!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./참고문헌.html" class="pagination-link" aria-label="참고문헌">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">참고문헌</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>부록 A — 수학 – 확률론 입문 — 한국어 번역</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./B-R.html" rel="next">
+<link href="./13-포아송-과정.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7d8ad657b878717df1156ab40fed854c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./A-수학.html">Appendices</a></li><li class="breadcrumb-item"><a href="./A-수학.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">수학</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="검색" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">확률론 입문 — 한국어 번역</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">번역 안내</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./서문.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">헌정사와 서문</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-확률과-경우의-수.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">확률과 경우의 수</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-조건부확률.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">조건부확률</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-확률변수와-분포.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">확률변수와 그 분포</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-기댓값.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">기댓값</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-연속확률변수.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">연속확률변수</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-적률.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">적률</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-결합분포.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">결합분포</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-변환.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">변환</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-조건부기댓값.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">조건부기댓값</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-부등식과-극한정리.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">부등식과 극한정리</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-마르코프-연쇄.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">마르코프 연쇄</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-마르코프-연쇄-몬테카를로.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">마르코프 연쇄 몬테카를로</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-포아송-과정.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">포아송 과정</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A-수학.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">수학</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./B-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./C-분포표.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">분포표</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./참고문헌.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">참고문헌</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./색인.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">색인</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#집합" id="toc-집합" class="nav-link active" data-scroll-target="#집합"><span class="header-section-number">A.1</span> 집합</a>
+  <ul class="collapse">
+  <li><a href="#공집합" id="toc-공집합" class="nav-link" data-scroll-target="#공집합"><span class="header-section-number">A.1.1</span> 공집합</a></li>
+  <li><a href="#부분집합" id="toc-부분집합" class="nav-link" data-scroll-target="#부분집합"><span class="header-section-number">A.1.2</span> 부분집합</a></li>
+  <li><a href="#합집합-교집합-여집합" id="toc-합집합-교집합-여집합" class="nav-link" data-scroll-target="#합집합-교집합-여집합"><span class="header-section-number">A.1.3</span> 합집합, 교집합, 여집합</a></li>
+  <li><a href="#분할" id="toc-분할" class="nav-link" data-scroll-target="#분할"><span class="header-section-number">A.1.4</span> 분할</a></li>
+  <li><a href="#원소의-개수" id="toc-원소의-개수" class="nav-link" data-scroll-target="#원소의-개수"><span class="header-section-number">A.1.5</span> 원소의 개수</a></li>
+  <li><a href="#데카르트-곱" id="toc-데카르트-곱" class="nav-link" data-scroll-target="#데카르트-곱"><span class="header-section-number">A.1.6</span> 데카르트 곱</a></li>
+  </ul></li>
+  <li><a href="#함수" id="toc-함수" class="nav-link" data-scroll-target="#함수"><span class="header-section-number">A.2</span> 함수</a>
+  <ul class="collapse">
+  <li><a href="#일대일-함수" id="toc-일대일-함수" class="nav-link" data-scroll-target="#일대일-함수"><span class="header-section-number">A.2.1</span> 일대일 함수</a></li>
+  <li><a href="#증가함수와-감소함수" id="toc-증가함수와-감소함수" class="nav-link" data-scroll-target="#증가함수와-감소함수"><span class="header-section-number">A.2.2</span> 증가함수와 감소함수</a></li>
+  <li><a href="#짝함수와-홀함수" id="toc-짝함수와-홀함수" class="nav-link" data-scroll-target="#짝함수와-홀함수"><span class="header-section-number">A.2.3</span> 짝함수와 홀함수</a></li>
+  <li><a href="#볼록함수와-오목함수" id="toc-볼록함수와-오목함수" class="nav-link" data-scroll-target="#볼록함수와-오목함수"><span class="header-section-number">A.2.4</span> 볼록함수와 오목함수</a></li>
+  <li><a href="#지수함수와-로그함수" id="toc-지수함수와-로그함수" class="nav-link" data-scroll-target="#지수함수와-로그함수"><span class="header-section-number">A.2.5</span> 지수함수와 로그함수</a></li>
+  <li><a href="#바닥함수와-천장함수" id="toc-바닥함수와-천장함수" class="nav-link" data-scroll-target="#바닥함수와-천장함수"><span class="header-section-number">A.2.6</span> 바닥함수와 천장함수</a></li>
+  <li><a href="#팩토리얼-함수와-감마함수" id="toc-팩토리얼-함수와-감마함수" class="nav-link" data-scroll-target="#팩토리얼-함수와-감마함수"><span class="header-section-number">A.2.7</span> 팩토리얼 함수와 감마함수</a></li>
+  </ul></li>
+  <li><a href="#행렬" id="toc-행렬" class="nav-link" data-scroll-target="#행렬"><span class="header-section-number">A.3</span> 행렬</a>
+  <ul class="collapse">
+  <li><a href="#행렬의-덧셈과-곱셈" id="toc-행렬의-덧셈과-곱셈" class="nav-link" data-scroll-target="#행렬의-덧셈과-곱셈"><span class="header-section-number">A.3.1</span> 행렬의 덧셈과 곱셈</a></li>
+  <li><a href="#고윳값과-고유벡터" id="toc-고윳값과-고유벡터" class="nav-link" data-scroll-target="#고윳값과-고유벡터"><span class="header-section-number">A.3.2</span> 고윳값과 고유벡터</a></li>
+  </ul></li>
+  <li><a href="#차분방정식" id="toc-차분방정식" class="nav-link" data-scroll-target="#차분방정식"><span class="header-section-number">A.4</span> 차분방정식</a></li>
+  <li><a href="#미분방정식" id="toc-미분방정식" class="nav-link" data-scroll-target="#미분방정식"><span class="header-section-number">A.5</span> 미분방정식</a></li>
+  <li><a href="#편도함수" id="toc-편도함수" class="nav-link" data-scroll-target="#편도함수"><span class="header-section-number">A.6</span> 편도함수</a></li>
+  <li><a href="#다중적분" id="toc-다중적분" class="nav-link" data-scroll-target="#다중적분"><span class="header-section-number">A.7</span> 다중적분</a>
+  <ul class="collapse">
+  <li><a href="#적분-순서-바꾸기" id="toc-적분-순서-바꾸기" class="nav-link" data-scroll-target="#적분-순서-바꾸기"><span class="header-section-number">A.7.1</span> 적분 순서 바꾸기</a></li>
+  <li><a href="#변수변환" id="toc-변수변환" class="nav-link" data-scroll-target="#변수변환"><span class="header-section-number">A.7.2</span> 변수변환</a></li>
+  </ul></li>
+  <li><a href="#합" id="toc-합" class="nav-link" data-scroll-target="#합"><span class="header-section-number">A.8</span> 합</a>
+  <ul class="collapse">
+  <li><a href="#이항정리" id="toc-이항정리" class="nav-link" data-scroll-target="#이항정리"><span class="header-section-number">A.8.1</span> 이항정리</a></li>
+  <li><a href="#등비급수" id="toc-등비급수" class="nav-link" data-scroll-target="#등비급수"><span class="header-section-number">A.8.2</span> 등비급수</a></li>
+  <li><a href="#ex의-테일러-급수" id="toc-ex의-테일러-급수" class="nav-link" data-scroll-target="#ex의-테일러-급수"><span class="header-section-number">A.8.3</span> <span class="math inline">\(e^x\)</span>의 테일러 급수</a></li>
+  <li><a href="#조화급수와-지수가-고정된-다른-합" id="toc-조화급수와-지수가-고정된-다른-합" class="nav-link" data-scroll-target="#조화급수와-지수가-고정된-다른-합"><span class="header-section-number">A.8.4</span> 조화급수와 지수가 고정된 다른 합</a></li>
+  </ul></li>
+  <li><a href="#패턴-인식" id="toc-패턴-인식" class="nav-link" data-scroll-target="#패턴-인식"><span class="header-section-number">A.9</span> 패턴 인식</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./A-수학.html">Appendices</a></li><li class="breadcrumb-item"><a href="./A-수학.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">수학</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">부록 A — 수학</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="집합" class="level2" data-number="A.1">
+<h2 data-number="A.1" class="anchored" data-anchor-id="집합"><span class="header-section-number">A.1</span> 집합</h2>
+<blockquote class="blockquote">
+<p>집합이란 하나로 생각될 수 있는 여럿이다.</p>
+<p>— 게오르크 칸토어</p>
+</blockquote>
+<p>집합은 객체들의 모임이다. 객체는 수, 사람, 고양이, 강좌, 심지어 다른 집합 등 무엇이든 될 수 있다! 집합의 언어를 사용하면 사건을 정확하게 이야기할 수 있다. <span class="math inline">\(S\)</span>가 집합일 때 <span class="math inline">\(x\in S\)</span>라는 표기는 <span class="math inline">\(x\)</span>가 집합 <span class="math inline">\(S\)</span>의 원소 또는 구성원임을 나타낸다. <span class="math inline">\(x\notin S\)</span>는 <span class="math inline">\(x\)</span>가 <span class="math inline">\(S\)</span>에 속하지 않음을 나타낸다. 집합을 구성원 자격에 관한 기준이 정확하게 정해진 동호회라고 생각할 수 있다. 예를 들면 다음과 같다.</p>
+<ol type="1">
+<li><span class="math inline">\(\{1,3,5,7,\ldots\}\)</span>은 양의 홀수의 집합이다.</li>
+<li><span class="math inline">\(\mathbb R\)</span>은 모든 실수의 집합이다.</li>
+<li><span class="math inline">\(\{\text{워프},\text{잭},\text{토비}\}\)</span>는 조의 고양이들의 집합이다.</li>
+<li><span class="math inline">\([3,7]\)</span>은 3과 7 사이의 모든 실수로 이루어진 닫힌구간이다.</li>
+<li><span class="math inline">\(\{HH,HT,TH,TT\}\)</span>는 동전을 두 번 던질 때 가능한 모든 결과의 집합이다. 예를 들어 <span class="math inline">\(HT\)</span>는 첫 번째 던지기에서 앞면, 두 번째 던지기에서 뒷면이 나왔음을 뜻한다.</li>
+</ol>
+<p>원소를 일일이 나열하기가 번거롭거나 불가능할 때 집합을 설명하려면 가능한 각 객체가 집합에 속하는지 여부를 알려 주는 규칙을 제시할 수 있다. 예를 들어 <span class="math inline">\(\{(x,y)\in\mathbb R^2:x^2+y^2\leq1\}\)</span>은 평면 <span class="math inline">\(\mathbb R^2\)</span>에서 원점을 중심으로 하는 반지름 1인 원판이다. 이 표현에서 ‘:’는 ‘~인’ 또는 ‘~을 만족하는’으로 읽는다.</p>
+<section id="공집합" class="level3" data-number="A.1.1">
+<h3 data-number="A.1.1" class="anchored" data-anchor-id="공집합"><span class="header-section-number">A.1.1</span> 공집합</h3>
+<p>가장 작은 집합이자 미묘하면서도 중요한 집합은 공집합이다. 공집합에는 원소가 전혀 없으며 <span class="math inline">\(\varnothing\)</span> 또는 <span class="math inline">\(\{\}\)</span>로 나타낸다. <span class="math inline">\(\varnothing\)</span>과 <span class="math inline">\(\{\varnothing\}\)</span>를 혼동하지 않도록 주의하자. 전자에는 원소가 없지만 후자에는 원소가 하나 있다. 공집합을 빈 종이봉투로 시각화한다면 <span class="math inline">\(\{\varnothing\}\)</span>는 종이봉투 안에 종이봉투가 들어 있는 것으로 시각화할 수 있다.</p>
+</section>
+<section id="부분집합" class="level3" data-number="A.1.2">
+<h3 data-number="A.1.2" class="anchored" data-anchor-id="부분집합"><span class="header-section-number">A.1.2</span> 부분집합</h3>
+<p><span class="math inline">\(A,B\)</span>가 집합일 때 <span class="math inline">\(A\)</span>의 모든 원소가 <span class="math inline">\(B\)</span>의 원소이기도 하면 <span class="math inline">\(A\)</span>를 <span class="math inline">\(B\)</span>의 부분집합이라고 하며 <span class="math inline">\(A\subseteq B\)</span>로 쓴다. 예를 들어 모든 정수의 집합은 모든 실수의 집합의 부분집합이다. <span class="math inline">\(\varnothing\)</span>과 <span class="math inline">\(A\)</span> 자신은 항상 <span class="math inline">\(A\)</span>의 부분집합이다. 이들은 부분집합의 양 극단이다. <span class="math inline">\(A\subseteq B\)</span>임을 보이는 일반적인 전략은 <span class="math inline">\(x\)</span>를 <span class="math inline">\(A\)</span>의 임의의 원소로 놓고 <span class="math inline">\(x\)</span>가 반드시 <span class="math inline">\(B\)</span>의 원소이기도 함을 보이는 것이다. 두 집합 <span class="math inline">\(A,B\)</span>에 대해 <span class="math inline">\(A=B\)</span>임을 보이는 일반적인 전략은 각각이 다른 하나의 부분집합임을 보이는 것이다.</p>
+</section>
+<section id="합집합-교집합-여집합" class="level3" data-number="A.1.3">
+<h3 data-number="A.1.3" class="anchored" data-anchor-id="합집합-교집합-여집합"><span class="header-section-number">A.1.3</span> 합집합, 교집합, 여집합</h3>
+<p>두 집합 <span class="math inline">\(A,B\)</span>의 합집합은 <span class="math inline">\(A\cup B\)</span>로 쓰며, <span class="math inline">\(A\)</span> 또는 <span class="math inline">\(B\)</span>에 속하는 모든 객체의 집합이다. 둘 모두에 속하는 경우도 포함한다. <span class="math inline">\(A,B\)</span>의 교집합은 <span class="math inline">\(A\cap B\)</span>로 쓰며, <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span> 모두에 속하는 모든 객체의 집합이다. <span class="math inline">\(A\cap B=\varnothing\)</span>이면 <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span>가 서로소라고 한다. <span class="math inline">\(n\)</span>개의 집합 <span class="math inline">\(A_1,\ldots,A_n\)</span>에 대해 합집합 <span class="math inline">\(A_1\cup A_2\cup\cdots\cup A_n\)</span>은 적어도 하나의 <span class="math inline">\(A_j\)</span>에 속하는 모든 객체의 집합이고, 교집합 <span class="math inline">\(A_1\cap A_2\cap\cdots\cap A_n\)</span>은 모든 <span class="math inline">\(A_j\)</span>에 속하는 객체의 집합이다.</p>
+<p>많은 응용에서는 다루는 모든 집합이 어떤 집합 <span class="math inline">\(S\)</span>의 부분집합이다. 확률에서는 <span class="math inline">\(S\)</span>가 어떤 실험의 가능한 모든 결과의 집합일 수 있다. 문맥상 <span class="math inline">\(S\)</span>가 명확하면 집합 <span class="math inline">\(A\)</span>의 여집합을 <span class="math inline">\(S\)</span>에 속하면서 <span class="math inline">\(A\)</span>에는 속하지 않는 모든 객체의 집합으로 정의하며 <span class="math inline">\(A^c\)</span>로 나타낸다.</p>
+<p>합집합, 교집합, 여집합은 아래와 같은 벤 다이어그램으로 쉽게 시각화할 수 있다. 합집합은 색칠된 영역 전체이고, 교집합은 <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span> 양쪽에 속하는 점들로 이루어진 미식축구공 모양의 영역이다. <span class="math inline">\(A\)</span>의 여집합은 직사각형 안에서 <span class="math inline">\(A\)</span> 밖에 있는 모든 점이다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-A-1.svg" class="img-fluid figure-img"></p>
+<figcaption>그림 A.1: 벤 다이어그램.</figcaption>
+</figure>
+</div>
+<p><span class="math inline">\(A\cup B\)</span> 영역의 넓이는 <span class="math inline">\(A\)</span>의 넓이와 <span class="math inline">\(B\)</span>의 넓이를 더한 뒤 <span class="math inline">\(A\cap B\)</span>의 넓이를 뺀 것과 같음에 주목하자. 이는 포함배제원리의 기본 형태이다.</p>
+<p>드모르간의 법칙은 합집합과 교집합 사이의 우아하고 유용한 쌍대성을 제시한다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+(A_1\cup A_2\cup\cdots\cup A_n)^c&amp;=A_1^c\cap A_2^c\cap\cdots\cap A_n^c,\\
+(A_1\cap A_2\cap\cdots\cap A_n)^c&amp;=A_1^c\cup A_2^c\cup\cdots\cup A_n^c.
+\end{aligned}
+\]</span></p>
+<p>드모르간의 법칙은 암기하는 것보다 이해하는 것이 훨씬 더 중요하다! 첫 번째 법칙은 <span class="math inline">\(A_j\)</span> 중 적어도 하나에 속한다는 것이 성립하지 않는 것은 <span class="math inline">\(A_1\)</span>에도 속하지 않고 <span class="math inline">\(A_2\)</span>에도 속하지 않고 <span class="math inline">\(A_3\)</span>에도 속하지 않는 것 등과 같다고 말한다.</p>
+<p>예를 들어 <span class="math inline">\(j\in\{1,2,3\}\)</span>에 대해 <span class="math inline">\(A_j\)</span>를 스타워즈 프리퀄의 <span class="math inline">\(j\)</span>번째 영화를 좋아하는 사람의 집합이라 하자. 그러면 <span class="math inline">\((A_1\cup A_2\cup A_3)^c\)</span>는 프리퀄 중 적어도 하나를 좋아한다는 것이 성립하지 않는 사람들의 집합이다. 그런데 이는 《보이지 않는 위험》도 좋아하지 않고, 《클론의 습격》도 좋아하지 않고, 《시스의 복수》도 좋아하지 않는 사람들의 집합인 <span class="math inline">\(A_1^c\cap A_2^c\cap A_3^c\)</span>와 같다.</p>
+<p>두 번째 법칙은 모든 <span class="math inline">\(A_j\)</span>에 속한다는 것이 성립하지 않는 것은 적어도 하나의 <span class="math inline">\(A_j\)</span> 바깥에 있는 것과 같다고 말한다. 예를 들어 <span class="math inline">\(A_j\)</span>를 앞 문단과 같이 정의하자. 스타워즈 프리퀄을 모두 좋아한다는 것이 성립하지 않는다면, 즉 <span class="math inline">\((A_1\cap A_2\cap A_3)^c\)</span>에 속한다면, 좋아하지 않는 프리퀄이 적어도 하나 있어야 한다. 이는 <span class="math inline">\(A_1^c\cup A_2^c\cup A_3^c\)</span>에 속한다는 뜻이며 그 역도 성립한다.</p>
+<p>다음 집합에 관한 사실들을 증명하는 것은 좋은 연습이다. 벤 다이어그램은 직관을 기르는 데 매우 유용하지만 단지 그림을 그리는 데 그치지 말고 증명해 보자.</p>
+<ol type="1">
+<li><span class="math inline">\(A\cap B\)</span>와 <span class="math inline">\(A\cap B^c\)</span>는 서로소이며 <span class="math inline">\((A\cap B)\cup(A\cap B^c)=A\)</span>이다.</li>
+<li><span class="math inline">\(A\cap B=A\)</span>일 필요충분조건은 <span class="math inline">\(A\subseteq B\)</span>이다.</li>
+<li><span class="math inline">\(A\subseteq B\)</span>일 필요충분조건은 <span class="math inline">\(B^c\subseteq A^c\)</span>이다.</li>
+</ol>
+</section>
+<section id="분할" class="level3" data-number="A.1.4">
+<h3 data-number="A.1.4" class="anchored" data-anchor-id="분할"><span class="header-section-number">A.1.4</span> 분할</h3>
+<p>집합 <span class="math inline">\(S\)</span>의 부분집합들의 모임 <span class="math inline">\(A_1,\ldots,A_n\)</span>이 <span class="math inline">\(A_1\cup\cdots\cup A_n=S\)</span>이고 모든 <span class="math inline">\(i\ne j\)</span>에 대해 <span class="math inline">\(A_i\cap A_j=\varnothing\)</span>이면 이 모임은 <span class="math inline">\(S\)</span>의 분할이다. 말로 표현하면 집합의 분할은 합집합이 전체 집합이 되는 서로소인 부분집합들의 모임이다. 예를 들어 짝수의 집합 <span class="math inline">\(\{0,2,4,\ldots\}\)</span>과 홀수의 집합 <span class="math inline">\(\{1,3,5,\ldots\}\)</span>은 음이 아닌 정수의 집합을 분할한다.</p>
+</section>
+<section id="원소의-개수" class="level3" data-number="A.1.5">
+<h3 data-number="A.1.5" class="anchored" data-anchor-id="원소의-개수"><span class="header-section-number">A.1.5</span> 원소의 개수</h3>
+<p>집합은 유한할 수도 무한할 수도 있다. <span class="math inline">\(A\)</span>가 유한집합이면 <span class="math inline">\(A\)</span>의 원소 수를 <span class="math inline">\(|A|\)</span>로 나타내며 이를 집합의 크기 또는 기수라고 한다. 예를 들어 <span class="math inline">\(\{2,4,6,8,10\}\)</span>에는 원소가 5개 있으므로 <span class="math inline">\(|\{2,4,6,8,10\}|=5\)</span>이다. 매우 유용한 사실로서 <span class="math inline">\(A,B\)</span>가 유한집합이면</p>
+<p><span class="math display">\[|A\cup B|=|A|+|B|-|A\cap B|.\]</span></p>
+<p>이는 1장의 포함배제정리의 한 형태이다. <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span>의 합집합에 원소가 몇 개 있는지 세려면 각각의 원소 수를 더한 다음, 양쪽 모두에 속한 원소가 있을 경우 이를 두 번 세었다는 사실을 보정하면 된다는 뜻이다.</p>
+<p>두 집합 <span class="math inline">\(A,B\)</span>를 일대일 대응시킬 수 있으면 크기 또는 기수가 같다고 한다. 즉 <span class="math inline">\(A\)</span>의 각 원소를 <span class="math inline">\(B\)</span>의 정확히 한 원소와 짝지을 수 있고 어느 집합에도 짝이 없는 원소가 없어야 한다. <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span> 사이에는 일대일 대응이 없지만 <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span>의 어떤 부분집합 사이에는 일대일 대응이 있으면 <span class="math inline">\(A\)</span>가 <span class="math inline">\(B\)</span>보다 작다고 한다.</p>
+<p>예를 들어 좌석이 100개인 영화관의 관객 수를 세려고 한다고 하자. 영화관에 서 있는 사람은 없고 한 좌석에 두 사람 이상 앉아 있지 않다고 가정하자. 분명한 방법은 돌아다니며 사람을 한 명씩 세는 것이다. 물론 사람을 빠뜨리거나 실수로 두 번 세기가 놀라울 정도로 쉽다. 그러나 모든 좌석이 차 있다면 좌석이 100개이고 사람과 좌석 사이에 일대일 대응이 있으므로 반드시 사람이 100명이라고 판단하는 것이 훨씬 쉽다. 빈 좌석이 있다면 사람은 100명보다 적어야 한다.</p>
+<p>일대일 대응을 살펴보는 이 아이디어는 유한집합과 무한집합 모두에 의미가 있다. 완전제곱수 <span class="math inline">\(1^2,2^2,3^2,\ldots\)</span>을 생각하자. 갈릴레이는 한편으로는 완전제곱수가 양의 정수보다 적어 보이지만, 다른 한편으로는 두 집합을 일대일 대응시킬 수 있으므로 크기가 같아 보인다는 역설적인 결과를 지적했다. 모든 완전제곱수는 양의 정수이지만 완전제곱수가 아닌 양의 정수도 많다. 그런데 <span class="math inline">\(1^2\)</span>을 1과, <span class="math inline">\(2^2\)</span>을 2와, <span class="math inline">\(3^2\)</span>을 3과 짝짓는 식으로 대응시킬 수 있다.</p>
+<p>갈릴레이의 역설은 유한집합에 관한 직관이 반드시 무한집합에도 적용되는 것은 아님을 깨달으면 해결된다. 정의에 따라 모든 완전제곱수의 집합과 모든 양의 정수의 집합은 실제로 크기가 같다. 이와 관련된 또 다른 유명한 예가 힐베르트의 호텔이다. 현실 세계의 어떤 호텔이든 객실 수는 유한하다. 모든 객실이 차 있으면 이미 사용 중인 객실에 사람을 더 밀어 넣는 것 외에는 손님을 더 받을 방법이 없다.</p>
+<p>이제 <span class="math inline">\(1,2,3,\ldots\)</span>의 번호가 붙은 무한한 객실을 가진 상상의 호텔을 생각하자. 모든 객실이 차 있고 지친 여행자 한 명이 묵을 곳을 찾아 도착했다고 하자. 호텔은 기존 손님 중 아무도 객실을 잃지 않게 하면서 이 여행자에게 객실을 줄 수 있을까? 그렇다. 한 가지 방법은 모든 <span class="math inline">\(n=1,2,3,\ldots\)</span>에 대해 <span class="math inline">\(n\)</span>번 방의 손님을 <span class="math inline">\(n+1\)</span>번 방으로 옮기는 것이다. 그러면 1번 방이 비므로 여행자가 묵을 수 있다.</p>
+<p>그렇다면 양의 정수의 집합과 같은 기수를 가진 무한히 많은 여행자가 동시에 도착하면 어떻게 될까? 즉 여행자 1, 여행자 2 등으로 번호를 붙일 수 있다고 하자. 위 절차를 계속 반복하여 여행자를 한 명씩 수용할 수도 있지만 모두를 수용하는 데 영원히, 즉 무한 번의 이동이 걸린다. 게다가 기존 손님들이 계속 방을 옮기도록 하는 것은 영업에도 좋지 않을 것이다. 모든 사람에게 방이 있도록 객실 배정을 단 한 번만 바꿀 수 있을까? 그렇다. 한 가지 방법은 모든 <span class="math inline">\(n=1,2,3,\ldots\)</span>에 대해 <span class="math inline">\(n\)</span>번 방의 기존 손님을 <span class="math inline">\(2n\)</span>번 방으로 옮긴 다음 여행자 <span class="math inline">\(n\)</span>을 <span class="math inline">\(2n-1\)</span>번 방에 배정하는 것이다. 이렇게 하면 기존 손님들은 모든 짝수 번호의 방을, 새 손님들은 모든 홀수 번호의 방을 차지한다.</p>
+<p>무한집합의 기수가 모든 양의 정수의 집합의 기수와 같으면 그 집합을 가산무한집합이라고 한다. 집합이 유한하거나 가산무한이면 가산집합이라 하고 그렇지 않으면 비가산집합이라 한다. 수학자 칸토어는 모든 무한집합의 크기가 같은 것은 아님을 보였다. 특히 모든 실수의 집합은 비가산집합이고, 실수선에서 길이가 양수인 임의의 구간도 비가산집합이다.</p>
+</section>
+<section id="데카르트-곱" class="level3" data-number="A.1.6">
+<h3 data-number="A.1.6" class="anchored" data-anchor-id="데카르트-곱"><span class="header-section-number">A.1.6</span> 데카르트 곱</h3>
+<p>두 집합 <span class="math inline">\(A,B\)</span>의 데카르트 곱은 다음 집합이다.</p>
+<p><span class="math display">\[A\times B=\{(a,b):a\in A,\ b\in B\}.\]</span></p>
+<p>예를 들어 <span class="math inline">\([0,1]\times[0,1]\)</span>은 정사각형 <span class="math inline">\(\{(x,y):x,y\in[0,1]\}\)</span>이고, <span class="math inline">\(\mathbb R\times\mathbb R=\mathbb R^2\)</span>는 2차원 유클리드 공간이다.</p>
+</section>
+</section>
+<section id="함수" class="level2" data-number="A.2">
+<h2 data-number="A.2" class="anchored" data-anchor-id="함수"><span class="header-section-number">A.2</span> 함수</h2>
+<p><span class="math inline">\(A,B\)</span>를 집합이라 하자. <span class="math inline">\(A\)</span>에서 <span class="math inline">\(B\)</span>로의 함수는 <span class="math inline">\(A\)</span>의 원소를 입력으로 받아 <span class="math inline">\(B\)</span>의 원소를 출력으로 내놓는 결정적인 규칙이다. 즉 <span class="math inline">\(A\)</span>에서 <span class="math inline">\(B\)</span>로의 함수는 <span class="math inline">\(A\)</span>의 원소 <span class="math inline">\(x\)</span>를 받아 <span class="math inline">\(B\)</span>의 어떤 원소 <span class="math inline">\(y\)</span>로 “대응시키는” 기계이다. 서로 다른 <span class="math inline">\(x\)</span>들이 같은 <span class="math inline">\(y\)</span>에 대응될 수 있지만, 각 <span class="math inline">\(x\)</span>는 하나의 <span class="math inline">\(y\)</span>에만 대응된다. 이때 <span class="math inline">\(A\)</span>를 <strong>정의역</strong>, <span class="math inline">\(B\)</span>를 <strong>공역</strong>이라고 한다. 표기 <span class="math inline">\(f:A\to B\)</span>는 <span class="math inline">\(f\)</span>가 <span class="math inline">\(A\)</span>를 <span class="math inline">\(B\)</span>에 대응시키는 함수임을 뜻한다. <span class="math inline">\(f\)</span>의 <strong>치역</strong>은 <span class="math inline">\(\{y\in B:\text{어떤 }x\in A\text{에 대해 }f(x)=y\}\)</span>이다.</p>
+<p><span class="math inline">\(f\)</span>(함수)와 <span class="math inline">\(f(x)\)</span>(<span class="math inline">\(x\)</span>에서 함수를 계산한 값)를 구별하는 것은 중요하다. 즉 <span class="math inline">\(f\)</span>는 규칙이고, <span class="math inline">\(f(x)\)</span>는 각 수 <span class="math inline">\(x\)</span>에 대해 얻어지는 수이다. <span class="math inline">\(g(x)=e^{-x^2/2}\)</span>로 주어진 함수 <span class="math inline">\(g\)</span>는 <span class="math inline">\(g(t)=e^{-t^2/2}\)</span>로 주어진 함수 <span class="math inline">\(g\)</span>와 정확히 같다. 중요한 것은 입력에 사용하는 이름이 아니라 규칙이다. 이 예에서 규칙은 <span class="math inline">\(x\)</span>를 <span class="math inline">\(e^{-x^2/2}\)</span>에 대응시키는 것이다. 이 규칙은 <span class="math inline">\(x\mapsto e^{-x^2/2}\)</span>로도 나타낸다.</p>
+<p>실수선에서 실수선으로 가는 함수 <span class="math inline">\(f\)</span>가 임의의 <span class="math inline">\(a\)</span>에 대해 <span class="math inline">\(x\to a\)</span>일 때 <span class="math inline">\(f(x)\to f(a)\)</span>를 만족하면 <strong>연속</strong>이라고 한다. 오른쪽에서 접근할 때 이것이 성립하면, 즉 <span class="math inline">\(x&gt;a\)</span>인 값을 거치며 <span class="math inline">\(x\to a\)</span>일 때 <span class="math inline">\(f(x)\to f(a)\)</span>이면 <strong>우연속</strong>이라고 한다.</p>
+<p>집합 <span class="math inline">\(A\)</span>가 숫자들의 집합일 필요는 없다. 확률론에서는 어떤 실험의 가능한 모든 결과의 집합을 정의역으로 하는 함수를 생각하는 일이 매우 흔하고 유용하다. 함수의 공식을 적기 어려울 수 있지만, 명확하게 정의되어 있기만 하면 여전히 유효한 함수이다.</p>
+<section id="일대일-함수" class="level3" data-number="A.2.1">
+<h3 data-number="A.2.1" class="anchored" data-anchor-id="일대일-함수"><span class="header-section-number">A.2.1</span> 일대일 함수</h3>
+<p><span class="math inline">\(f\)</span>를 <span class="math inline">\(A\)</span>에서 <span class="math inline">\(B\)</span>로의 함수라 하자. <span class="math inline">\(x\ne y\)</span>일 때마다 <span class="math inline">\(f(x)\ne f(y)\)</span>이면 <span class="math inline">\(f\)</span>를 <strong>일대일 함수</strong>라고 한다. 즉 <span class="math inline">\(A\)</span>의 서로 다른 두 입력은 <span class="math inline">\(B\)</span>의 서로 다른 두 출력에 대응된다. <span class="math inline">\(B\)</span>의 각 <span class="math inline">\(y\)</span>에 대해 그 값으로 대응되는 <span class="math inline">\(A\)</span>의 원소 <span class="math inline">\(x\)</span>는 많아야 하나이다.</p>
+<p><span class="math inline">\(f\)</span>를 <span class="math inline">\(A\)</span>에서 <span class="math inline">\(B\)</span>로의 일대일 함수라 하고 <span class="math inline">\(C\)</span>를 <span class="math inline">\(f\)</span>의 치역, 즉</p>
+<p><span class="math display">\[C=\{b\in B:\text{어떤 }a\in A\text{에 대해 }f(a)=b\}\]</span></p>
+<p>라고 하자. 그러면 <strong>역함수</strong> <span class="math inline">\(f^{-1}:C\to A\)</span>가 존재하며, <span class="math inline">\(f^{-1}(y)\)</span>는 <span class="math inline">\(f(x)=y\)</span>를 만족하는 유일한 원소 <span class="math inline">\(x\in A\)</span>로 정의된다. 역함수가 있는 함수를 <strong>가역함수</strong>라고 한다.</p>
+<p>예를 들어 모든 실수 <span class="math inline">\(x\)</span>에 대해 <span class="math inline">\(f(x)=x^2\)</span>이라고 하자. 예컨대 <span class="math inline">\(f(3)=f(-3)\)</span>이므로 이는 일대일 함수가 아니다. 그러나 대신 <span class="math inline">\(f\)</span>의 정의역을 <span class="math inline">\([0,\infty)\)</span>로 선택하여 <span class="math inline">\(f\)</span>를 <span class="math inline">\([0,\infty)\)</span>에서 <span class="math inline">\([0,\infty)\)</span>로 가는 함수로 정의하자. 그러면 <span class="math inline">\(f\)</span>는 일대일이고, 모든 <span class="math inline">\(y\in[0,\infty)\)</span>에 대한 역함수는 <span class="math inline">\(f^{-1}(y)=\sqrt y\)</span>이다.</p>
+<p>비둘기집 원리는 <span class="math inline">\(A,B\)</span>가 <span class="math inline">\(|A|&gt;|B|\)</span>인 유한집합이면 <span class="math inline">\(A\)</span>에서 <span class="math inline">\(B\)</span>로의 일대일 함수가 존재하지 않는다고 말한다. 다시 말해 <span class="math inline">\(k&gt;n\)</span>일 때 <span class="math inline">\(k\)</span>개의 물건을 <span class="math inline">\(n\)</span>개의 상자에 넣으면 한 개보다 많은 물건이 들어 있는 상자가 적어도 하나 있어야 한다.</p>
+<p>예를 들어 1장의 생일 문제에서(1년이 365일이라고 가정하면) 366명 이상이 있으면 같은 생일을 가진 사람이 적어도 한 쌍 있음이 보장된다. 사람 수가 일 년의 날 수보다 많으면 각 사람에게 생일을 할당하는 일대일 함수는 없다.</p>
+</section>
+<section id="증가함수와-감소함수" class="level3" data-number="A.2.2">
+<h3 data-number="A.2.2" class="anchored" data-anchor-id="증가함수와-감소함수"><span class="header-section-number">A.2.2</span> 증가함수와 감소함수</h3>
+<p><span class="math inline">\(A\)</span>를 실수의 집합이라 하고 <span class="math inline">\(f:A\to\mathbb R\)</span>이라 하자. 모든 <span class="math inline">\(x,y\in A\)</span>에 대해 <span class="math inline">\(x\leq y\)</span>이면 <span class="math inline">\(f(x)\leq f(y)\)</span>일 때 <span class="math inline">\(f\)</span>는 <strong>증가함수</strong>이다. 이 정의는 <span class="math inline">\(f\)</span>가 평평한 구간이 있는 것을 허용한다. 예를 들어 모든 곳에서 42와 같은 상수함수는 증가함수이며 모든 누적분포함수(CDF, 3.6절 참조)도 증가함수이다.</p>
+<p><span class="math inline">\(x&lt;y\)</span>이면 <span class="math inline">\(f(x)&lt;f(y)\)</span>일 때 <span class="math inline">\(f\)</span>가 <strong>엄격히 증가</strong>한다고 한다. 예를 들어 <span class="math inline">\(f(x)=x^3\)</span>인 <span class="math inline">\(f:\mathbb R\to\mathbb R\)</span>은 엄격히 증가하는 함수이다.</p>
+<p>마찬가지로 <span class="math inline">\(x\leq y\)</span>이면 <span class="math inline">\(f(x)\geq f(y)\)</span>일 때 <span class="math inline">\(f\)</span>는 <strong>감소함수</strong>이고, <span class="math inline">\(x&lt;y\)</span>이면 <span class="math inline">\(f(x)&gt;f(y)\)</span>일 때 <strong>엄격히 감소하는 함수</strong>이다. 예를 들어 <span class="math inline">\(f(x)=1/x\)</span>인 <span class="math inline">\(f:(0,\infty)\to(0,\infty)\)</span>는 엄격히 감소하는 함수이다.</p>
+<p><strong>단조함수</strong>는 증가하거나 감소하는 함수이다. <strong>엄격한 단조함수</strong>는 엄격히 증가하거나 엄격히 감소하는 함수이다. 엄격한 단조함수는 모두 일대일 함수이다.</p>
+</section>
+<section id="짝함수와-홀함수" class="level3" data-number="A.2.3">
+<h3 data-number="A.2.3" class="anchored" data-anchor-id="짝함수와-홀함수"><span class="header-section-number">A.2.3</span> 짝함수와 홀함수</h3>
+<p><span class="math inline">\(f\)</span>를 <span class="math inline">\(\mathbb R\)</span>에서 <span class="math inline">\(\mathbb R\)</span>로 가는 함수라 하자. 모든 <span class="math inline">\(x\)</span>에 대해 <span class="math inline">\(f(x)=f(-x)\)</span>이면 <span class="math inline">\(f\)</span>를 <strong>짝함수</strong>라 하고, 모든 <span class="math inline">\(x\)</span>에 대해 <span class="math inline">\(-f(x)=f(-x)\)</span>이면 <strong>홀함수</strong>라고 한다. 두 조건 중 어느 것도 만족하지 않으면 <span class="math inline">\(f\)</span>는 짝함수도 홀함수도 아니다. 그림 A.2는 두 짝함수와 두 홀함수의 그래프를 보여 준다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-A-2.png" class="img-fluid figure-img"></p>
+<figcaption>그림 A.2: 짝함수와 홀함수. 왼쪽 그래프는 짝함수로, 위는 <span class="math inline">\(f(x)=x^2\)</span>, 아래는 <span class="math inline">\(f(x)=e^{-x^2/2}\)</span>이다. 오른쪽 그래프는 홀함수로, 위는 <span class="math inline">\(f(x)=x^3\)</span>, 아래는 <span class="math inline">\(f(x)=xe^{-x^2/2}\)</span>이다.</figcaption>
+</figure>
+</div>
+<p>짝함수와 홀함수에는 좋은 대칭 성질이 있다. 짝함수의 그래프를 세로축에 대해 반사하면 그대로이고, 홀함수의 그래프를 원점을 중심으로 180도 회전하면 그대로이다.</p>
+<p>적분이 존재한다고 가정하면 짝함수는 임의의 <span class="math inline">\(a\)</span>에 대해 다음 성질을 갖는다.</p>
+<p><span class="math display">\[\int_{-a}^a f(x)\,dx=2\int_0^a f(x)\,dx.\]</span></p>
+<p>이는 <span class="math inline">\(-a\)</span>에서 0까지 함수 아래의 면적이 0에서 <span class="math inline">\(a\)</span>까지의 면적과 같기 때문이다. 홀함수는 적분이 존재한다고 가정하면 임의의 <span class="math inline">\(a\)</span>에 대해 다음 성질을 갖는다.</p>
+<p><span class="math display">\[\int_{-a}^a f(x)\,dx=0.\]</span></p>
+<p>이는 <span class="math inline">\(-a\)</span>에서 0까지 함수 아래의 면적이 0에서 <span class="math inline">\(a\)</span>까지의 면적과 서로 상쇄되기 때문이다.</p>
+</section>
+<section id="볼록함수와-오목함수" class="level3" data-number="A.2.4">
+<h3 data-number="A.2.4" class="anchored" data-anchor-id="볼록함수와-오목함수"><span class="header-section-number">A.2.4</span> 볼록함수와 오목함수</h3>
+<p>정의역이 구간 <span class="math inline">\(I\)</span>인 함수 <span class="math inline">\(g\)</span>가 모든 <span class="math inline">\(x_1,x_2\in I\)</span>와 <span class="math inline">\(p\in(0,1)\)</span>에 대해</p>
+<p><span class="math display">\[g(px_1+(1-p)x_2)\leq pg(x_1)+(1-p)g(x_2)\]</span></p>
+<p>를 만족하면 <strong>볼록함수</strong>이다. 기하학적으로 이는 <span class="math inline">\(g\)</span>의 그래프 위 두 점을 잇는 선분을 그리면 그 선분이 <span class="math inline">\(g\)</span>의 그래프 위쪽에 놓인다는 뜻이다. 도함수 <span class="math inline">\(g'\)</span>이 존재한다면, 이에 동등한 정의는 <span class="math inline">\(g\)</span>의 그래프에 그은 모든 접선이 그래프 아래에 놓인다는 것이다. <span class="math inline">\(g''\)</span>이 존재한다면, 이에 동등한 정의는 모든 <span class="math inline">\(x\in I\)</span>에 대해 <span class="math inline">\(g''(x)\geq0\)</span>이라는 것이다. 그림 A.3에 예가 나와 있다. 간단한 예는 <span class="math inline">\(g(x)=x^2\)</span>이며, 이 함수의 이계도함수는 <span class="math inline">\(g''(x)=2&gt;0\)</span>이다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-A-3.png" class="img-fluid figure-img"></p>
+<figcaption>그림 A.3: 볼록함수 <span class="math inline">\(g\)</span>의 그래프. <span class="math inline">\(g''(x)\geq0\)</span>이다. 곡선 위 두 점을 잇는 모든 선분은 곡선 위쪽에 놓인다. 모든 접선은 곡선 아래쪽에 놓인다.</figcaption>
+</figure>
+</div>
+<p><span class="math inline">\(-g\)</span>가 볼록함수이면 <span class="math inline">\(g\)</span>를 <strong>오목함수</strong>라고 한다. <span class="math inline">\(g''\)</span>이 존재하면 정의역의 모든 <span class="math inline">\(x\)</span>에 대해 <span class="math inline">\(g''(x)\leq0\)</span>인 것과 <span class="math inline">\(g\)</span>가 오목한 것은 동치이다. 예를 들어 모든 <span class="math inline">\(x\in(0,\infty)\)</span>에 대해 <span class="math inline">\(g''(x)=-1/x^2&lt;0\)</span>이므로 <span class="math inline">\(g(x)=\log(x)\)</span>는 <span class="math inline">\((0,\infty)\)</span> 위의 오목함수이다.</p>
+</section>
+<section id="지수함수와-로그함수" class="level3" data-number="A.2.5">
+<h3 data-number="A.2.5" class="anchored" data-anchor-id="지수함수와-로그함수"><span class="header-section-number">A.2.5</span> 지수함수와 로그함수</h3>
+<p><strong>지수함수</strong>는 어떤 수 <span class="math inline">\(a&gt;0\)</span>에 대해 <span class="math inline">\(f(x)=a^x\)</span> 꼴인 함수이다. <span class="math inline">\(a&gt;1\)</span>이면 함수는 증가하고 <span class="math inline">\(0&lt;a&lt;1\)</span>이면 감소한다. 이 책에서 가장 흔히 다루는 지수함수는 <span class="math inline">\(f(x)=e^x\)</span>이며, 알아두면 매우 유용한 극한 결과는 임의의 실수 <span class="math inline">\(x\)</span>에 대해</p>
+<p><span class="math display">\[\left(1+\frac xn\right)^n\to e^x\qquad(n\to\infty)\]</span></p>
+<p>라는 것이다. 이는 은행이 예금에 복리 이자를 지급하는 상황으로 해석할 수 있다. 일 년에 복리 계산을 더 많이 할수록 증가율은 지수적 증가에 가까워진다.</p>
+<p>지수함수에는 다음 성질이 있다.</p>
+<ol type="1">
+<li><span class="math inline">\(a^xa^y=a^{x+y}\)</span>.</li>
+<li><span class="math inline">\(a^xb^x=(ab)^x\)</span>.</li>
+<li><span class="math inline">\((a^x)^y=a^{xy}\)</span>.</li>
+</ol>
+<p>지수함수의 역함수는 <strong>로그함수</strong>이다. 양수 <span class="math inline">\(y\)</span>에 대해 <span class="math inline">\(\log_a y\)</span>는 <span class="math inline">\(a^x=y\)</span>를 만족하는 수 <span class="math inline">\(x\)</span>로 정의된다. 이 책에서는 밑을 명시하지 않고 <span class="math inline">\(\log y\)</span>라고 쓰면 자연로그(밑이 <span class="math inline">\(e\)</span>)를 뜻한다.</p>
+<p><em>옮긴이 주:</em> 역함수로서의 로그에는 <span class="math inline">\(a&gt;0\)</span>, <span class="math inline">\(a\ne1\)</span>이 필요하다. 아래 로그 성질에서도 진수 <span class="math inline">\(x,y\)</span>는 양수이다.</p>
+<p>로그에는 다음 성질이 있다.</p>
+<ol type="1">
+<li><span class="math inline">\(\log_a x+\log_a y=\log_a(xy)\)</span>.</li>
+<li><span class="math inline">\(\log_a x^n=n\log_a x\)</span>.</li>
+<li><span class="math inline">\(\log_a x=\dfrac{\log x}{\log a}\)</span>.</li>
+</ol>
+</section>
+<section id="바닥함수와-천장함수" class="level3" data-number="A.2.6">
+<h3 data-number="A.2.6" class="anchored" data-anchor-id="바닥함수와-천장함수"><span class="header-section-number">A.2.6</span> 바닥함수와 천장함수</h3>
+<p><strong>바닥함수</strong>는 <span class="math inline">\(\lfloor x\rfloor\)</span>를 <span class="math inline">\(x\)</span> 이하인 가장 큰 정수로 정의한다. 즉 정수로 내림한다. 예를 들어 <span class="math inline">\(\lfloor3.14\rfloor=3\)</span>, <span class="math inline">\(\lfloor-1.3\rfloor=-2\)</span>, <span class="math inline">\(\lfloor5\rfloor=5\)</span>이다. (일부 책에서는 바닥함수를 <span class="math inline">\([x]\)</span>로 나타내지만, 이는 천장함수에 대응하는 표기를 떠올리게 하지 못하고 대괄호가 다른 용도로도 쓰이므로 좋지 않은 표기이다.)</p>
+<p><strong>천장함수</strong>는 <span class="math inline">\(\lceil x\rceil\)</span>를 <span class="math inline">\(x\)</span> 이상인 가장 작은 정수로 정의한다. 예를 들어 <span class="math inline">\(\lceil3.14\rceil=4\)</span>, <span class="math inline">\(\lceil-1.3\rceil=-1\)</span>, <span class="math inline">\(\lceil5\rceil=5\)</span>이다.</p>
+</section>
+<section id="팩토리얼-함수와-감마함수" class="level3" data-number="A.2.7">
+<h3 data-number="A.2.7" class="anchored" data-anchor-id="팩토리얼-함수와-감마함수"><span class="header-section-number">A.2.7</span> 팩토리얼 함수와 감마함수</h3>
+<p><strong>팩토리얼 함수</strong>는 양의 정수 <span class="math inline">\(n\)</span>을 받아 1부터 <span class="math inline">\(n\)</span>까지 정수의 곱을 돌려준다. 이를 <span class="math inline">\(n!\)</span>로 쓰고 “<span class="math inline">\(n\)</span> 팩토리얼”이라고 읽는다.</p>
+<p><span class="math display">\[n!=n(n-1)(n-2)\cdots1.\]</span></p>
+<p>또한 <span class="math inline">\(0!=1\)</span>로 정의한다. <span class="math inline">\(n!\)</span>을 <span class="math inline">\(n\)</span>명이 줄을 설 수 있는 방법의 수로 생각하면 <span class="math inline">\(n=0\)</span>일 때 방법이 하나이므로 이 관례는 타당하다. 이는 단지 아무도 없어서 줄이 비어 있다는 뜻이다. 또한 이 정의는 매우 유용하다. 예를 들어 <span class="math inline">\(n=1\)</span>일 때 문제가 생기지 않고 모든 양의 정수 <span class="math inline">\(n\)</span>에 대해 <span class="math inline">\(n!/(n-1)!=n\)</span>이라고 말할 수 있다.</p>
+<p>팩토리얼 함수는 <span class="math inline">\(n\)</span>이 커짐에 따라 극도로 빠르게 증가한다. 팩토리얼에 대한 유명하고 유용한 근사인 <strong>스털링 공식</strong>은</p>
+<p><span class="math display">\[n!\approx\sqrt{2\pi n}\left(\frac ne\right)^n\]</span></p>
+<p>이다. 양변의 비는 <span class="math inline">\(n\to\infty\)</span>일 때 1로 수렴한다. 예를 들어 직접 계산하면 <span class="math inline">\(52!\approx8.066\times10^{67}\)</span>이고, 스털링 공식은 <span class="math inline">\(52!\approx8.053\times10^{67}\)</span>을 준다.</p>
+<p><strong>감마함수</strong> <span class="math inline">\(\Gamma\)</span>는 팩토리얼 함수를 양의 실수로 일반화한다. 다음과 같이 정의되며</p>
+<p><span class="math display">\[\Gamma(a)=\int_0^\infty x^ae^{-x}\,\frac{dx}{x},\qquad a&gt;0,\]</span></p>
+<p>모든 양의 정수 <span class="math inline">\(n\)</span>에 대해</p>
+<p><span class="math display">\[\Gamma(n)=(n-1)!\]</span></p>
+<p>이라는 성질이 있다. 또한 <span class="math inline">\(\Gamma(1/2)=\sqrt\pi\)</span>이다.</p>
+<p><span class="math inline">\(n!=n\cdot(n-1)!\)</span>이라는 사실을 일반화한 감마함수의 중요한 성질은 모든 <span class="math inline">\(a&gt;0\)</span>에 대해</p>
+<p><span class="math display">\[\Gamma(a+1)=a\Gamma(a)\]</span></p>
+<p>라는 것이다. 감마함수에 관해서는 8장을 참조하라.</p>
+</section>
+</section>
+<section id="행렬" class="level2" data-number="A.3">
+<h2 data-number="A.3" class="anchored" data-anchor-id="행렬"><span class="header-section-number">A.3</span> 행렬</h2>
+<blockquote class="blockquote">
+<p>네오: 매트릭스가 뭐죠?</p>
+<p>트리니티: 답은 저 바깥에 있어요, 네오. 답이 당신을 찾고 있어요. 당신이 원한다면 답이 당신을 찾아낼 거예요.</p>
+<p>— 영화 《매트릭스》(1999)</p>
+</blockquote>
+<p><em>행렬</em>은 다음과 같이 숫자들을 직사각형 모양으로 배열한 것이다.</p>
+<p><span class="math display">\[
+\begin{pmatrix}3&amp;1/e\\2\pi&amp;1\end{pmatrix}
+\quad\text{또는}\quad
+\begin{pmatrix}1&amp;1&amp;0\\1&amp;2&amp;3\end{pmatrix}.
+\]</span></p>
+<p>행렬에 <span class="math inline">\(m\)</span>개의 행과 <span class="math inline">\(n\)</span>개의 열이 있으면 그 행렬의 크기를 <span class="math inline">\(m\)</span> 곱하기 <span class="math inline">\(n\)</span>이라고 하며 <span class="math inline">\(m\times n\)</span>이라고도 쓴다. 따라서 앞의 예는 <span class="math inline">\(2\times2\)</span>이고 뒤의 예는 <span class="math inline">\(2\times3\)</span>이다. <span class="math inline">\(m=n\)</span>이면 그 행렬을 <em>정방행렬</em>이라고 한다. <span class="math inline">\(m=1\)</span>이면 행벡터이고, <span class="math inline">\(n=1\)</span>이면 열벡터이다. <span class="math inline">\(A\)</span>의 <span class="math inline">\(i\)</span>행 <span class="math inline">\(j\)</span>열 성분이 <span class="math inline">\(a_{ij}\)</span>임을 나타내기 위해 <span class="math inline">\(A=(a_{ij})\)</span>라고 쓴다.</p>
+<section id="행렬의-덧셈과-곱셈" class="level3" data-number="A.3.1">
+<h3 data-number="A.3.1" class="anchored" data-anchor-id="행렬의-덧셈과-곱셈"><span class="header-section-number">A.3.1</span> 행렬의 덧셈과 곱셈</h3>
+<p>크기가 같은 두 행렬 <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span>를 더하려면 대응하는 성분끼리 더하면 된다. 예를 들면 다음과 같다.</p>
+<p><span class="math display">\[
+\begin{pmatrix}1&amp;1&amp;0\\1&amp;1&amp;1\end{pmatrix}+
+\begin{pmatrix}1&amp;0&amp;0\\1&amp;1&amp;0\end{pmatrix}=
+\begin{pmatrix}2&amp;1&amp;0\\2&amp;2&amp;1\end{pmatrix}.
+\]</span></p>
+<p><span class="math inline">\(m\times n\)</span> 행렬 <span class="math inline">\(A\)</span>에 <span class="math inline">\(n\times r\)</span> 행렬 <span class="math inline">\(B\)</span>를 곱하면 <span class="math inline">\(m\times r\)</span> 행렬 <span class="math inline">\(AB\)</span>를 얻는다. <span class="math inline">\(A\)</span>의 열 수가 <span class="math inline">\(B\)</span>의 행 수와 같지 않으면 곱 <span class="math inline">\(AB\)</span>는 정의되지 않는다.</p>
+<p><span class="math inline">\(AB\)</span>의 <span class="math inline">\(i\)</span>행 <span class="math inline">\(j\)</span>열 성분은 <span class="math inline">\(\sum_{k=1}^n a_{ik}b_{kj}\)</span>이다. 여기서 <span class="math inline">\(a_{ij}\)</span>와 <span class="math inline">\(b_{ij}\)</span>는 각각 <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span>의 <span class="math inline">\(i\)</span>행 <span class="math inline">\(j\)</span>열 성분이다. 예를 들어 <span class="math inline">\(2\times3\)</span> 행렬과 <span class="math inline">\(3\times1\)</span> 벡터는 다음과 같이 곱한다.</p>
+<p><span class="math display">\[
+\begin{pmatrix}1&amp;2&amp;3\\4&amp;5&amp;6\end{pmatrix}
+\begin{pmatrix}7\\8\\9\end{pmatrix}=
+\begin{pmatrix}1\cdot7+2\cdot8+3\cdot9\\4\cdot7+5\cdot8+6\cdot9\end{pmatrix}=
+\begin{pmatrix}50\\122\end{pmatrix}.
+\]</span></p>
+<p><span class="math inline">\(AB\)</span>와 <span class="math inline">\(BA\)</span>가 모두 정의되더라도 둘이 같지 않을 수 있음에 주의하자. 행렬 <span class="math inline">\(A\)</span>에 스칼라를 곱하려면 각 성분에 그 스칼라를 곱하면 된다.</p>
+<p>행렬 <span class="math inline">\(A\)</span>의 <em>전치행렬</em>은 <span class="math inline">\(i\)</span>행 <span class="math inline">\(j\)</span>열 성분이 <span class="math inline">\(A\)</span>의 <span class="math inline">\(j\)</span>행 <span class="math inline">\(i\)</span>열 성분인 행렬이다. 이를 <span class="math inline">\(A'\)</span>로 나타내며 ‘<span class="math inline">\(A\)</span> 전치’라고 읽는다. <span class="math inline">\(A\)</span>의 행은 <span class="math inline">\(A'\)</span>의 열이고 <span class="math inline">\(A\)</span>의 열은 <span class="math inline">\(A'\)</span>의 행이다. 정방행렬 <span class="math inline">\(A\)</span>가 <span class="math inline">\(A'=A\)</span>를 만족하면 <em>대칭행렬</em>이라고 한다. 전치의 유용한 성질은 행렬 <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span>의 곱 <span class="math inline">\(AB\)</span>가 정의될 때 <span class="math inline">\((AB)'=B'A'\)</span>이라는 것이다.</p>
+<p><span class="math inline">\(2\times2\)</span> 행렬의 <em>행렬식</em>은 다음과 같이 정의한다.</p>
+<p><span class="math display">\[
+\begin{vmatrix}a&amp;b\\c&amp;d\end{vmatrix}=ad-bc.
+\]</span></p>
+<p><span class="math inline">\(n\times n\)</span> 행렬에 대해서도 재귀적인 방법으로 행렬식을 정의할 수 있으나 여기서는 다루지 않는다.</p>
+</section>
+<section id="고윳값과-고유벡터" class="level3" data-number="A.3.2">
+<h3 data-number="A.3.2" class="anchored" data-anchor-id="고윳값과-고유벡터"><span class="header-section-number">A.3.2</span> 고윳값과 고유벡터</h3>
+<p><span class="math inline">\(n\times n\)</span> 행렬 <span class="math inline">\(A\)</span>의 <em>고윳값</em>은 성분들이 모두 0은 아닌 어떤 <span class="math inline">\(n\times1\)</span> 열벡터 <span class="math inline">\(\mathbf v\)</span>에 대해</p>
+<p><span class="math display">\[A\mathbf v=\lambda\mathbf v\]</span></p>
+<p>를 만족하는 수 <span class="math inline">\(\lambda\)</span>이다. 벡터 <span class="math inline">\(\mathbf v\)</span>를 <span class="math inline">\(A\)</span>의 <em>고유벡터</em> 또는 <em>오른쪽 고유벡터</em>라고 한다. (마찬가지로 <span class="math inline">\(A\)</span>의 <em>왼쪽 고유벡터</em>는 어떤 <span class="math inline">\(\lambda\)</span>에 대해 <span class="math inline">\(\mathbf w A=\lambda\mathbf w\)</span>를 만족하는 행벡터 <span class="math inline">\(\mathbf w\)</span>이다.) 이 정의는 <span class="math inline">\(A\)</span>와 <span class="math inline">\(\mathbf v\)</span>를 곱하면 <span class="math inline">\(\mathbf v\)</span>가 상수 <span class="math inline">\(\lambda\)</span>만큼 늘어나기만 한다는 뜻이다.</p>
+<p>어떤 행렬에는 실수 고윳값이 없지만, 페론–프로베니우스 정리는 11장에서 특별히 관심을 갖는 특수한 경우에 고윳값이 존재하고 좋은 성질을 지님을 알려준다. <span class="math inline">\(A\)</span>를 성분이 모두 음이 아니고 각 행의 합이 1인 정방행렬이라 하자. 또한 모든 <span class="math inline">\(i,j\)</span>에 대해 <span class="math inline">\(A^k\)</span>의 <span class="math inline">\(i\)</span>행 <span class="math inline">\(j\)</span>열 성분이 양수인 <span class="math inline">\(k\geq1\)</span>이 존재한다고 가정하자. 그러면 페론–프로베니우스 정리에 따르면 1은 <span class="math inline">\(A\)</span>의 고윳값이며 실제로 <span class="math inline">\(A\)</span>의 가장 큰 고윳값이고, 이에 대응하는 고유벡터 중 모든 성분이 양수인 것이 존재한다.</p>
+<p><em>옮긴이 주:</em> 복소수 고윳값도 있을 수 있으므로 정확히는 모든 고윳값의 절댓값이 1 이하이다. 위 기약 조건에서는 고윳값 1의 양의 왼쪽 고유벡터도 존재하고 성분의 합이 1이 되도록 정규화하면 유일하다. 이것이 11장의 정상분포이다.</p>
+</section>
+</section>
+<section id="차분방정식" class="level2" data-number="A.4">
+<h2 data-number="A.4" class="anchored" data-anchor-id="차분방정식"><span class="header-section-number">A.4</span> 차분방정식</h2>
+<p>차분방정식은 수열의 항을 그보다 앞선 항들로 재귀적으로 나타낸다. 예를 들어 모든 <span class="math inline">\(i\geq2\)</span>에 대해</p>
+<p><span class="math display">\[a_i=a_{i-1}+a_{i-2}\]</span></p>
+<p>이면 <span class="math inline">\(a_0,a_1,\ldots\)</span>은 피보나치 수열이다. 피보나치 수열은 무한히 많지만 <span class="math inline">\(a_0\)</span>과 <span class="math inline">\(a_1\)</span>을 지정하면 수열이 유일하게 결정된다. 이 값들을 초기조건 또는 경계조건이라고 한다. 예를 들어 <span class="math inline">\(a_0=0\)</span>, <span class="math inline">\(a_1=1\)</span>이면 피보나치 수열 <span class="math inline">\(0,1,1,2,3,5,8,13,\ldots\)</span>을 얻는다.</p>
+<p>차분방정식은 확률론에서, 특히 전체확률법칙을 적용할 때 자주 나타난다. 이 절에서는 <span class="math inline">\(p\ne0\)</span>, <span class="math inline">\(q=1-p\)</span>일 때 다음 형태의 차분방정식을 푸는 방법을 보이겠다.</p>
+<p><span class="math display">\[p_i=p\cdot p_{i+1}+q\cdot p_{i-1}.\]</span></p>
+<p>이 방정식은 도박사의 파산 문제에서 등장한다. 첫 단계는 <span class="math inline">\(p_i=x^i\)</span> 형태의 해를 추측하는 것이다. 이를 위 식에 대입하면</p>
+<p><span class="math display">\[x^i=p\cdot x^{i+1}+q\cdot x^{i-1}\]</span></p>
+<p>이고, 이를 정리하면 <span class="math inline">\(px^2-x+q=0\)</span>이다. 이를 특성방정식이라고 하며 차분방정식의 해는 특성방정식이 서로 다른 두 근을 갖는지, 하나의 근만 갖는지에 따라 달라진다. 서로 다른 두 근이 <span class="math inline">\(r_1,r_2\)</span>이면 해는 어떤 상수 <span class="math inline">\(a,b\)</span>에 대해</p>
+<p><span class="math display">\[p_i=ar_1^i+br_2^i\]</span></p>
+<p>의 형태이다. 서로 다른 근이 하나인 <span class="math inline">\(r\)</span>뿐이면 해는</p>
+<p><span class="math display">\[p_i=ar^i+bir^i\]</span></p>
+<p>의 형태이다.</p>
+<p>이 경우 특성방정식의 근은 1과 <span class="math inline">\(q/p\)</span>이다. 왜냐하면</p>
+<p><span class="math display">\[\frac{1\pm\sqrt{1-4p(1-p)}}{2p}=\frac{1\pm\sqrt{(2p-1)^2}}{2p}=\frac{1\pm|2p-1|}{2p}\]</span></p>
+<p>이며, 이 두 값은 <span class="math inline">\((1+2p-1)/(2p)=1\)</span> 또는 <span class="math inline">\((2-2p)/(2p)=q/p\)</span>이기 때문이다. <span class="math inline">\(p\ne q\)</span>이면 두 근은 서로 다르고, <span class="math inline">\(p=q\)</span>이면 둘 다 1이다. 따라서</p>
+<p><span class="math display">\[p_i=\begin{cases}
+a+b\left(\dfrac qp\right)^i,&amp;p\ne q,\\
+a+bi,&amp;p=q.
+\end{cases}\]</span></p>
+<p>아직 상수 <span class="math inline">\(a,b\)</span>를 지정하지 않았으므로 이를 차분방정식의 일반해라고 한다. 특정한 해를 구하려면 수열의 두 점을 알아야 <span class="math inline">\(a,b\)</span>를 구할 수 있다.</p>
+<p><em>옮긴이 주:</em> 두 서로 다른 인덱스의 값으로 계수를 결정한다는 설명은 예를 들어 <span class="math inline">\(0&lt;p&lt;1\)</span>에서 성립한다. <span class="math inline">\(p=1\)</span>, <span class="math inline">\(q=0\)</span>은 별도 취급해야 하며, 양의 인덱스에서의 두 값만으로는 <span class="math inline">\(p_0\)</span>을 복원할 수 없다.</p>
+</section>
+<section id="미분방정식" class="level2" data-number="A.5">
+<h2 data-number="A.5" class="anchored" data-anchor-id="미분방정식"><span class="header-section-number">A.5</span> 미분방정식</h2>
+<p>미분방정식은 차분방정식의 연속적인 형태이다. 미분방정식은 도함수를 사용하여 함수 또는 함수들의 모임을 기술한다. 예를 들어 미분방정식</p>
+<p><span class="math display">\[\frac{dy}{dx}=3y\]</span></p>
+<p>는 다음 성질을 가진 함수들의 모임을 나타낸다. 즉 임의의 점 <span class="math inline">\((x,y)\)</span>에서 함수의 순간변화율이 <span class="math inline">\(3y\)</span>와 같다. 이는 변수분리형 미분방정식의 예이다. <span class="math inline">\(x\)</span>와 <span class="math inline">\(y\)</span>를 분리하여 방정식의 양쪽으로 나눌 수 있기 때문이다.</p>
+<p><span class="math display">\[\frac{dy}{y}=3\,dx.\]</span></p>
+<p>이제 양변을 적분하면 <span class="math inline">\(\log y=3x+c\)</span>를 얻거나, 동등하게</p>
+<p><em>옮긴이 주:</em> 변수분리는 <span class="math inline">\(y\ne0\)</span>인 구간에서 적용한다. 음의 해까지 포함하는 적분식은 <span class="math inline">\(\log|y|=3x+c\)</span>이며, 영해 <span class="math inline">\(y=0\)</span>도 별도로 확인한다.</p>
+<p><span class="math display">\[y=Ce^{3x}\]</span></p>
+<p>를 얻는다. 여기서 <span class="math inline">\(C\)</span>는 임의의 상수이다. 이를 미분방정식의 일반해라고 하며, 이 미분방정식을 만족하는 모든 함수가 어떤 <span class="math inline">\(C\)</span>에 대해 <span class="math inline">\(y=Ce^{3x}\)</span> 형태임을 알려 준다. 특정한 해를 구하려면 그래프 위의 한 점을 지정해야 하며, 그러면 <span class="math inline">\(C\)</span>를 구할 수 있다.</p>
+</section>
+<section id="편도함수" class="level2" data-number="A.6">
+<h2 data-number="A.6" class="anchored" data-anchor-id="편도함수"><span class="header-section-number">A.6</span> 편도함수</h2>
+<p>보통의 미분을 할 수 있다면 편미분도 할 수 있다. 미분하는 변수 외의 모든 입력 변수를 상수로 고정하기만 하면 된다. 예를 들어 <span class="math inline">\(f(x,y)=y\sin(x^2+y^3)\)</span>이라 하자. 그러면 <span class="math inline">\(x\)</span>에 대한 편도함수는</p>
+<p><span class="math display">\[\frac{\partial f(x,y)}{\partial x}=2xy\cos(x^2+y^3),\]</span></p>
+<p><span class="math inline">\(y\)</span>에 대한 편도함수는</p>
+<p><span class="math display">\[\frac{\partial f(x,y)}{\partial y}=\sin(x^2+y^3)+3y^3\cos(x^2+y^3)\]</span></p>
+<p>이다. 이들은 1계 편도함수이다. 1계 편도함수를 편미분하면 다음과 같은 2계 편도함수를 얻는다.</p>
+<p><span class="math display">\[\frac{\partial^2f(x,y)}{\partial y\,\partial x}=\frac{\partial}{\partial y}\left(\frac{\partial f(x,y)}{\partial x}\right)=2x\left(\cos(x^2+y^3)-3y^3\sin(x^2+y^3)\right).\]</span></p>
+<p>반대 순서로(<span class="math inline">\(y\)</span>에 대해 미분한 다음 <span class="math inline">\(x\)</span>에 대해 미분하여) 편도함수를 구해도 같은 결과를 얻는다.</p>
+<p><span class="math display">\[\frac{\partial^2f(x,y)}{\partial x\,\partial y}=\frac{\partial}{\partial x}\left(\frac{\partial f(x,y)}{\partial y}\right)=2x\left(\cos(x^2+y^3)-3y^3\sin(x^2+y^3)\right).\]</span></p>
+<p>약간의 기술적 가정 아래에서는 일반적인 <span class="math inline">\(f\)</span>에 대해서도 다음이 성립한다.</p>
+<p><span class="math display">\[\frac{\partial^2f(x,y)}{\partial x\,\partial y}=\frac{\partial^2f(x,y)}{\partial y\,\partial x}.\]</span></p>
+<p><span class="math inline">\((x_1,\ldots,x_n)\)</span>을 <span class="math inline">\((y_1,\ldots,y_n)\)</span>으로 대응시키는 변환의 야코비 행렬은 가능한 모든 1계 편도함수로 이루어진 <span class="math inline">\(n\times n\)</span> 행렬이며 다음과 같다.</p>
+<p><span class="math display">\[\frac{\partial y}{\partial x}=\begin{pmatrix}
+\frac{\partial y_1}{\partial x_1}&amp;\frac{\partial y_1}{\partial x_2}&amp;\cdots&amp;\frac{\partial y_1}{\partial x_n}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+\frac{\partial y_n}{\partial x_1}&amp;\frac{\partial y_n}{\partial x_2}&amp;\cdots&amp;\frac{\partial y_n}{\partial x_n}
+\end{pmatrix}.\]</span></p>
+</section>
+<section id="다중적분" class="level2" data-number="A.7">
+<h2 data-number="A.7" class="anchored" data-anchor-id="다중적분"><span class="header-section-number">A.7</span> 다중적분</h2>
+<p>단일 적분을 할 수 있다면 다중적분도 할 수 있다. 현재 적분하는 변수 외의 변수들을 상수로 고정하면서 적분을 한 번보다 많이 하면 된다. 예를 들어</p>
+<p><span class="math display">\[\begin{aligned}
+\int_0^1\int_0^y(x-y)^2\,dx\,dy
+&amp;=\int_0^1\int_0^y(x^2-2xy+y^2)\,dx\,dy\\
+&amp;=\int_0^1\left.\left(\frac{x^3}{3}-x^2y+xy^2\right)\right|_0^y\,dy\\
+&amp;=\int_0^1\left(\frac{y^3}{3}-y^3+y^3\right)dy\\
+&amp;=\frac1{12}.
+\end{aligned}\]</span></p>
+<section id="적분-순서-바꾸기" class="level3" data-number="A.7.1">
+<h3 data-number="A.7.1" class="anchored" data-anchor-id="적분-순서-바꾸기"><span class="header-section-number">A.7.1</span> 적분 순서 바꾸기</h3>
+<p>적분구간의 끝점에 주의하기만 하면 <span class="math inline">\(dx\,dy\)</span> 대신 <span class="math inline">\(dy\,dx\)</span>로 순서를 바꾸어 적분할 수도 있다. <span class="math inline">\(x,y\)</span>가 0과 1 사이이고 <span class="math inline">\(x\leq y\)</span>인 모든 <span class="math inline">\((x,y)\)</span>에 대해 적분하므로, 반대 순서로 적분하면 다음과 같다.</p>
+<p><em>옮긴이 주:</em> 일반적으로 적분 순서의 교환에는 적분가능성 등 적절한 조건이 필요하다.</p>
+<p><span class="math display">\[\begin{aligned}
+\int_0^1\int_x^1(x-y)^2\,dy\,dx
+&amp;=\int_0^1\int_x^1(x^2-2xy+y^2)\,dy\,dx\\
+&amp;=\int_0^1\left.\left(x^2y-xy^2+\frac{y^3}{3}\right)\right|_x^1\,dx\\
+&amp;=\int_0^1\left(x^2-x+\frac13-x^3+x^3-\frac{x^3}{3}\right)dx\\
+&amp;=\frac1{12}.
+\end{aligned}\]</span></p>
+</section>
+<section id="변수변환" class="level3" data-number="A.7.2">
+<h3 data-number="A.7.2" class="anchored" data-anchor-id="변수변환"><span class="header-section-number">A.7.2</span> 변수변환</h3>
+<p>다중적분에서 변수변환을 할 때는 야코비 행렬이 필요하다. 표기를 간단하게 하기 위해 2차원 경우를 논의하겠다. <span class="math inline">\(n\)</span>차원 경우도 비슷하다. <span class="math inline">\((x,y)\)</span>에서 <span class="math inline">\((u,v)\)</span>로 가는 가역변환을 하고, 그 역변환이 다음과 같다고 하자.</p>
+<p><span class="math display">\[x=g(u,v),\qquad y=h(u,v).\]</span></p>
+<p><span class="math inline">\(A\)</span>를 <span class="math inline">\((x,y)\)</span> 평면의 영역, <span class="math inline">\(B\)</span>를 그에 대응하는 <span class="math inline">\((u,v)\)</span> 평면의 영역이라 하자. 그러면 변수변환 공식은 다음과 같다.</p>
+<p><span class="math display">\[\iint_A f(x,y)\,dx\,dy=\iint_B f(g(u,v),h(u,v))\left|\det\frac{\partial(x,y)}{\partial(u,v)}\right|du\,dv,\]</span></p>
+<p>여기서 <span class="math inline">\(\left|\det\frac{\partial(x,y)}{\partial(u,v)}\right|\)</span>는 야코비 행렬의 행렬식의 절댓값이다. 이 결과에는 야코비 행렬에 나타나는 편도함수들이 존재하고 연속이며 야코비 행렬의 행렬식이 어디에서도 0이 아니라는 등의 기술적인 가정이 몇 가지 필요하다.</p>
+<p>예를 들어 반지름이 1인 원의 넓이를 구해 보자. 한 영역의 넓이를 구하려면 그 영역에서 1을 적분하기만 하면 된다. 따라서 어려울 수 있는 부분은 적분구간의 끝점이며 피적분함수는 단지 1이다. 넓이는</p>
+<p><span class="math display">\[\iint_{x^2+y^2\leq1}1\,dx\,dy=\int_{-1}^1\int_{-\sqrt{1-y^2}}^{\sqrt{1-y^2}}1\,dx\,dy=2\int_{-1}^1\sqrt{1-y^2}\,dy.\]</span></p>
+<p>이중적분에서 안쪽 변수 <span class="math inline">\(x\)</span>의 적분구간 끝점은 바깥쪽 변수 <span class="math inline">\(y\)</span>에 의존할 수 있지만, 바깥쪽 적분구간의 끝점은 상수라는 점에 유의하라. 마지막 적분은 삼각치환으로 계산할 수 있지만, 대신 극좌표로 변환하여 문제를 간단히 하자. 즉</p>
+<p><span class="math display">\[x=r\cos\theta,\qquad y=r\sin\theta\]</span></p>
+<p>라고 놓는다. 여기서 <span class="math inline">\(r\)</span>은 <span class="math inline">\((x,y)\)</span>에서 원점까지의 거리이고 <span class="math inline">\(\theta\in[0,2\pi)\)</span>는 각도이다. 이 변환의 야코비 행렬은</p>
+<p><span class="math display">\[\frac{\partial(x,y)}{\partial(r,\theta)}=\begin{pmatrix}\cos\theta&amp;-r\sin\theta\\\sin\theta&amp;r\cos\theta\end{pmatrix}\]</span></p>
+<p>이므로 야코비 행렬식의 절댓값은 <span class="math inline">\(r(\cos^2\theta+\sin^2\theta)=r\)</span>이다. 즉 <span class="math inline">\(dx\,dy\)</span>는 <span class="math inline">\(r\,dr\,d\theta\)</span>가 된다. 따라서 원의 넓이는</p>
+<p><em>옮긴이 주:</em> 원점에서는 야코비 행렬식이 0이고 각도가 유일하지 않다. 원점과 각도 경계에 해당하는 면적 0인 부분을 제외한 뒤 변수변환을 적용할 수 있다.</p>
+<p><span class="math display">\[\int_0^{2\pi}\int_0^1r\,dr\,d\theta=\int_0^{2\pi}\frac12\,d\theta=\pi.\]</span></p>
+<p>반지름이 <span class="math inline">\(r\)</span>인 원에 대해서는 측정 단위를 반지름이 1이 되는 단위로 바꾸면 되므로, 넓이가 <span class="math inline">\(\pi r^2\)</span>임이 바로 따라 나온다.</p>
+<p>이처럼 익숙한 결과를 얻는 데 너무 많은 일을 한 것처럼 보일 수 있지만, 이는 설명을 위한 것이었고 비슷한 방법으로 임의의 차원에서 공의 부피를 구할 수 있다! <span class="math inline">\(\mathbb R^n\)</span>에서 반지름이 1인 공의 부피는 다음과 같다.</p>
+<p><span class="math display">\[V_n=\frac{\pi^{n/2}}{\Gamma(n/2+1)},\]</span></p>
+<p>여기서 <span class="math inline">\(\Gamma\)</span>는 감마함수이다(A.2.7절 참조).</p>
+</section>
+</section>
+<section id="합" class="level2" data-number="A.8">
+<h2 data-number="A.8" class="anchored" data-anchor-id="합"><span class="header-section-number">A.8</span> 합</h2>
+<p>확률론에서 자주 등장하는 합에는 여러 종류가 있다.</p>
+<section id="이항정리" class="level3" data-number="A.8.1">
+<h3 data-number="A.8.1" class="anchored" data-anchor-id="이항정리"><span class="header-section-number">A.8.1</span> 이항정리</h3>
+<p>이항정리에 따르면 음이 아닌 임의의 정수 <span class="math inline">\(n\)</span>에 대해</p>
+<p><span class="math display">\[
+(x+y)^n=\sum_{k=0}^n\binom nk x^k y^{n-k}.
+\]</span></p>
+<p>여기서 <span class="math inline">\(\binom nk\)</span>는 이항계수로, <span class="math inline">\(n\)</span>개의 대상에서 순서를 고려하지 않고 <span class="math inline">\(k\)</span>개를 선택하는 방법의 수로 정의한다. <span class="math inline">\(0\leq k\leq n\)</span>일 때 계승을 이용하여 <span class="math inline">\(\binom nk\)</span>를 명시적으로 나타내는 공식은</p>
+<p><span class="math display">\[
+\binom nk=\frac{n!}{(n-k)!k!}
+\]</span></p>
+<p>이다. 이항정리의 증명은 예제 1.4.19에 나와 있다.</p>
+<p>때로 <span class="math inline">\(0^0\)</span>은 정의되지 않는다고 하지만 이를 1로 정의해야 할 강력한 근거들이 여럿 있으며, 이 책에서는 <span class="math inline">\(0^0=1\)</span>로 정한다. 그 간단한 이유 하나로 이항정리에서 <span class="math inline">\(x=0\)</span>, <span class="math inline">\(y=1\)</span>인 경우를 생각해 보자. 이때 왼쪽은 <span class="math inline">\(1^n=1\)</span>이고, 오른쪽도 1이 되려면 <span class="math inline">\(0^0=1\)</span>이어야 한다.</p>
+</section>
+<section id="등비급수" class="level3" data-number="A.8.2">
+<h3 data-number="A.8.2" class="anchored" data-anchor-id="등비급수"><span class="header-section-number">A.8.2</span> 등비급수</h3>
+<p><span class="math inline">\(\sum_{n=0}^\infty x^n\)</span> 꼴의 급수를 <em>등비급수</em>라고 한다. <span class="math inline">\(|x|&lt;1\)</span>이면 급수는 수렴하고 다음이 성립한다.</p>
+<p><span class="math display">\[
+\sum_{n=0}^\infty x^n=\frac{1}{1-x}.
+\]</span></p>
+<p><span class="math inline">\(|x|\geq1\)</span>이면 급수는 발산한다. 같은 형태이지만 유한 개의 항으로 이루어진 급수를 <em>유한 등비급수</em>라고 한다. <span class="math inline">\(x\ne1\)</span>일 때 그 합은</p>
+<p><span class="math display">\[
+\sum_{k=0}^n x^k=\frac{1-x^{n+1}}{1-x}
+\]</span></p>
+<p>이다. 지수의 <span class="math inline">\(n+1\)</span>이 합에 있는 항의 수임에 주목하자. 합이 <span class="math inline">\(k=0\)</span>이 아니라 <span class="math inline">\(k=m\)</span>에서 시작한다면(<span class="math inline">\(m\)</span>은 <span class="math inline">\(0\leq m\leq n\)</span>인 정수), 합이 0에서 시작하는 경우로 쉽게 바꿀 수 있다. <span class="math inline">\(j=k-m\)</span>으로 치환하면</p>
+<p><span class="math display">\[
+\sum_{k=m}^n x^k
+=\sum_{j=0}^{n-m}x^{j+m}
+=x^m\sum_{j=0}^{n-m}x^j
+=x^m\cdot\frac{1-x^{n-m+1}}{1-x}.
+\]</span></p>
+</section>
+<section id="ex의-테일러-급수" class="level3" data-number="A.8.3">
+<h3 data-number="A.8.3" class="anchored" data-anchor-id="ex의-테일러-급수"><span class="header-section-number">A.8.3</span> <span class="math inline">\(e^x\)</span>의 테일러 급수</h3>
+<p><span class="math inline">\(e^x\)</span>의 테일러 급수는 다음과 같다.</p>
+<p><span class="math display">\[
+\sum_{n=0}^\infty\frac{x^n}{n!}=e^x,\qquad\text{모든 }x\text{에 대하여}.
+\]</span></p>
+</section>
+<section id="조화급수와-지수가-고정된-다른-합" class="level3" data-number="A.8.4">
+<h3 data-number="A.8.4" class="anchored" data-anchor-id="조화급수와-지수가-고정된-다른-합"><span class="header-section-number">A.8.4</span> 조화급수와 지수가 고정된 다른 합</h3>
+<p><span class="math inline">\(\sum_{n=1}^\infty 1/n^c\)</span>는 <span class="math inline">\(c&gt;1\)</span>이면 수렴하고 <span class="math inline">\(c\leq1\)</span>이면 발산한다는 것도 알아 두면 유용하다. <span class="math inline">\(c=1\)</span>인 경우 이를 <em>조화급수</em>라고 한다. <span class="math inline">\(n\)</span>이 클 때 조화급수의 처음 <span class="math inline">\(n\)</span>개 항의 합은 다음과 같이 근사할 수 있다.</p>
+<p><span class="math display">\[
+\sum_{k=1}^n\frac1k\approx\log(n)+\gamma,
+\]</span></p>
+<p>여기서 <span class="math inline">\(\gamma\approx0.577\)</span>은 오일러–마스케로니 상수이다.</p>
+<p>처음 <span class="math inline">\(n\)</span>개 양의 정수의 합은</p>
+<p><span class="math display">\[
+\sum_{k=1}^n k=\frac{n(n+1)}2=\binom{n+1}{2}.
+\]</span></p>
+<p>이 항등식에서 예를 들어 처음 <span class="math inline">\(n\)</span>개 양의 홀수의 합이 다음과 같음을 얻는다.</p>
+<p><span class="math display">\[
+\sum_{k=1}^n(2k-1)=2\sum_{k=1}^n k-\sum_{k=1}^n1=n(n+1)-n=n^2.
+\]</span></p>
+<p>정수의 제곱에 대해서는</p>
+<p><span class="math display">\[
+\sum_{k=1}^n k^2=\frac{n(n+1)(2n+1)}6.
+\]</span></p>
+<p>정수의 세제곱에 대해서는 놀랍게도 그 합이 처음 <span class="math inline">\(n\)</span>개 양의 정수의 합의 제곱이다! 즉,</p>
+<p><span class="math display">\[
+\sum_{k=1}^n k^3=\left(\frac{n(n+1)}2\right)^2.
+\]</span></p>
+<p>1장의 연습문제 22에서는 이 결과의 이야기 증명을 요구한다.</p>
+</section>
+</section>
+<section id="패턴-인식" class="level2" data-number="A.9">
+<h2 data-number="A.9" class="anchored" data-anchor-id="패턴-인식"><span class="header-section-number">A.9</span> 패턴 인식</h2>
+<p>수학과 통계학의 상당 부분은 사실 패턴 인식에 관한 것이다. 문제의 본질적인 구조를 알아보고, 어떤 문제가 겉모습만 다를 뿐 다른 문제와 본질적으로 같다는 것을 인식하며, 대칭을 알아차리는 것 등이다. 이 책에서 이러한 사고의 예를 많이 보게 될 것이다. 예를 들어 <span class="math inline">\(\lambda\)</span>가 양의 상수인 급수 <span class="math inline">\(\sum_{k=0}^\infty e^{tk}e^{-\lambda}\lambda^k/k!\)</span>를 생각하자. <span class="math inline">\(e^{-\lambda}\)</span>를 합 밖으로 꺼낼 수 있고, 그러면 급수의 구조는 <span class="math inline">\(e^x\)</span>의 테일러 급수의 구조와 정확히 일치한다. 따라서</p>
+<p><span class="math display">\[
+\sum_{k=0}^\infty\frac{e^{tk}e^{-\lambda}\lambda^k}{k!}
+=e^{-\lambda}\sum_{k=0}^\infty\frac{(\lambda e^t)^k}{k!}
+=e^{-\lambda}e^{\lambda e^t}
+=e^{\lambda(e^t-1)},
+\]</span></p>
+<p>이는 모든 실수 <span class="math inline">\(t\)</span>에 대해 성립한다.</p>
+<p>마찬가지로 <span class="math inline">\(1/(1-x^3)\)</span>의 <span class="math inline">\(x=0\)</span>을 중심으로 한 테일러 급수를 구하고 싶다고 하자. 이 함수를 미분하기 시작하면 지루할 것이다. 대신 이 함수가 등비급수의 합을 떠올리게 한다는 점에 주목하자. 따라서</p>
+<p><span class="math display">\[
+\frac1{1-x^3}=\sum_{n=0}^\infty x^{3n},
+\]</span></p>
+<p>여기서 <span class="math inline">\(|x^3|&lt;1\)</span>이고 이는 <span class="math inline">\(|x|&lt;1\)</span>과 동치이다. 중요한 것은 구조이지 변수에 어떤 이름을 붙이느냐가 아니다!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "복사완료!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "복사완료!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./13-포아송-과정.html" class="pagination-link" aria-label="포아송 과정">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">포아송 과정</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./B-R.html" class="pagination-link" aria-label="R">
+        <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">R</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

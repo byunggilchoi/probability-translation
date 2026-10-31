@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>10&nbsp; 부등식과 극한정리 – 확률론 입문 — 한국어 번역</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./11-마르코프-연쇄.html" rel="next">
+<link href="./09-조건부기댓값.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7d8ad657b878717df1156ab40fed854c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-부등식과-극한정리.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">부등식과 극한정리</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="검색" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">확률론 입문 — 한국어 번역</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">번역 안내</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./서문.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">헌정사와 서문</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-확률과-경우의-수.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">확률과 경우의 수</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-조건부확률.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">조건부확률</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-확률변수와-분포.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">확률변수와 그 분포</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-기댓값.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">기댓값</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-연속확률변수.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">연속확률변수</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-적률.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">적률</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-결합분포.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">결합분포</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-변환.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">변환</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-조건부기댓값.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">조건부기댓값</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-부등식과-극한정리.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">부등식과 극한정리</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-마르코프-연쇄.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">마르코프 연쇄</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-마르코프-연쇄-몬테카를로.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">마르코프 연쇄 몬테카를로</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-포아송-과정.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">포아송 과정</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A-수학.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">수학</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./B-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./C-분포표.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">분포표</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./참고문헌.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">참고문헌</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./색인.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">색인</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#부등식" id="toc-부등식" class="nav-link active" data-scroll-target="#부등식"><span class="header-section-number">10.1</span> 부등식</a>
+  <ul class="collapse">
+  <li><a href="#코시-슈바르츠-결합-기댓값에-대한-주변-경계" id="toc-코시-슈바르츠-결합-기댓값에-대한-주변-경계" class="nav-link" data-scroll-target="#코시-슈바르츠-결합-기댓값에-대한-주변-경계"><span class="header-section-number">10.1.1</span> 코시-슈바르츠: 결합 기댓값에 대한 주변 경계</a></li>
+  <li><a href="#옌센-볼록성에-관한-부등식" id="toc-옌센-볼록성에-관한-부등식" class="nav-link" data-scroll-target="#옌센-볼록성에-관한-부등식"><span class="header-section-number">10.1.2</span> 옌센: 볼록성에 관한 부등식</a></li>
+  <li><a href="#마르코프-체비쇼프-체르노프-꼬리확률의-경계" id="toc-마르코프-체비쇼프-체르노프-꼬리확률의-경계" class="nav-link" data-scroll-target="#마르코프-체비쇼프-체르노프-꼬리확률의-경계"><span class="header-section-number">10.1.3</span> 마르코프, 체비쇼프, 체르노프: 꼬리확률의 경계</a></li>
+  </ul></li>
+  <li><a href="#큰-수의-법칙" id="toc-큰-수의-법칙" class="nav-link" data-scroll-target="#큰-수의-법칙"><span class="header-section-number">10.2</span> 큰 수의 법칙</a></li>
+  <li><a href="#중심극한정리" id="toc-중심극한정리" class="nav-link" data-scroll-target="#중심극한정리"><span class="header-section-number">10.3</span> 중심극한정리</a></li>
+  <li><a href="#카이제곱분포와-스튜던트-t분포" id="toc-카이제곱분포와-스튜던트-t분포" class="nav-link" data-scroll-target="#카이제곱분포와-스튜던트-t분포"><span class="header-section-number">10.4</span> 카이제곱분포와 스튜던트 t분포</a></li>
+  <li><a href="#요약" id="toc-요약" class="nav-link" data-scroll-target="#요약"><span class="header-section-number">10.5</span> 요약</a></li>
+  <li><a href="#r" id="toc-r" class="nav-link" data-scroll-target="#r"><span class="header-section-number">10.6</span> R</a>
+  <ul class="collapse">
+  <li><a href="#옌센-부등식" id="toc-옌센-부등식" class="nav-link" data-scroll-target="#옌센-부등식"><span class="header-section-number">10.6.1</span> 옌센 부등식</a></li>
+  <li><a href="#큰-수의-법칙-시각화" id="toc-큰-수의-법칙-시각화" class="nav-link" data-scroll-target="#큰-수의-법칙-시각화"><span class="header-section-number">10.6.2</span> 큰 수의 법칙 시각화</a></li>
+  <li><a href="#몬테카를로를-이용한-pi의-추정" id="toc-몬테카를로를-이용한-pi의-추정" class="nav-link" data-scroll-target="#몬테카를로를-이용한-pi의-추정"><span class="header-section-number">10.6.3</span> 몬테카를로를 이용한 <span class="math inline">\(\pi\)</span>의 추정</a></li>
+  <li><a href="#중심극한정리의-시각화" id="toc-중심극한정리의-시각화" class="nav-link" data-scroll-target="#중심극한정리의-시각화"><span class="header-section-number">10.6.4</span> 중심극한정리의 시각화</a></li>
+  <li><a href="#카이제곱분포와-스튜던트-t분포-1" id="toc-카이제곱분포와-스튜던트-t분포-1" class="nav-link" data-scroll-target="#카이제곱분포와-스튜던트-t분포-1"><span class="header-section-number">10.6.5</span> 카이제곱분포와 스튜던트 t분포</a></li>
+  </ul></li>
+  <li><a href="#연습문제" id="toc-연습문제" class="nav-link" data-scroll-target="#연습문제"><span class="header-section-number">10.7</span> 연습문제</a>
+  <ul class="collapse">
+  <li><a href="#부등식-1" id="toc-부등식-1" class="nav-link" data-scroll-target="#부등식-1"><span class="header-section-number">10.7.1</span> 부등식</a></li>
+  <li><a href="#빈칸에-부등호-채우기" id="toc-빈칸에-부등호-채우기" class="nav-link" data-scroll-target="#빈칸에-부등호-채우기"><span class="header-section-number">10.7.2</span> 빈칸에 부등호 채우기</a></li>
+  <li><a href="#큰-수의-법칙과-중심극한정리" id="toc-큰-수의-법칙과-중심극한정리" class="nav-link" data-scroll-target="#큰-수의-법칙과-중심극한정리"><span class="header-section-number">10.7.3</span> 큰 수의 법칙과 중심극한정리</a></li>
+  <li><a href="#종합-연습" id="toc-종합-연습" class="nav-link" data-scroll-target="#종합-연습"><span class="header-section-number">10.7.4</span> 종합 연습</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">부등식과 극한정리</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>“확률이나 기댓값을 정확히 계산할 수 없다면 어떻게 해야 할까?” 확률을 사용하는 사람이라면 거의 누구나 때때로 이런 상황에 부딪힌다. 당황하지 말자. 시뮬레이션, 경계 구하기, 근사라는 강력한 전략을 사용할 수 있다.</p>
+<ul>
+<li><p><strong>몬테카를로 시뮬레이션:</strong> 이 책에서 우리는 이미 여러 시뮬레이션을 보았다. R 절에는 몇 줄의 코드와 컴퓨터를 이용한 몇 초의 계산만으로 좋은 근삿값을 얻는 예가 많다. “몬테카를로”는 단지 시뮬레이션에 난수를 사용한다는 뜻이다. 이 용어는 모나코의 몬테카를로 카지노에서 유래했다.</p>
+<p>몬테카를로 시뮬레이션은 매우 강력한 기법이며, 현재로서는 이것이 유일하게 합리적인 접근법인 문제가 많다. 그렇다면 왜 언제나 시뮬레이션만 하지 않을까? 몇 가지 이유가 있다.</p>
+<ol type="1">
+<li>빠른 컴퓨터를 사용하더라도 시뮬레이션을 대단히 오래 실행해야 할 수 있다. 12장에서 소개하는 마르코프 연쇄 몬테카를로라는 중요한 확장 기법을 사용하면 몬테카를로 시뮬레이션을 적용할 수 있는 문제의 범위가 크게 넓어진다. 그러나 그 경우에도 쓸 만한 답을 얻으려면 얼마나 오래 실행해야 할지 알 수 없고, 그 시간이 매우 길 수 있다.</li>
+<li>문제의 <strong>모든 모수 값</strong>에 대해 좋은 답을 얻고 싶을 수 있다. 예를 들어 쿠폰 수집가 문제(예제 4.3.12)에서 장난감 종류가 <span class="math inline">\(n\)</span>개이면 완전한 세트를 모으는 데 평균적으로 약 <span class="math inline">\(n\log n\)</span>개의 장난감이 필요하다는 것을 보았다. 이는 간단하고 기억하기 쉬운 답이다. 특정한 <span class="math inline">\(n\)</span>에 대해서는 시뮬레이션하기 쉽다. 예를 들어 <span class="math inline">\(n=20\)</span>일 때 쿠폰 수집 과정을 시뮬레이션하면 약 60이라는 답을 얻을 수 있다. 하지만 이 결과만으로는 일반적인 <span class="math inline">\(n\log n\)</span>이라는 결과를 쉽게 알아내기 어렵다.</li>
+<li>시뮬레이션 결과에는 의문을 제기하기 쉽다. 충분히 오래 실행했는지, 결과가 참값에 가까운지 어떻게 알 수 있을까? “가깝다”는 것은 얼마나 가깝다는 뜻일까? 증명으로 보장되는 결과가 필요할 수도 있다.</li>
+</ol></li>
+<li><p><strong>부등식을 이용한 경계:</strong> 확률의 경계는 그 확률이 일정한 범위 안에 있음을 증명으로 보장한다. 이 장의 앞부분에서는 확률론의 중요한 부등식 몇 가지를 소개한다. 이런 부등식을 이용하면 정확한 답이 가질 수 있는 값의 범위를 좁히는, 즉 상한이나 하한을 구하는 경우가 많다. 경계가 좋은 근삿값을 제공하지는 않을 수도 있다. 예를 들어 구하려는 확률이 <span class="math inline">\([0.2,0.6]\)</span>에 있다는 경계를 얻었다면 정확한 답은 이 범위 어디에나 있을 수 있다. 그래도 적어도 정확한 답이 이 범위 안에 있음은 보장된다.</p></li>
+<li><p><strong>극한정리를 이용한 근사:</strong> 이 장의 뒷부분에서는 확률론에서 가장 유명한 두 정리인 큰 수의 법칙과 중심극한정리를 다룬다. 두 정리 모두 데이터가 점점 많아질 때 표본평균에 어떤 일이 일어나는지 알려준다. 극한정리를 사용하면 데이터가 많을 때 잘 들어맞을 가능성이 높은 근사를 할 수 있다. 마지막으로 극한정리를 이용해 통계학에서 중요한 이름 붙은 분포 몇 가지를 살펴본다.</p></li>
+</ul>
+<section id="부등식" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="부등식"><span class="header-section-number">10.1</span> 부등식</h2>
+<section id="코시-슈바르츠-결합-기댓값에-대한-주변-경계" class="level3" data-number="10.1.1">
+<h3 data-number="10.1.1" class="anchored" data-anchor-id="코시-슈바르츠-결합-기댓값에-대한-주변-경계"><span class="header-section-number">10.1.1</span> 코시-슈바르츠: 결합 기댓값에 대한 주변 경계</h3>
+<p>코시-슈바르츠 부등식은 수학 전체에서 가장 유명한 부등식 중 하나이다. 확률론에서는 다음과 같은 형태를 취한다.</p>
+<p><strong>정리 10.1.1 (코시-슈바르츠).</strong> 분산이 유한한 임의의 확률변수 <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>에 대해</p>
+<p><span class="math display">\[|E(XY)|\leq\sqrt{E(X^2)E(Y^2)}.\]</span></p>
+<p><strong>증명.</strong> 임의의 <span class="math inline">\(t\)</span>에 대해</p>
+<p><span class="math display">\[0\leq E(Y-tX)^2=E(Y^2)-2tE(XY)+t^2E(X^2).\]</span></p>
+<p><span class="math inline">\(t\)</span>는 어디서 나왔을까? <span class="math inline">\(t\)</span>를 도입하면 그 값마다 하나씩 무한히 많은 부등식이 생긴다. 그러고 나서 미적분을 이용하여 가장 좋은 부등식을 주는 <span class="math inline">\(t\)</span>를 찾는다. 오른쪽을 <span class="math inline">\(t\)</span>로 미분하여 0으로 놓으면 <span class="math inline">\(t=E(XY)/E(X^2)\)</span>일 때 오른쪽이 최소가 되므로 가장 촘촘한 경계를 얻는다. 이 값을 대입하면 코시-슈바르츠 부등식이 나온다. <span class="math inline">\(\blacksquare\)</span><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p><span class="math inline">\(X\)</span>와 <span class="math inline">\(Y\)</span>가 비상관이면 <span class="math inline">\(E(XY)=E(X)E(Y)\)</span>이므로 이 값은 주변 기댓값 <span class="math inline">\(E(X)\)</span>와 <span class="math inline">\(E(Y)\)</span>에만 의존한다. 그러나 일반적으로 <span class="math inline">\(E(XY)\)</span>를 정확히 계산하려면 <span class="math inline">\(X\)</span>와 <span class="math inline">\(Y\)</span>의 결합분포를 알고 이를 다룰 수 있어야 한다. 코시-슈바르츠 부등식은 주변 이차적률 <span class="math inline">\(E(X^2)\)</span>과 <span class="math inline">\(E(Y^2)\)</span>로 <span class="math inline">\(E(XY)\)</span>의 경계를 구하게 해 준다.</p>
+<p><span class="math inline">\(X\)</span>와 <span class="math inline">\(Y\)</span>의 평균이 0이라면 코시-슈바르츠 부등식에는 아주 익숙한 통계적 해석이 있다. 바로 두 변수의 상관관계가 <span class="math inline">\(-1\)</span>과 1 사이에 있다는 뜻이다.</p>
+<p><strong>예제 10.1.2.</strong> <span class="math inline">\(E(X)=E(Y)=0\)</span>이라고 하자. 그러면</p>
+<p><span class="math display">\[E(XY)=\operatorname{Cov}(X,Y),\quad E(X^2)=\operatorname{Var}(X),\quad E(Y^2)=\operatorname{Var}(Y),\]</span></p>
+<p>따라서 코시-슈바르츠 부등식은 <span class="math inline">\(|\operatorname{Corr}(X,Y)|\leq 1\)</span>이 된다. 물론 정리 7.3.5에서 이미 알고 있던 사실이다. 이제 평균이 0이라는 가정을 없애 보자. 중심화한 확률변수 <span class="math inline">\(X-E(X)\)</span>와 <span class="math inline">\(Y-E(Y)\)</span>에 코시-슈바르츠를 적용하면 다시 <span class="math inline">\(|\operatorname{Corr}(X,Y)|\leq 1\)</span>을 얻는다. <span class="math inline">\(\square\)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>코시-슈바르츠 부등식은 흔히 창의적으로 적용할 수 있다. 예를 들어 <span class="math inline">\(X=X\cdot1\)</span>로 쓰면 <span class="math inline">\(|E(X\cdot1)|\leq\sqrt{E(X^2)E(1^2)}\)</span>이고, 이는 <span class="math inline">\(E(X^2)\geq(EX)^2\)</span>로 정리된다. 이로써 분산이 음이 아니라는 사실을 새롭게 간단히 증명했다. 또 다른 예로, 음이 아닌 확률변수가 0이 될 확률의 상한을 구해 보자.</p>
+<p><strong>예제 10.1.3 (이차적률 방법).</strong> <span class="math inline">\(X\)</span>를 음이 아닌 확률변수라 하고 <span class="math inline">\(P(X=0)\)</span>의 상한을 구하고자 한다고 하자. 예를 들어 <span class="math inline">\(X\)</span>가 Fred가 시험에서 틀린 문제의 수라면 <span class="math inline">\(P(X=0)\)</span>은 Fred가 만점을 받을 확률이다. 또는 <span class="math inline">\(X\)</span>가 파티에서 생일이 같은 사람 쌍의 수라면 <span class="math inline">\(P(X=0)\)</span>은 생일이 같은 쌍이 없을 확률이다. 다음에 주목하자.</p>
+<p><span class="math display">\[X=XI(X&gt;0),\]</span></p>
+<p>여기서 <span class="math inline">\(I(X&gt;0)\)</span>은 <span class="math inline">\(X&gt;0\)</span>의 지시확률변수이다. <span class="math inline">\(X=0\)</span>이면 양변이 0이고 <span class="math inline">\(X&gt;0\)</span>이면 양변이 <span class="math inline">\(X\)</span>이므로 이 등식이 성립한다. 코시-슈바르츠 부등식에 의해</p>
+<p><span class="math display">\[E(X)=E(XI(X&gt;0))\leq\sqrt{E(X^2)E(I(X&gt;0))}.\]</span></p>
+<p>이를 정리하고 기본 연결고리를 이용하면</p>
+<p><span class="math display">\[P(X&gt;0)\geq\frac{(EX)^2}{E(X^2)},\]</span></p>
+<p>또는 동등하게</p>
+<p><span class="math display">\[P(X=0)\leq\frac{\operatorname{Var}(X)}{E(X^2)}.\]</span></p>
+<p>이 경계를 적용하는 방법을 <strong>이차적률 방법</strong>이라고 부르기도 한다. 예를 들어 <span class="math inline">\(I_j\)</span>들이 서로 비상관인 지시확률변수이고</p>
+<p><span class="math display">\[X=I_1+\cdots+I_n\]</span></p>
+<p>인 경우에 이 경계를 적용해 보자. <span class="math inline">\(p_j=E(I_j)\)</span>라고 하면</p>
+<p><span class="math display">\[\operatorname{Var}(X)=\sum_{j=1}^n\operatorname{Var}(I_j)=\sum_{j=1}^n(p_j-p_j^2)=\sum_{j=1}^np_j-\sum_{j=1}^np_j^2=\mu-c,\]</span></p>
+<p>여기서 <span class="math inline">\(\mu=E(X)\)</span>이고 <span class="math inline">\(c=\sum_{j=1}^n p_j^2\)</span>이다. 또한 <span class="math inline">\(E(X^2)=\operatorname{Var}(X)+(EX)^2=\mu^2+\mu-c\)</span>이므로</p>
+<p><span class="math display">\[P(X=0)\leq\frac{\operatorname{Var}(X)}{E(X^2)}=\frac{\mu-c}{\mu^2+\mu-c}\leq\frac1{\mu+1}.\]</span></p>
+<p>마지막 부등식은 양변을 교차하여 곱하면 쉽게 확인할 수 있다.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> 일반적으로 “<span class="math inline">\(X\)</span>의 평균이 크면 <span class="math inline">\(X\)</span>가 0일 가능성은 작다”라고 말하는 것은 잘못이다. <span class="math inline">\(X\)</span>가 대개 0이지만 아주 작은 확률로 극히 큰 값을 가질 수도 있기 때문이다. 그러나 지금의 상황에서는 평균이 크면 <span class="math inline">\(X\)</span>가 0일 가능성이 작다는 것을 간단하고 정량적으로 표현할 수 있다.</p>
+<p>예를 들어 방에 14명이 있다고 하자. 생일이 같거나 하루 차이 나는 두 사람이 있을 가능성은 얼마나 될까? 이는 생일 문제보다 정확히 풀기가 훨씬 어려워서 예제 4.7.6에서는 포아송 근사를 이용했다. 그러나 포아송 근사가 충분히 좋은지 걱정하는 대신 경계를 통해 보장된 결과를 원할 수도 있다. <span class="math inline">\(X\)</span>를 “가까운 생일”을 가진 사람 쌍의 수라고 하자. 지시확률변수를 이용하면 <span class="math inline">\(E(X)=\binom{14}{2}\frac3{365}\)</span>이므로</p>
+<p><span class="math display">\[P(X=0)\leq\frac1{E(X)+1}&lt;0.573.\]</span></p>
+<p><span class="math inline">\(P(X=0)\)</span>의 실제 값은 소수 둘째 자리까지 0.46이며, 이는 경계와 일치한다. <span class="math inline">\(\square\)</span></p>
+<p>코시-슈바르츠 부등식을 이용하면 주변 적률생성함수가 존재한다는 사실에서 결합 적률생성함수의 존재도 추론할 수 있다. 결합분포의 양을 주변분포의 양으로 제한할 수 있어서 얻는 또 하나의 이점이다.</p>
+<p><strong>예제 10.1.4 (결합 적률생성함수의 존재).</strong> <span class="math inline">\(X_1\)</span>과 <span class="math inline">\(X_2\)</span>가 결합분포를 가진 확률변수이며 독립이거나 동일한 분포를 가질 필요는 없다고 하자. 각각의 주변 적률생성함수가 존재하면 확률벡터 <span class="math inline">\((X_1,X_2)\)</span>의 결합 적률생성함수도 존재함을 보여라.</p>
+<p><strong>풀이.</strong> 7장에서 결합 적률생성함수는 <span class="math inline">\(M(s,t)=E(e^{sX_1+tX_2})\)</span>로 정의되며 원점 주위의 직사각형 영역에서 이 기댓값이 유한하면 존재한다고 했음을 떠올리자. 주변 적률생성함수는 <span class="math inline">\(E(e^{sX_1})\)</span>과 <span class="math inline">\(E(e^{tX_2})\)</span>이며 각각 원점 주위의 어떤 구간에서 유한해야 한다. <span class="math inline">\(X_1\)</span>과 <span class="math inline">\(X_2\)</span>의 적률생성함수가 <span class="math inline">\((−a,a)\)</span>에서 유한하다고 하자. <span class="math inline">\(s,t\in(-a/2,a/2)\)</span>를 고정하면 코시-슈바르츠 부등식에 의해</p>
+<p><span class="math display">\[E(e^{sX_1+tX_2})\leq\sqrt{E(e^{2sX_1})E(e^{2tX_2})}.\]</span></p>
+<p>가정에 의해 오른쪽은 유한하므로 <span class="math inline">\(E(e^{sX_1+tX_2})\)</span>는 직사각형 <span class="math inline">\(\{(s,t):s,t\in(-a/2,a/2)\}\)</span>에서 유한하다. 따라서 <span class="math inline">\((X_1,X_2)\)</span>의 결합 적률생성함수가 존재한다. <span class="math inline">\(\square\)</span></p>
+</section>
+<section id="옌센-볼록성에-관한-부등식" class="level3" data-number="10.1.2">
+<h3 data-number="10.1.2" class="anchored" data-anchor-id="옌센-볼록성에-관한-부등식"><span class="header-section-number">10.1.2</span> 옌센: 볼록성에 관한 부등식</h3>
+<p>4.3.13에서 비선형 함수 <span class="math inline">\(g\)</span>에 대해 <span class="math inline">\(E(g(X))\)</span>와 <span class="math inline">\(g(E(X))\)</span>가 매우 다를 수 있음을 이야기했다. <span class="math inline">\(g\)</span>가 볼록함수 또는 오목함수라면 옌센 부등식은 두 값 중 어느 쪽이 더 큰지 정확히 알려준다. 볼록함수와 오목함수에 관한 내용은 수학 부록을 참조하자. 흔히 이계도함수를 이용해 볼록성이나 오목성을 판별할 수 있다. <span class="math inline">\(g''\)</span>이 존재한다고 할 때, <span class="math inline">\(g\)</span>가 볼록이라는 것은 정의역의 모든 곳에서 <span class="math inline">\(g''(x)\geq0\)</span>이라는 것과 동치이며, <span class="math inline">\(g\)</span>가 오목이라는 것은 모든 곳에서 <span class="math inline">\(g''(x)\leq0\)</span>이라는 것과 동치이다.</p>
+<p><strong>정리 10.1.5 (옌센).</strong> <span class="math inline">\(X\)</span>를 확률변수라고 하자. <span class="math inline">\(g\)</span>가 볼록함수이면 <span class="math inline">\(E(g(X))\geq g(E(X))\)</span>이고, <span class="math inline">\(g\)</span>가 오목함수이면 <span class="math inline">\(E(g(X))\leq g(E(X))\)</span>이다. 두 경우 모두 등호가 성립하려면 확률 1로 <span class="math inline">\(g(X)=a+bX\)</span>가 되는 상수 <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>가 있어야 한다.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p><strong>증명.</strong> <span class="math inline">\(g\)</span>가 볼록이면 <span class="math inline">\(g\)</span>에 접하는 모든 직선은 <span class="math inline">\(g\)</span> 아래에 놓인다(그림 10.1 참조). 특히 <span class="math inline">\(\mu=E(X)\)</span>라 하고 점 <span class="math inline">\((\mu,g(\mu))\)</span>에서의 접선을 생각하자. <span class="math inline">\(g\)</span>가 <span class="math inline">\(\mu\)</span>에서 미분 가능하면 접선은 유일하다. 그렇지 않으면 접선 중 하나를 선택한다. 이 접선을 <span class="math inline">\(a+bx\)</span>라고 하면 볼록성에 의해 모든 <span class="math inline">\(x\)</span>에 대해 <span class="math inline">\(g(x)\geq a+bx\)</span>이므로 <span class="math inline">\(g(X)\geq a+bX\)</span>이다. 양변의 기댓값을 취하면</p>
+<p><span class="math display">\[E(g(X))\geq E(a+bX)=a+bE(X)=a+b\mu=g(\mu)=g(E(X)),\]</span></p>
+<p>즉 원하는 결과를 얻는다. <span class="math inline">\(g\)</span>가 오목하면 <span class="math inline">\(h=-g\)</span>가 볼록이므로 방금 증명한 것을 <span class="math inline">\(h\)</span>에 적용하면 <span class="math inline">\(g\)</span>에 대한 부등호의 방향이 볼록인 경우와 반대임을 알 수 있다.</p>
+<p>마지막으로 볼록인 경우에 등호가 성립한다고 하자. <span class="math inline">\(Y=g(X)-a-bX\)</span>로 놓으면 <span class="math inline">\(Y\)</span>는 음이 아닌 확률변수이고 <span class="math inline">\(E(Y)=0\)</span>이므로 <span class="math inline">\(P(Y=0)=1\)</span>이다. <span class="math inline">\(Y&gt;0\)</span>일 가능성이 아무리 작더라도 0이 아니면 <span class="math inline">\(E(Y)&gt;0\)</span>이 되기 때문이다. 따라서 <span class="math inline">\(P(g(X)=a+bX)=1\)</span>일 때 그리고 그때에만 등호가 성립한다. 오목인 경우에는 <span class="math inline">\(Y=a+bX-g(X)\)</span>로 놓고 같은 논증을 적용하면 된다. <span class="math inline">\(\blacksquare\)</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-10-01.png" class="img-fluid figure-img"></p>
+<figcaption>그림 10.1: <span class="math inline">\(g\)</span>가 볼록이므로 접선은 곡선 아래에 놓인다. 특히 점 <span class="math inline">\((\mu,g(\mu))\)</span>에서의 접선은 곡선 아래에 놓인다.</figcaption>
+</figure>
+</div>
+<p>이미 알고 있는 간단한 사례 몇 가지로 옌센 부등식을 확인해 보자.</p>
+<ul>
+<li><span class="math inline">\(g(x)=x^2\)</span>은 볼록이므로(이계도함수가 2이다) 옌센 부등식은 <span class="math inline">\(E(X^2)\geq(EX)^2\)</span>이라고 한다. 이는 분산이 음이 아니라는 사실 또는 코시-슈바르츠 부등식으로 이미 알고 있다.</li>
+<li>4장의 상트페테르부르크 역설에서 <span class="math inline">\(N\sim\operatorname{FS}(1/2)\)</span>일 때 <span class="math inline">\(E(2^N)&gt;2^{EN}\)</span>임을 보았다. <span class="math inline">\(g(x)=2^x\)</span>이 볼록이므로 옌센 부등식과 일치한다(<span class="math inline">\(g''(x)\)</span>를 구하려면 <span class="math inline">\(2^x=e^{x\log 2}\)</span>로 쓰면 된다). 더욱이 <span class="math inline">\(N\)</span>의 분포가 무엇이든 부등호의 방향은 같다는 것도 알려준다! <span class="math inline">\(N\)</span>이 확률 1로 상수인 경우를 제외하면 부등호는 엄격하다.</li>
+</ul>
+<p>옌센 부등식의 방향을 잊어버리더라도 이런 간단한 경우를 이용하면 쉽게 다시 알아낼 수 있다. 간단한 예를 몇 가지 더 들면 다음과 같다.</p>
+<ul>
+<li><span class="math inline">\(E|X|\geq|EX|\)</span>,</li>
+<li>양의 확률변수 <span class="math inline">\(X\)</span>에 대해 <span class="math inline">\(E(1/X)\geq1/(EX)\)</span>,</li>
+<li>양의 확률변수 <span class="math inline">\(X\)</span>에 대해 <span class="math inline">\(E(\log X)\leq\log(EX)\)</span>.</li>
+</ul>
+<p>또 다른 예로, 데이터의 표본표준편차를 이용해 미지의 표준편차를 추정할 때 편향의 방향이 어떻게 되는지 옌센 부등식으로 알 수 있다.</p>
+<p><strong>예제 10.1.6 (표본표준편차의 편향).</strong> <span class="math inline">\(X_1,\ldots,X_n\)</span>이 분산 <span class="math inline">\(\sigma^2\)</span>인 독립이고 동일한 분포를 따르는 확률변수라고 하자. 정리 6.3.4에서 표본분산 <span class="math inline">\(S_n^2\)</span>은 <span class="math inline">\(\sigma^2\)</span>의 불편추정량이라는 것을 떠올리자. 즉 <span class="math inline">\(E(S_n^2)=\sigma^2\)</span>이다. 그러나 우리는 흔히 표준편차 <span class="math inline">\(\sigma\)</span>에 더 관심이 있다. <span class="math inline">\(\sigma\)</span>의 자연스러운 추정량은 표본표준편차 <span class="math inline">\(S_n\)</span>이다.</p>
+<p>옌센 부등식에 따르면 <span class="math inline">\(S_n\)</span>은 <span class="math inline">\(\sigma\)</span>에 대해 편향된 추정량이며, 부등호의 방향도 알 수 있다.</p>
+<p><span class="math display">\[E(S_n)=E(\sqrt{S_n^2})\leq\sqrt{E(S_n^2)}=\sigma.\]</span></p>
+<p>따라서 표본표준편차는 참 표준편차를 과소추정하는 경향이 있다. 편향의 크기는 분포에 따라 달라지므로 이를 바로잡는 보편적인 방법은 없다. 이는 표본분산의 분모를 <span class="math inline">\(n-1\)</span>로 정의하면 모든 분포에 대해 불편이 되는 것과 대조된다. 다행히 표본 크기가 충분히 크면 일반적으로 편향은 작다. <span class="math inline">\(\square\)</span><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>옌센 부등식이 중요한 분야 중 하나는 정보를 정량화하는 방법을 연구하는 정보이론이다. 정보이론의 원리는 통신과 압축에 필수적이 되었다(MP3와 휴대전화가 그 예다). 옌센 부등식의 응용 사례를 몇 가지 살펴보자.</p>
+<p><strong>예제 10.1.7 (엔트로피).</strong> 확률이 <span class="math inline">\(p\)</span>인 사건이 일어났다는 사실을 알게 되었을 때의 <strong>놀람</strong>은 <span class="math inline">\(\log_2(1/p)\)</span>로 정의하며, 비트라는 단위로 측정한다. 확률이 작은 사건은 놀람이 크고, 확률이 1인 사건의 놀람은 0이다. 로그를 쓰는 이유는 독립인 두 사건 <span class="math inline">\(A\)</span>와 <span class="math inline">\(B\)</span>를 관찰했을 때 놀람의 합이 <span class="math inline">\(A\cap B\)</span>를 관찰했을 때의 놀람과 같도록 하기 위해서이다. 밑을 2로 택한 이유는 확률이 <span class="math inline">\(1/2\)</span>인 사건이 일어났음을 알게 되었을 때 놀람이 1이 되게 하기 위해서이며, 이는 1비트의 정보를 얻는 것에 해당한다.</p>
+<p><span class="math inline">\(X\)</span>를 가능한 값이 서로 다른 <span class="math inline">\(a_1,a_2,\ldots,a_n\)</span>이고 그 확률이 각각 <span class="math inline">\(p_1,p_2,\ldots,p_n\)</span>인 이산확률변수라고 하자. 따라서 <span class="math inline">\(p_1+\cdots+p_n=1\)</span>이다. <span class="math inline">\(X\)</span>의 <strong>엔트로피</strong>는 <span class="math inline">\(X\)</span>의 값을 알게 될 때 얻는 놀람의 평균으로 정의한다.</p>
+<p><span class="math display">\[H(X)=\sum_{j=1}^n p_j\log_2(1/p_j).\]</span></p>
+<p><span class="math inline">\(X\)</span>의 엔트로피는 확률 <span class="math inline">\(p_j\)</span>에만 의존하고 값 <span class="math inline">\(a_j\)</span>에는 의존하지 않는다. 예를 들어 <span class="math inline">\(X^3\)</span>은 서로 다른 값 <span class="math inline">\(a_1^3,\ldots,a_n^3\)</span>을 각각 확률 <span class="math inline">\(p_1,\ldots,p_n\)</span>으로 가지므로 <span class="math inline">\(H(X^3)=H(X)\)</span>이다. 이 확률 목록은 <span class="math inline">\(X\)</span>의 경우와 같다.</p>
+<p>옌센 부등식을 이용하여 <span class="math inline">\(X\)</span>의 엔트로피가 최대가 되는 경우는 <span class="math inline">\(a_1,\ldots,a_n\)</span>에 대한 분포가 균등분포일 때, 즉 모든 <span class="math inline">\(j\)</span>에 대해 <span class="math inline">\(p_j=1/n\)</span>일 때임을 보여라. 이는 직관에도 맞는다. <span class="math inline">\(X\)</span>의 각 값이 나올 가능성이 같을 때 <span class="math inline">\(X\)</span>의 값을 알면 평균적으로 가장 많은 정보를 얻게 되고, <span class="math inline">\(X\)</span>가 상수이면 가능한 정보가 가장 적기 때문이다.</p>
+<p><strong>풀이.</strong> <span class="math inline">\(X\sim\operatorname{DUnif}(a_1,\ldots,a_n)\)</span>이라고 하면</p>
+<p><span class="math display">\[H(X)=\sum_{j=1}^n\frac1n\log_2(n)=\log_2(n).\]</span></p>
+<p>이제 같은 가능한 값 <span class="math inline">\(a_1,\ldots,a_n\)</span>에 각각 확률 <span class="math inline">\(p_1,\ldots,p_n\)</span>을 부여하는 임의의 확률변수 <span class="math inline">\(Z\)</span>를 생각하자. 확률이 양수인 값의 개수를 <span class="math inline">\(m\le n\)</span>이라 하고, <span class="math inline">\(Z=a_j\)</span>일 때 <span class="math inline">\(Y=1/p_j\)</span>로 정의하자. 그러면 <span class="math inline">\(E(\log_2Y)=H(Z)\)</span>이고 <span class="math inline">\(E(Y)=m\)</span>이다. 따라서 옌센 부등식에 의해<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p><span class="math display">\[H(Z)=E(\log_2Y)\leq\log_2(E(Y))=\log_2(m)\leq\log_2(n)=H(X).\]</span></p>
+<p>그러므로 <span class="math inline">\(a_1,\ldots,a_n\)</span>에서 균등한 <span class="math inline">\(X\)</span>의 엔트로피는 같은 가능한 값들을 가진 어떤 다른 확률변수 <span class="math inline">\(Z\)</span>의 엔트로피보다 작지 않다. <span class="math inline">\(\square\)</span></p>
+<p><strong>예제 10.1.8 (쿨백-라이블러 발산).</strong> <span class="math inline">\(\mathbf p=(p_1,\ldots,p_n)\)</span>와 <span class="math inline">\(\mathbf r=(r_1,\ldots,r_n)\)</span>을 확률벡터라고 하자. 즉 각 성분은 음이 아니고 각각의 합은 1이다. 이를 지지집합이 서로 다른 <span class="math inline">\(n\)</span>개의 값으로 이루어진 확률변수에 대해 가능한 두 확률질량함수로 생각하자. <span class="math inline">\(\mathbf p\)</span>와 <span class="math inline">\(\mathbf r\)</span> 사이의 <strong>쿨백-라이블러 발산</strong>은 다음과 같이 정의한다.</p>
+<p><span class="math display">\[D(\mathbf p,\mathbf r)=\sum_{j=1}^n p_j\log_2(1/r_j)-\sum_{j=1}^n p_j\log_2(1/p_j).\]</span></p>
+<p>이는 실제 확률이 <span class="math inline">\(\mathbf p\)</span>인데 <span class="math inline">\(\mathbf r\)</span>을 사용하여 계산할 때(예를 들어 <span class="math inline">\(\mathbf p\)</span>는 모르고 <span class="math inline">\(\mathbf r\)</span>이 현재 추측인 경우) 경험할 평균 놀람과 <span class="math inline">\(\mathbf p\)</span>를 사용할 때의 평균 놀람의 차이다. 쿨백-라이블러 발산이 음이 아님을 보여라.</p>
+<p><strong>풀이.</strong> 로그의 성질을 이용하면</p>
+<p><span class="math display">\[D(\mathbf p,\mathbf r)=-\sum_{j=1}^n p_j\log_2\left(\frac{r_j}{p_j}\right).\]</span></p>
+<p><span class="math inline">\(Y\)</span>를 <span class="math inline">\(r_j/p_j\)</span>를 확률 <span class="math inline">\(p_j\)</span>로 취하는 확률변수라고 하자. LOTUS에 의해 <span class="math inline">\(D(\mathbf p,\mathbf r)=-E(\log_2Y)\)</span>이다. 옌센 부등식에 의해</p>
+<p><span class="math display">\[D(\mathbf p,\mathbf r)=-E(\log_2Y)\geq-\log_2(E(Y))=-\log_2(1)=0,\]</span></p>
+<p>등호는 <span class="math inline">\(\mathbf p=\mathbf r\)</span>일 때 그리고 그때에만 성립한다. 이 결과는 잘못된 확률을 사용하면 올바른 확률을 사용할 때보다 평균적으로 더 놀라게 된다는 뜻이다. <span class="math inline">\(\square\)</span><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<p><strong>예제 10.1.9 (로그 확률 점수).</strong> 객관식 시험에서 답 하나에 동그라미를 치는 대신 각 선택지가 정답일 확률을 기입하라는 요청을 받았다고 상상해 보자. 한 문제의 점수는 정답에 부여한 확률의 로그이다. 한 문제의 최고 점수는 0이고 최저 점수는 <span class="math inline">\(-\infty\)</span>이며, 정답에 확률 0을 부여하면 최저 점수를 받는다.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p><span class="math inline">\(n\)</span>개 선택지 각각이 정답일 것이라는 자신의 확률이 <span class="math inline">\(p_1,\ldots,p_n\)</span>이고, <span class="math inline">\(p_j\)</span>는 양수이며 합은 1이라고 하자. 자신의 진정한 확률 <span class="math inline">\(p_j\)</span>를 보고할 때 문제의 기대 점수가 최대가 됨을 보여라. 다시 말해 로그 확률 점수 체계에서는 자신의 믿음에 대해 거짓말하거나 실제보다 자신이 더 또는 덜 있다고 가장할 유인이 없다. 단, 기대 점수를 최대화하는 것이 목표라고 가정한다.</p>
+<p><strong>풀이.</strong> 이 예제는 바로 이전 예제와 동형이다! 진정한 확률 <span class="math inline">\(\mathbf p\)</span>를 보고하면 문제의 기대 점수는 <span class="math inline">\(\sum_{j=1}^n p_j\log p_j\)</span>이고, 거짓 확률 <span class="math inline">\(\mathbf r\)</span>을 보고하면 <span class="math inline">\(\sum_{j=1}^n p_j\log r_j\)</span>이다. 두 값의 차이는 정확히 <span class="math inline">\(\mathbf p\)</span>와 <span class="math inline">\(\mathbf r\)</span>의 쿨백-라이블러 발산이다. 앞 예제에서 증명했듯이 이는 항상 음이 아니다.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> 따라서 진정한 확률을 보고할 때 기대 점수가 최대가 된다. <span class="math inline">\(\square\)</span></p>
+</section>
+<section id="마르코프-체비쇼프-체르노프-꼬리확률의-경계" class="level3" data-number="10.1.3">
+<h3 data-number="10.1.3" class="anchored" data-anchor-id="마르코프-체비쇼프-체르노프-꼬리확률의-경계"><span class="header-section-number">10.1.3</span> 마르코프, 체비쇼프, 체르노프: 꼬리확률의 경계</h3>
+<p>이 절의 부등식은 확률변수가 분포의 오른쪽 또는 왼쪽 꼬리에서 “극단적인” 값을 가질 확률에 대한 경계를 제공한다.</p>
+<p><strong>정리 10.1.10 (마르코프).</strong> 임의의 확률변수 <span class="math inline">\(X\)</span>와 상수 <span class="math inline">\(a&gt;0\)</span>에 대해</p>
+<p><span class="math display">\[P(|X|\geq a)\leq\frac{E|X|}{a}.\]</span></p>
+<p><strong>증명.</strong> <span class="math inline">\(Y=|X|/a\)</span>로 놓자. <span class="math inline">\(P(Y\geq1)\leq E(Y)\)</span>임을 보이면 된다. 다음에 주목하자.</p>
+<p><span class="math display">\[I(Y\geq1)\leq Y.\]</span></p>
+<p><span class="math inline">\(I(Y\geq1)=0\)</span>이면 부등식은 <span class="math inline">\(Y\geq0\)</span>이 되고, <span class="math inline">\(I(Y\geq1)=1\)</span>이면 지시확률변수의 정의에 의해 <span class="math inline">\(Y\geq1\)</span>이기 때문이다. 양변의 기댓값을 취하면 마르코프 부등식을 얻는다. <span class="math inline">\(\blacksquare\)</span></p>
+<p>직관적으로 해석하기 위해 <span class="math inline">\(X\)</span>를 모집단에서 무작위로 선택한 개인의 소득이라고 하자. <span class="math inline">\(a=2E(X)\)</span>로 놓으면 마르코프 부등식은 <span class="math inline">\(P(X\geq2E(X))\leq1/2\)</span>라고 한다. 즉 모집단의 절반을 넘는 사람이 평균 소득의 두 배 이상을 버는 일은 불가능하다. 이는 명백하다. 절반이 넘는 사람이 평균의 두 배 이상을 번다면 평균 소득이 그보다 높아질 것이기 때문이다! 마찬가지로 <span class="math inline">\(P(X\geq3E(X))\leq1/3\)</span>이다. 모집단의 3분의 1을 넘는 사람이 평균의 세 배 이상을 벌 수는 없다. 그 사람들만으로도 평균이 현재 값보다 높아지기 때문이다.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+<p>마르코프 부등식은 <span class="math inline">\(X\)</span>에 아무 가정도 요구하지 않기 때문에 매우 거친 경계이다. 부등식의 오른쪽이 1보다 크거나 무한대일 수도 있다. 이미 0과 1 사이임을 아는 수의 경계를 구하는 데는 별 도움이 되지 않는다. 놀랍게도 마르코프 부등식에서 거의 추가 작업 없이 유도할 수 있는 다음 두 부등식은 마르코프보다 훨씬 좋은 경계를 주는 경우가 많다.</p>
+<p><strong>정리 10.1.11 (체비쇼프).</strong> <span class="math inline">\(X\)</span>의 평균을 <span class="math inline">\(\mu\)</span>, 분산을 <span class="math inline">\(\sigma^2\)</span>이라고 하자. 그러면 임의의 <span class="math inline">\(a&gt;0\)</span>에 대해</p>
+<p><span class="math display">\[P(|X-\mu|\geq a)\leq\frac{\sigma^2}{a^2}.\]</span></p>
+<p><strong>증명.</strong> 마르코프 부등식에 의해</p>
+<p><span class="math display">\[P(|X-\mu|\geq a)=P((X-\mu)^2\geq a^2)\leq\frac{E(X-\mu)^2}{a^2}=\frac{\sigma^2}{a^2}.\qquad\blacksquare\]</span></p>
+<p><span class="math inline">\(c&gt;0\)</span>에 대해 <span class="math inline">\(a\)</span>에 <span class="math inline">\(c\sigma\)</span>를 대입하면 동등한 형태의 체비쇼프 부등식을 얻는다.</p>
+<p><span class="math display">\[P(|X-\mu|\geq c\sigma)\leq\frac1{c^2}.\]</span></p>
+<p>이는 확률변수가 평균에서 표준편차의 <span class="math inline">\(c\)</span>배 이상 떨어질 확률의 상한을 준다. 예를 들어 평균에서 표준편차의 2배 이상 떨어질 확률은 25%를 넘을 수 없다.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+<p>마르코프 부등식으로 체비쇼프 부등식을 증명할 때의 아이디어는 <span class="math inline">\(|X-\mu|\)</span>를 제곱한 다음 마르코프 부등식을 적용하는 것이었다. 마찬가지로 마르코프 부등식을 적용하기 전에 다른 변환을 하는 것도 흔히 유용하다. 공학에서 널리 쓰이는 체르노프 경계는 지수함수에 이 아이디어를 적용한다.</p>
+<p><strong>정리 10.1.12 (체르노프).</strong> 임의의 확률변수 <span class="math inline">\(X\)</span>와 상수 <span class="math inline">\(a&gt;0\)</span>, <span class="math inline">\(t&gt;0\)</span>에 대해</p>
+<p><span class="math display">\[P(X\geq a)\leq\frac{E(e^{tX})}{e^{ta}}.\]</span></p>
+<p><strong>증명.</strong> <span class="math inline">\(g(x)=e^{tx}\)</span>인 변환 <span class="math inline">\(g\)</span>는 역함수가 존재하고 엄격히 증가한다. 따라서 마르코프 부등식에 의해</p>
+<p><span class="math display">\[P(X\geq a)=P(e^{tX}\geq e^{ta})\leq\frac{E(e^{tX})}{e^{ta}}.\qquad\blacksquare\]</span></p>
+<p>처음에는 체르노프 경계가 마르코프 부등식보다 어떤 이점이 있는지 분명하지 않을 수 있지만, 매우 좋은 특징이 두 가지 있다.</p>
+<ol type="1">
+<li>코시-슈바르츠 부등식의 증명에서처럼 오른쪽을 <span class="math inline">\(t\)</span>에 관해 최적화하여 가장 촘촘한 상한을 얻을 수 있다.</li>
+<li><span class="math inline">\(X\)</span>의 적률생성함수가 존재하면 경계의 분자는 적률생성함수이므로 그 유용한 성질들을 활용할 수 있다.</li>
+</ol>
+<p>이제 실제 확률을 아는 간단한 예에 방금 논의한 세 경계를 적용해 비교해 보자.</p>
+<p><strong>예제 10.1.13 (정규분포 꼬리확률의 경계).</strong> <span class="math inline">\(Z\sim N(0,1)\)</span>이라고 하자. 68-95-99.7% 법칙에 의해 <span class="math inline">\(P(|Z|&gt;3)\)</span>은 약 0.003이며, 정확한 값은 <span class="math inline">\(2\Phi(-3)\)</span>이다. 마르코프, 체비쇼프, 체르노프 부등식으로 어떤 상한을 얻는지 보자.</p>
+<ul>
+<li><strong>마르코프:</strong> 5장에서 <span class="math inline">\(E|Z|=\sqrt{2/\pi}\)</span>임을 보았다. 따라서 <span class="math display">\[P(|Z|&gt;3)\leq\frac{E|Z|}{3}=\frac13\sqrt{\frac2\pi}\approx0.27.\]</span></li>
+<li><strong>체비쇼프:</strong> <span class="math display">\[P(|Z|&gt;3)\leq\frac19\approx0.11.\]</span></li>
+<li><strong>체르노프</strong> (정규분포의 대칭성을 이용한 후): <span class="math display">\[P(|Z|&gt;3)=2P(Z&gt;3)\leq2e^{-3t}E(e^{tZ})=2e^{-3t}e^{t^2/2},\]</span> 여기서 표준정규분포의 적률생성함수를 이용했다. 오른쪽은 미분하여 0으로 놓으면 <span class="math inline">\(t=3\)</span>에서 최소가 된다. 먼저 로그를 취해도 좋다. 로그를 취해도 최솟값의 위치는 바뀌지 않으며 이차다항식만 최소화하면 되기 때문이다. <span class="math inline">\(t=3\)</span>을 대입하면 <span class="math display">\[P(|Z|&gt;3)\leq2e^{-9/2}\approx0.022.\]</span></li>
+</ul>
+<p>이 상한들은 모두 맞지만 체르노프 경계가 단연 가장 좋다. 이 예제는 이 장의 도입부에서 설명한 경계와 근사의 차이도 보여준다. 마르코프 부등식은 꼬리확률 <span class="math inline">\(P(|Z|&gt;3)\)</span>이 기껏해야 0.27이라고 알려주지만, <span class="math inline">\(P(|Z|&gt;3)\)</span>이 약 0.27이라고 말한다면 대략 100배나 틀리는 실수를 저지르는 것이다. <span class="math inline">\(\square\)</span></p>
+</section>
+</section>
+<section id="큰-수의-법칙" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="큰-수의-법칙"><span class="header-section-number">10.2</span> 큰 수의 법칙</h2>
+<p>이제 독립이고 동일한 분포를 따르는 확률변수들의 표본 크기가 커질 때 표본평균이 어떻게 행동하는지 설명하는 두 정리, 큰 수의 법칙과 중심극한정리를 살펴보자. 이 절과 다음 절에서는 유한한 평균 <span class="math inline">\(\mu\)</span>와 유한한 분산 <span class="math inline">\(\sigma^2\)</span>을 갖는 독립이고 동일한 분포를 따르는 확률변수 <span class="math inline">\(X_1,X_2,X_3,\ldots\)</span>이 주어졌다고 가정한다. 모든 양의 정수 <span class="math inline">\(n\)</span>에 대해</p>
+<p><span class="math display">\[
+\bar X_n=\frac{X_1+\cdots+X_n}{n}
+\]</span></p>
+<p>을 <span class="math inline">\(X_1\)</span>부터 <span class="math inline">\(X_n\)</span>까지의 표본평균이라 하자. 표본평균 자체도 확률변수이며, 그 평균은 <span class="math inline">\(\mu\)</span>, 분산은 <span class="math inline">\(\sigma^2/n\)</span>이다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(\bar X_n)&amp;=\frac1nE(X_1+\cdots+X_n)=\frac1n\bigl(E(X_1)+\cdots+E(X_n)\bigr)=\mu,\\
+\operatorname{Var}(\bar X_n)&amp;=\frac1{n^2}\operatorname{Var}(X_1+\cdots+X_n)
+=\frac1{n^2}\bigl(\operatorname{Var}(X_1)+\cdots+\operatorname{Var}(X_n)\bigr)=\frac{\sigma^2}{n}.
+\end{aligned}
+\]</span></p>
+<p>큰 수의 법칙(LLN)은 <span class="math inline">\(n\)</span>이 커짐에 따라 표본평균 <span class="math inline">\(\bar X_n\)</span>이 참평균 <span class="math inline">\(\mu\)</span>에 수렴한다고 말한다. 수렴의 의미는 아래에서 설명한다. 큰 수의 법칙에는 ‘강한’ 형태(SLLN)와 ‘약한’ 형태(WLLN)가 있는데, 확률변수의 열이 어떤 수에 수렴한다는 것을 약간 다르게 정의한다. 두 형태를 모두 제시하고, 두 번째는 체비쇼프 부등식을 이용해 증명하겠다.</p>
+<p><strong>정리 10.2.1 (강한 큰 수의 법칙).</strong> 표본평균 <span class="math inline">\(\bar X_n\)</span>은 확률 1로 참평균 <span class="math inline">\(\mu\)</span>에 점별 수렴한다. 확률변수가 표본공간 <span class="math inline">\(S\)</span>에서 <span class="math inline">\(\mathbb R\)</span>로 가는 함수임을 떠올리면, 이러한 수렴은 각 점 <span class="math inline">\(s\in S\)</span>에 대해 <span class="math inline">\(\bar X_n(s)\to\mu\)</span>임을 뜻한다. 단, 예외들의 집합 <span class="math inline">\(B_0\)</span>에서 수렴하지 않아도 되는데, 이 집합은 <span class="math inline">\(P(B_0)=0\)</span>이어야 한다. 간단히 쓰면 <span class="math inline">\(P(\bar X_n\to\mu)=1\)</span>이다.</p>
+<p><strong>정리 10.2.2 (약한 큰 수의 법칙).</strong> 모든 <span class="math inline">\(\epsilon&gt;0\)</span>에 대해, <span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(P(|\bar X_n-\mu|&gt;\epsilon)\to0\)</span>이다. (이러한 수렴을 <em>확률수렴</em>이라 한다.)</p>
+<p><em>증명.</em> <span class="math inline">\(\epsilon&gt;0\)</span>을 고정하자. 체비쇼프 부등식에 의해</p>
+<p><span class="math display">\[
+P(|\bar X_n-\mu|&gt;\epsilon)\leq\frac{\sigma^2}{n\epsilon^2}.
+\]</span></p>
+<p><span class="math inline">\(n\to\infty\)</span>일 때 오른쪽이 0으로 가므로 왼쪽도 0으로 가야 한다. <span class="math inline">\(\blacksquare\)</span></p>
+<p>큰 수의 법칙은 시뮬레이션, 통계학, 과학에 필수적이다. 컴퓨터 시뮬레이션이나 실제 세계에서 실험을 여러 번 독립적으로 반복하여 ‘데이터’를 생성한다고 생각해 보자. 반복에서 얻은 어떤 양의 평균값으로 그 이론적 평균을 근사할 때마다 우리는 암묵적으로 큰 수의 법칙에 의존하고 있다.</p>
+<p><strong>예제 10.2.3 (앞면의 누적 비율).</strong> <span class="math inline">\(X_1,X_2,\ldots\)</span>이 독립이고 동일한 <span class="math inline">\(\operatorname{Bern}(1/2)\)</span> 분포를 따르자. 공정한 동전을 연속해서 던질 때 <span class="math inline">\(X_j\)</span>를 앞면이 나왔는지 나타내는 지시확률변수로 해석하면, <span class="math inline">\(\bar X_n\)</span>은 <span class="math inline">\(n\)</span>번 던진 후 앞면의 비율이다. 강한 큰 수의 법칙에 따르면 확률 1로, 확률변수의 열 <span class="math inline">\(\bar X_1,\bar X_2,\bar X_3,\ldots\)</span>이 구체적인 숫자의 열로 실현되었을 때 그 숫자의 열은 <span class="math inline">\(1/2\)</span>로 수렴한다. 수학적으로 <span class="math inline">\(HHHHHH\ldots\)</span>나 <span class="math inline">\(HHTHHTHHTHHT\ldots\)</span>와 같은 기이한 결과도 있지만, 이러한 결과가 일어날 확률은 전체를 합쳐도 0이다. 약한 큰 수의 법칙은 임의의 <span class="math inline">\(\epsilon&gt;0\)</span>에 대해 <span class="math inline">\(\bar X_n\)</span>이 <span class="math inline">\(1/2\)</span>에서 <span class="math inline">\(\epsilon\)</span>보다 멀리 떨어질 확률을 <span class="math inline">\(n\)</span>을 충분히 크게 하여 원하는 만큼 작게 만들 수 있다고 말한다.</p>
+<p>이를 보여 주기 위해 공정한 동전 던지기의 열 여섯 개를 시뮬레이션하고, 각 열에 대해 <span class="math inline">\(\bar X_n\)</span>을 <span class="math inline">\(n\)</span>의 함수로 계산했다. 물론 실제로 동전을 무한히 많이 던지는 시뮬레이션은 할 수 없으므로 300번 던진 후 멈추었다. 그림 10.2는 각 열에서 <span class="math inline">\(\bar X_n\)</span>을 <span class="math inline">\(n\)</span>의 함수로 나타낸다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-10-2.png" class="img-fluid figure-img"></p>
+<figcaption>그림 10.2. 공정한 동전 던지기 여섯 열의 앞면 누적 비율. 가로축은 던진 횟수, 세로축은 앞면의 누적 비율이다. 참고를 위해 0.6과 0.4에 점선을 표시했다. 던진 횟수가 증가하면 앞면의 비율은 <span class="math inline">\(1/2\)</span>에 가까워진다.</figcaption>
+</figure>
+</div>
+<p>처음에는 앞면의 누적 비율이 상당히 크게 변동함을 볼 수 있다. 그러나 동전을 던지는 횟수가 증가하면 <span class="math inline">\(\operatorname{Var}(\bar X_n)\)</span>은 점점 작아지고 <span class="math inline">\(\bar X_n\)</span>은 <span class="math inline">\(1/2\)</span>에 가까워진다. <span class="math inline">\(\square\)</span></p>
+<p><strong>주의 10.2.4 (큰 수의 법칙은 동전의 무기억성과 모순되지 않는다).</strong> 위 예제에서 큰 수의 법칙은 앞면의 비율이 <span class="math inline">\(1/2\)</span>로 수렴한다고 말하지만, 이것이 앞면이 길게 연속해서 나온 다음 균형을 맞추기 위해 뒷면이 ‘나올 차례’라는 뜻은 아니다. 오히려 수렴은 <em>압도 효과</em>로 일어난다. 과거의 던지기들이 앞으로 있을 무한히 많은 던지기에 의해 압도되는 것이다.</p>
+<p>독립이고 동일한 분포를 따르는 베르누이 확률변수의 열은 큰 수의 법칙을 보여 주는 가장 단순한 예지만, 다음 예제에서 볼 수 있듯이 이 단순한 경우는 통계학에서 매우 유용한 방법의 토대가 된다.</p>
+<p><strong>예제 10.2.5 (몬테카를로 적분).</strong> 적분 <span class="math inline">\(\int_a^b f(x)\,dx\)</span>를 근사하고자 하는 복잡한 함수 <span class="math inline">\(f\)</span>가 있다고 하자. 적분이 유한함을 알 수 있도록 <span class="math inline">\(0\leq f(x)\leq c\)</span>라고 가정한다. <span class="math inline">\(\int_a^b f(x)\,dx\)</span>는 단지 하나의 수이므로 겉보기에는 이 문제에 확률이 개입하지 않는다. 그러나 무작위성이 없는 곳에도 우리는 무작위성을 만들어 낼 수 있다! <em>몬테카를로 적분</em>은 정확하게 적분하는 방법을 사용할 수 없을 때 무작위 표본을 이용하여 정적분의 근삿값을 구하는 기법이다.</p>
+<p><span class="math inline">\(A\)</span>를 <span class="math inline">\((x,y)\)</span> 평면에서 <span class="math inline">\(a\leq x\leq b\)</span>이고 <span class="math inline">\(0\leq y\leq c\)</span>인 직사각형이라 하자. <span class="math inline">\(B\)</span>를 <span class="math inline">\(a\leq x\leq b\)</span>에서 곡선 <span class="math inline">\(y=f(x)\)</span> 아래이면서 <span class="math inline">\(x\)</span>축 위인 영역이라 하면, 구하려는 적분은 영역 <span class="math inline">\(B\)</span>의 넓이이다. 우리의 전략은 <span class="math inline">\(A\)</span>에서 무작위로 표본을 추출한 다음 그 표본 중 영역 <span class="math inline">\(B\)</span>에도 속하는 것의 비율을 계산하는 것이다. 그림 10.3은 이를 보여 준다. <span class="math inline">\(B\)</span>에 속하는 점은 검은색이고, <span class="math inline">\(B\)</span>에 속하지 않는 점은 흰색이다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-10-3.png" class="img-fluid figure-img"></p>
+<figcaption>그림 10.3. 몬테카를로 적분. <span class="math inline">\(x=a\)</span>에서 <span class="math inline">\(x=b\)</span>까지 <span class="math inline">\(f(x)\)</span> 아래의 넓이를 근사하려면 직사각형 <span class="math inline">\([a,b]\times[0,c]\)</span> 안에 무작위 점들을 생성하고, 곡선 아래에 떨어지는 점의 비율에 직사각형의 전체 넓이를 곱한다.</figcaption>
+</figure>
+</div>
+<p>이 방법이 작동하는 이유를 알아보기 위해 직사각형 <span class="math inline">\(A\)</span>에서 독립이고 동일한 균등분포를 따르는 점 <span class="math inline">\((X_1,Y_1),(X_2,Y_2),\ldots,(X_n,Y_n)\)</span>을 뽑는다고 하자. <span class="math inline">\((X_j,Y_j)\)</span>가 <span class="math inline">\(B\)</span>에 속하면 <span class="math inline">\(I_j=1\)</span>, 그렇지 않으면 <span class="math inline">\(I_j=0\)</span>으로 하여 지시확률변수 <span class="math inline">\(I_1,\ldots,I_n\)</span>을 정의한다. 그러면 <span class="math inline">\(I_j\)</span>는 성공확률이 정확히 <span class="math inline">\(B\)</span>의 넓이와 <span class="math inline">\(A\)</span>의 넓이의 비율인 베르누이 확률변수이다. <span class="math inline">\(p=E(I_j)\)</span>라 하면</p>
+<p><span class="math display">\[
+p=E(I_j)=P(I_j=1)=\frac{\int_a^b f(x)\,dx}{c(b-a)}.
+\]</span></p>
+<p><span class="math inline">\(p\)</span>를 <span class="math inline">\(\frac1n\sum_{j=1}^n I_j\)</span>로 추정하고, 이를 이용하여 원하는 적분을 다음과 같이 추정할 수 있다.</p>
+<p><span class="math display">\[
+\int_a^b f(x)\,dx\approx c(b-a)\frac1n\sum_{j=1}^n I_j.
+\]</span></p>
+<p><span class="math inline">\(I_j\)</span>는 평균이 <span class="math inline">\(p\)</span>인 독립이고 동일한 분포를 따르는 확률변수이므로, 큰 수의 법칙에 따라 점의 개수가 무한대로 갈 때 이 추정값은 확률 1로 적분의 참값에 수렴한다. <span class="math inline">\(\square\)</span></p>
+<p><strong>예제 10.2.6 (경험적 누적분포함수의 수렴).</strong> <span class="math inline">\(X_1,\ldots,X_n\)</span>이 누적분포함수 <span class="math inline">\(F\)</span>를 갖는 독립이고 동일한 분포의 확률변수라 하자. 모든 수 <span class="math inline">\(x\)</span>에 대해 <span class="math inline">\(R_n(x)\)</span>를 <span class="math inline">\(X_1,\ldots,X_n\)</span> 중 <span class="math inline">\(x\)</span> 이하인 것의 개수라 하자. 즉,</p>
+<p><span class="math display">\[
+R_n(x)=\sum_{j=1}^n I(X_j\leq x).
+\]</span></p>
+<p>지시확률변수 <span class="math inline">\(I(X_j\leq x)\)</span>는 성공확률이 <span class="math inline">\(F(x)\)</span>인 독립이고 동일한 분포를 따르므로, <span class="math inline">\(R_n(x)\)</span>는 매개변수가 <span class="math inline">\(n\)</span>과 <span class="math inline">\(F(x)\)</span>인 이항분포를 따른다.</p>
+<p><span class="math inline">\(X_1,\ldots,X_n\)</span>의 <em>경험적 누적분포함수</em>는 <span class="math inline">\(x\)</span>의 함수로서 다음과 같이 정의된다.</p>
+<p><span class="math display">\[
+\hat F_n(x)=\frac{R_n(x)}{n}.
+\]</span></p>
+<p><span class="math inline">\(X_1,\ldots,X_n\)</span>을 관측하기 전에는 각 <span class="math inline">\(x\)</span>에 대해 <span class="math inline">\(\hat F_n(x)\)</span>가 확률변수이다. 관측한 후에는 각 <span class="math inline">\(x\)</span>에서 <span class="math inline">\(\hat F_n(x)\)</span>가 구체적인 값으로 실현되므로, <span class="math inline">\(\hat F_n\)</span>은 하나의 구체적인 누적분포함수로 실현된다. 참 누적분포함수 <span class="math inline">\(F\)</span>를 모를 때 이를 이용하여 <span class="math inline">\(F\)</span>를 추정할 수 있다.</p>
+<p>예를 들어 <span class="math inline">\(n=4\)</span>이고 <span class="math inline">\(X_1=x_1\)</span>, <span class="math inline">\(X_2=x_2\)</span>, <span class="math inline">\(X_3=x_3\)</span>, <span class="math inline">\(X_4=x_4\)</span>를 관측했다고 하자. 그러면 <span class="math inline">\(R_4(x)/4\)</span>의 그래프는 0에서 시작하여 <span class="math inline">\(x_j\)</span> 중 하나에 도달할 때마다 <span class="math inline">\(1/4\)</span>씩 뛰어오른다. 다시 말해 <span class="math inline">\(R_4(x)/4\)</span>는 각각 확률 <span class="math inline">\(1/4\)</span>로 <span class="math inline">\(x_1,\ldots,x_4\)</span>의 값을 취하는 이산확률변수의 누적분포함수이다. 그림 10.4가 이를 보여 준다.</p>
+<p>이제 <span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(\hat F_n\)</span>에 어떤 일이 일어나는지 물을 수 있다. <span class="math inline">\(\hat F_n\)</span>을 참값 <span class="math inline">\(F\)</span>의 추정값으로 사용한다면 이는 자연스러운 질문이다. 극한에서 근사는 잘 작동할까? 큰 수의 법칙이 답을 준다. 각 고정된 <span class="math inline">\(x\)</span>에 대해 <span class="math inline">\(R_n(x)\)</span>는 <span class="math inline">\(p=F(x)\)</span>인 독립이고 동일한 <span class="math inline">\(\operatorname{Bern}(p)\)</span> 확률변수 <span class="math inline">\(n\)</span>개의 합이다. 따라서 강한 큰 수의 법칙에 의해 각 고정된 <span class="math inline">\(x\)</span>에 대해 <span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(\hat F_n(x)\to F(x)\)</span>가 확률 1로 성립한다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-10-4.png" class="img-fluid figure-img"></p>
+<figcaption>그림 10.4. <span class="math inline">\(X_1=x_1\)</span>, <span class="math inline">\(X_2=x_2\)</span>, <span class="math inline">\(X_3=x_3\)</span>, <span class="math inline">\(X_4=x_4\)</span>를 관측한 후의 경험적 누적분포함수. 그래프는 <span class="math inline">\(x_j\)</span> 중 하나에 도달할 때마다 <span class="math inline">\(1/4\)</span>씩 뛰어오른다.</figcaption>
+</figure>
+</div>
+<p>경험적 누적분포함수는 <em>비모수 통계학</em>에서 흔히 사용된다. 비모수 통계학은 무작위 표본이 나온 분포의 계열에 대해 강한 가정을 하지 않고 그 표본을 이해하려는 통계학의 한 분야이다. 예를 들어 <span class="math inline">\(X_1,\ldots,X_n\sim\mathcal N(\mu,\sigma^2)\)</span>이라고 가정하는 대신, 비모수적 방법에서는 임의의 누적분포함수 <span class="math inline">\(F\)</span>에 대해 <span class="math inline">\(X_1,\ldots,X_n\sim F\)</span>를 허용한 다음 경험적 누적분포함수를 <span class="math inline">\(F\)</span>의 근사로 사용한다. 표본을 점점 더 많이 수집할 때 극한에서 이 근사가 타당함을 보장해 주는 것이 바로 큰 수의 법칙이다. 모든 <span class="math inline">\(x\)</span>값에서 경험적 누적분포함수는 참 누적분포함수에 수렴한다. <span class="math inline">\(\square\)</span></p>
+</section>
+<section id="중심극한정리" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="중심극한정리"><span class="header-section-number">10.3</span> 중심극한정리</h2>
+<p>앞 절에서와 같이 <span class="math inline">\(X_1,X_2,X_3,\ldots\)</span>이 평균 <span class="math inline">\(\mu\)</span>, 분산 <span class="math inline">\(0&lt;\sigma^2&lt;\infty\)</span>인 독립이고 동일한 분포를 따르는 확률변수라고 하자. 큰 수의 법칙에 따르면 <span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(\bar X_n\)</span>은 상수 <span class="math inline">\(\mu\)</span>로 수렴한다(확률 1로). 그렇다면 상수가 되어 가는 동안에는 어떤 분포를 따를까? 중심극한정리(CLT)는 이 질문에 답한다. 그 이름에서 알 수 있듯이 이 정리는 통계학에서 중심적인 중요성을 지닌 극한정리이다.</p>
+<p>중심극한정리는 <span class="math inline">\(n\)</span>이 클 때 표준화한 <span class="math inline">\(\bar X_n\)</span>의 분포가 표준정규분포에 가까워진다고 말한다. 표준화란 <span class="math inline">\(\bar X_n\)</span>에서 그 평균 <span class="math inline">\(\mu\)</span>를 빼고 표준편차 <span class="math inline">\(\sigma/\sqrt n\)</span>으로 나누는 것을 뜻한다.</p>
+<p><strong>정리 10.3.1 (중심극한정리).</strong> <span class="math inline">\(n\to\infty\)</span>일 때,</p>
+<p><span class="math display">\[\sqrt n\left(\frac{\bar X_n-\mu}{\sigma}\right)\xrightarrow{d}N(0,1).\]</span></p>
+<p>말로 표현하면, 왼쪽의 누적분포함수(CDF)가 표준정규분포의 CDF인 <span class="math inline">\(\Phi\)</span>로 수렴한다는 뜻이다.</p>
+<p><strong>증명.</strong> <span class="math inline">\(X_j\)</span>의 적률생성함수(MGF)가 0의 열린 근방에서 유한하게 존재한다고 가정하고 중심극한정리를 증명하겠다. 다만 이 정리는 훨씬 더 일반적으로 성립한다. <span class="math inline">\(M(t)=E(e^{tX_j})\)</span>라고 놓고, 일반성을 잃지 않고 <span class="math inline">\(\mu=0\)</span>, <span class="math inline">\(\sigma^2=1\)</span>이라고 하자. 정리에서 결국 <span class="math inline">\(\bar X_n\)</span>을 표준화할 것이므로 처음부터 <span class="math inline">\(X_j\)</span>를 표준화해도 된다. 그러면 <span class="math inline">\(M(0)=1\)</span>, <span class="math inline">\(M'(0)=\mu=0\)</span>, <span class="math inline">\(M''(0)=\sigma^2=1\)</span>이다.</p>
+<p><span class="math inline">\(\sqrt n\bar X_n=(X_1+\cdots+X_n)/\sqrt n\)</span>의 MGF가 <span class="math inline">\(N(0,1)\)</span> 분포의 MGF인 <span class="math inline">\(e^{t^2/2}\)</span>로 수렴함을 보이고자 한다. 다음 정리에 의해 이는 타당한 전략이다. 확률변수 <span class="math inline">\(Z_1,Z_2,\ldots\)</span>의 MGF가 연속확률변수 <span class="math inline">\(Z\)</span>의 MGF로 수렴하면 <span class="math inline">\(Z_n\)</span>의 CDF는 <span class="math inline">\(Z\)</span>의 CDF로 수렴한다. 이 결과의 증명에는 어려운 해석학이 필요하므로 생략한다. 하지만 확률변수의 MGF가 그 분포를 결정한다는 사실을 생각하면 적어도 그럴듯하게 느껴질 것이다.</p>
+<p>MGF의 성질에 의해</p>
+<p><span class="math display">\[
+\begin{aligned}
+E\left(e^{t(X_1+\cdots+X_n)/\sqrt n}\right)
+&amp;=E(e^{tX_1/\sqrt n})E(e^{tX_2/\sqrt n})\cdots E(e^{tX_n/\sqrt n})\\
+&amp;=\left(M\left(\frac{t}{\sqrt n}\right)\right)^n.
+\end{aligned}
+\]</span></p>
+<p><span class="math inline">\(n\to\infty\)</span>로 보내면 부정형 <span class="math inline">\(1^\infty\)</span>를 얻는다. 따라서 대신 로그인 <span class="math inline">\(n\log M(t/\sqrt n)\)</span>의 극한을 구하고 마지막에 지수함수를 취한다. 그러면</p>
+<p><span class="math display">\[
+\begin{aligned}
+\lim_{n\to\infty}n\log M\left(\frac t{\sqrt n}\right)
+&amp;=\lim_{y\to0}\frac{\log M(yt)}{y^2} &amp;&amp;\text{여기서 }y=1/\sqrt n\\
+&amp;=\lim_{y\to0}\frac{tM'(yt)}{2yM(yt)} &amp;&amp;\text{로피탈의 법칙에 의해}\\
+&amp;=\frac t2\lim_{y\to0}\frac{M'(yt)}y &amp;&amp;M(yt)\to1\text{이므로}\\
+&amp;=\frac{t^2}{2}\lim_{y\to0}M''(yt) &amp;&amp;\text{로피탈의 법칙에 의해}\\
+&amp;=\frac{t^2}{2}.
+\end{aligned}
+\]</span></p>
+<p>따라서 <span class="math inline">\(\sqrt n\bar X_n\)</span>의 MGF인 <span class="math inline">\(\left(M(t/\sqrt n)\right)^n\)</span>은 <span class="math inline">\(N(0,1)\)</span>의 MGF인 <span class="math inline">\(e^{t^2/2}\)</span>에 가까워진다. <span class="math inline">\(\blacksquare\)</span></p>
+<p>중심극한정리는 <span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(\bar X_n\)</span>의 극한분포에 관한 점근적 결과이지만, <span class="math inline">\(n\)</span>이 크고 유한할 때의 <span class="math inline">\(\bar X_n\)</span>의 분포를 근사하는 방법도 제시한다.</p>
+<p><strong>근사 10.3.2 (중심극한정리의 근사 형태).</strong> <span class="math inline">\(n\)</span>이 클 때 <span class="math inline">\(\bar X_n\)</span>의 분포는 근사적으로 <span class="math inline">\(N(\mu,\sigma^2/n)\)</span>이다.</p>
+<p><strong>증명.</strong> 중심극한정리의 화살표를 근사 분포 기호 <span class="math inline">\(\dot\sim\)</span>으로 바꾸면</p>
+<p><span class="math display">\[\sqrt n\left(\frac{\bar X_n-\mu}{\sigma}\right)\mathrel{\dot\sim}N(0,1).\]</span></p>
+<p>위치-척도 변환에 의해</p>
+<p><span class="math display">\[\bar X_n\mathrel{\dot\sim}N(\mu,\sigma^2/n).\qquad\blacksquare\]</span></p>
+<p>물론 기댓값과 분산의 성질로부터 <span class="math inline">\(\bar X_n\)</span>의 평균이 <span class="math inline">\(\mu\)</span>이고 분산이 <span class="math inline">\(\sigma^2/n\)</span>임은 이미 알고 있었다. 중심극한정리는 <span class="math inline">\(\bar X_n\)</span>이 이 평균과 분산을 갖는 정규분포에 근사적으로 따른다는 추가 정보를 제공한다.</p>
+<p>이 결과가 얼마나 일반적인지 잠시 살펴보자. 평균과 분산이 유한하기만 하면 개별 <span class="math inline">\(X_j\)</span>의 분포는 무엇이든 될 수 있다. 이항분포 같은 이산분포, 베타분포 같은 유계 분포, 로그정규분포 같은 치우친 분포, 또는 봉우리와 골이 여러 개인 분포일 수도 있다. 어떤 경우든 평균을 취하면 정규성이 나타난다. 그림 10.5에는 네 가지 출발 분포와 <span class="math inline">\(n=1,5,30,100\)</span>에 대한 <span class="math inline">\(\bar X_n\)</span>의 분포를 히스토그램으로 나타냈다. <span class="math inline">\(n\)</span>이 커짐에 따라 <span class="math inline">\(X_j\)</span>의 분포와 관계없이 <span class="math inline">\(\bar X_n\)</span>의 분포가 정규분포의 모습에 가까워지기 시작한다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-10-5.png" class="img-fluid figure-img"></p>
+<figcaption>그림 10.5: 중심극한정리. 서로 다른 <span class="math inline">\(X_j\)</span>의 출발 분포(행)와 증가하는 <span class="math inline">\(n\)</span>의 값(열)에 대한 <span class="math inline">\(\bar X_n\)</span>의 분포를 나타낸 히스토그램이다. 각 히스토그램은 <span class="math inline">\(\bar X_n\)</span>을 10,000번 모의실험한 값에 기초한다. <span class="math inline">\(X_j\)</span>의 출발 분포에 관계없이 <span class="math inline">\(n\)</span>이 커지면 <span class="math inline">\(\bar X_n\)</span>의 분포는 정규분포에 가까워진다.</figcaption>
+</figure>
+</div>
+<p>그렇다고 <span class="math inline">\(X_j\)</span>의 분포가 중요하지 않다는 뜻은 아니다. <span class="math inline">\(X_j\)</span>의 분포가 심하게 치우쳐 있거나 봉우리가 여러 개라면 정규근사가 정확해지기 전에 <span class="math inline">\(n\)</span>이 매우 커져야 할 수도 있다. 반대 극단으로, <span class="math inline">\(X_j\)</span>가 이미 독립이고 동일한 정규분포를 따르면 <span class="math inline">\(\bar X_n\)</span>의 분포는 모든 <span class="math inline">\(n\)</span>에 대해 정확히 <span class="math inline">\(N(\mu,\sigma^2/n)\)</span>이다. 현실에는 무한한 데이터셋이 없으므로 유한한 <span class="math inline">\(n\)</span>에 대한 정규근사의 품질은 중요한 고려 사항이다.</p>
+<p><strong>예제 10.3.3 (앞면의 누적 비율 다시 살펴보기).</strong> 예제 10.2.3과 같이 <span class="math inline">\(X_1,X_2,\ldots\)</span>을 독립이고 동일한 <span class="math inline">\(\operatorname{Bern}(1/2)\)</span> 분포를 따르는 확률변수라고 하자. 앞에서는 큰 수의 법칙을 이용해 <span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(\bar X_n\to1/2\)</span>라는 결론을 얻었다. 이제 중심극한정리를 이용하면 더 많은 것을 말할 수 있다. <span class="math inline">\(E(\bar X_n)=1/2\)</span>이고 <span class="math inline">\(\operatorname{Var}(\bar X_n)=1/(4n)\)</span>이므로 <span class="math inline">\(n\)</span>이 클 때</p>
+<p><span class="math display">\[\bar X_n\mathrel{\dot\sim}N\left(\frac12,\frac1{4n}\right).\]</span></p>
+<p>이 추가 정보를 이용하면 주어진 <span class="math inline">\(n\)</span>에서 평균으로부터 어느 정도 벗어나는 것이 전형적인지 정량화할 수 있다. 예를 들어 <span class="math inline">\(n=100\)</span>이면 <span class="math inline">\(\operatorname{SD}(\bar X_n)=1/20=0.05\)</span>이므로, 정규근사가 타당하다면 68-95-99.7% 법칙에 의해 <span class="math inline">\(\bar X_n\)</span>이 구간 <span class="math inline">\([0.40,0.60]\)</span>에 있을 확률은 약 95%이다. <span class="math inline">\(\square\)</span></p>
+<p>중심극한정리는 표본평균 <span class="math inline">\(\bar X_n\)</span>이 근사적으로 정규분포를 따른다고 말한다. 그런데 합 <span class="math inline">\(W_n=X_1+\cdots+X_n=n\bar X_n\)</span>은 <span class="math inline">\(\bar X_n\)</span>의 척도만 바꾼 것이므로, 중심극한정리는 <span class="math inline">\(W_n\)</span>도 근사적으로 정규분포를 따른다는 뜻이다. <span class="math inline">\(X_j\)</span>의 평균이 <span class="math inline">\(\mu\)</span>, 분산이 <span class="math inline">\(\sigma^2\)</span>이면 <span class="math inline">\(W_n\)</span>의 평균은 <span class="math inline">\(n\mu\)</span>, 분산은 <span class="math inline">\(n\sigma^2\)</span>이다. 따라서 중심극한정리에 의해 <span class="math inline">\(n\)</span>이 클 때</p>
+<p><span class="math display">\[W_n\mathrel{\dot\sim}N(n\mu,n\sigma^2).\]</span></p>
+<p>이는 <span class="math inline">\(\bar X_n\)</span>에 대한 근사와 완전히 동등하지만, 앞에서 배운 이름 붙은 분포 중 상당수를 독립이고 동일한 분포를 따르는 확률변수의 합으로 볼 수 있기 때문에 이 형태로 쓰면 유용할 수 있다. 다음은 세 가지 간단한 예이다.</p>
+<p><strong>예제 10.3.4 (포아송분포의 정규분포로의 수렴).</strong> <span class="math inline">\(Y\sim\operatorname{Pois}(n)\)</span>이라고 하자. 정리 4.8.1에 의해 <span class="math inline">\(Y\)</span>를 독립이고 동일한 <span class="math inline">\(\operatorname{Pois}(1)\)</span> 분포를 따르는 확률변수 <span class="math inline">\(n\)</span>개의 합으로 볼 수 있다. 따라서 <span class="math inline">\(n\)</span>이 클 때</p>
+<p><span class="math display">\[Y\mathrel{\dot\sim}N(n,n).\qquad\square\]</span></p>
+<p><strong>예제 10.3.5 (감마분포의 정규분포로의 수렴).</strong> <span class="math inline">\(Y\sim\operatorname{Gamma}(n,\lambda)\)</span>라고 하자. 정리 8.4.3에 의해 <span class="math inline">\(Y\)</span>를 독립이고 동일한 <span class="math inline">\(\operatorname{Expo}(\lambda)\)</span> 분포를 따르는 확률변수 <span class="math inline">\(n\)</span>개의 합으로 볼 수 있다. 따라서 <span class="math inline">\(n\)</span>이 클 때</p>
+<p><span class="math display">\[Y\mathrel{\dot\sim}N\left(\frac n\lambda,\frac n{\lambda^2}\right).\qquad\square\]</span></p>
+<p><strong>예제 10.3.6 (이항분포의 정규분포로의 수렴).</strong> <span class="math inline">\(Y\sim\operatorname{Bin}(n,p)\)</span>이고 <span class="math inline">\(0&lt;p&lt;1\)</span>이라고 하자. 정리 3.8.8에 의해 <span class="math inline">\(Y\)</span>를 독립이고 동일한 <span class="math inline">\(\operatorname{Bern}(p)\)</span> 분포를 따르는 확률변수 <span class="math inline">\(n\)</span>개의 합으로 볼 수 있다. 따라서 <span class="math inline">\(n\)</span>이 클 때</p>
+<p><span class="math display">\[Y\mathrel{\dot\sim}N\bigl(np,np(1-p)\bigr).\]</span></p>
+<p>이는 통계학에서 아마 가장 널리 쓰이는 정규근사일 것이다. <span class="math inline">\(Y\)</span>가 이산형이라는 사실을 반영하기 위해 확률 <span class="math inline">\(P(Y=k)\)</span>를 정규근사에서 정확히 0이 되는 대신 <span class="math inline">\(P(k-1/2&lt;Y&lt;k+1/2)\)</span>로 써서 너비가 0이 아닌 구간으로 만든 다음 후자에 정규근사를 적용한다. 이를 <strong>연속성 보정</strong>이라고 하며, <span class="math inline">\(Y\)</span>의 확률질량함수(PMF)에 대해 다음 근사를 얻는다.</p>
+<p><span class="math display">\[
+P(Y=k)=P(k-1/2&lt;Y&lt;k+1/2)\approx
+\Phi\left(\frac{k+1/2-np}{\sqrt{np(1-p)}}\right)-
+\Phi\left(\frac{k-1/2-np}{\sqrt{np(1-p)}}\right).
+\]</span></p>
+<p>이항분포의 정규근사는 4장에서 논의한 포아송근사와 상호 보완적이다. 포아송근사는 <span class="math inline">\(p\)</span>가 작을 때 가장 잘 작동하는 반면, 정규근사는 <span class="math inline">\(n\)</span>이 크고 <span class="math inline">\(p\)</span>가 <span class="math inline">\(1/2\)</span> 부근에 있어 <span class="math inline">\(Y\)</span>의 분포가 대칭이거나 거의 대칭일 때 가장 잘 작동한다. <span class="math inline">\(\square\)</span></p>
+<p>큰 수의 법칙과 중심극한정리를 둘 다 사용하는 예제로 마무리하자.</p>
+<p><strong>예제 10.3.7 (변동성이 큰 주식).</strong> 변동성이 매우 큰 한 주식의 가격이 매일 같은 확률로 70% 오르거나 50% 내리며, 각 날의 변동은 서로 독립이다. 초기 가격은 <span class="math inline">\(Y_0=100\)</span>이고 <span class="math inline">\(n\)</span>일 후 주가를 <span class="math inline">\(Y_n\)</span>이라고 하자.</p>
+<ol type="a">
+<li><p><span class="math inline">\(n\)</span>이 클 때 <span class="math inline">\(\log Y_n\)</span>이 근사적으로 정규분포를 따르는 이유를 설명하고 그 모수를 구하라.</p></li>
+<li><p><span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(E(Y_n)\)</span>은 어떻게 되는가?</p></li>
+<li><p>큰 수의 법칙을 이용하여 <span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(Y_n\)</span>이 어떻게 되는지 구하라.</p></li>
+</ol>
+<p><strong>풀이.</strong> (a) 처음 <span class="math inline">\(n\)</span>일 동안 주가가 오른 횟수를 <span class="math inline">\(U_n\sim\operatorname{Bin}(n,1/2)\)</span>라고 하면 <span class="math inline">\(Y_n=Y_0(0.5)^{n-U_n}(1.7)^{U_n}\)</span>으로 쓸 수 있다. 따라서</p>
+<p><span class="math display">\[\log Y_n=\log Y_0-n\log2+U_n\log3.4,\]</span></p>
+<p>이는 <span class="math inline">\(U_n\)</span>의 위치-척도 변환이다. 중심극한정리에 의해 <span class="math inline">\(n\)</span>이 클 때 <span class="math inline">\(U_n\)</span>은 근사적으로 <span class="math inline">\(N(n/2,n/4)\)</span>를 따르므로 <span class="math inline">\(\log Y_n\)</span>은 평균</p>
+<p><span class="math display">\[E(\log Y_n)=\log100-n\log2+(\log3.4)E(U_n)\approx\log100-0.081n\]</span></p>
+<p>과 분산</p>
+<p><span class="math display">\[\operatorname{Var}(\log Y_n)=(\log3.4)^2\operatorname{Var}(U_n)\approx0.374n\]</span></p>
+<p>을 갖는 정규분포를 근사적으로 따른다.</p>
+<ol start="2" type="a">
+<li><span class="math inline">\(E(Y_1)=(170+50)/2=110\)</span>이다. 마찬가지로</li>
+</ol>
+<p><span class="math display">\[E(Y_{n+1}\mid Y_n)=\frac12(1.7Y_n)+\frac12(0.5Y_n)=1.1Y_n,\]</span></p>
+<p>이므로</p>
+<p><span class="math display">\[E(Y_{n+1})=E(E(Y_{n+1}\mid Y_n))=1.1E(Y_n).\]</span></p>
+<p>따라서 <span class="math inline">\(E(Y_n)=1.1^nE(Y_0)=100\cdot1.1^n\)</span>이고, 이는 <span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(\infty\)</span>로 간다.</p>
+<ol start="3" type="a">
+<li>(a)에서와 같이 처음 <span class="math inline">\(n\)</span>일 동안 주가가 오른 횟수를 <span class="math inline">\(U_n\sim\operatorname{Bin}(n,1/2)\)</span>라고 하자. <span class="math inline">\(E(Y_n)\to\infty\)</span>이지만, 주가가 어느 날 70% 오르고 다음 날 50% 내리면 <span class="math inline">\(1.7\cdot0.5=0.85\)</span>이므로 전체적으로는 15% 하락한다는 점에 주목하자. 따라서 여러 날이 지난 후 주가가 오른 날과 내린 날이 각각 전체의 대략 절반이면 <span class="math inline">\(Y_n\)</span>은 매우 작을 것이다. 큰 수의 법칙은 실제로 그렇게 된다는 것을 보장한다! 큰 수의 법칙을 적용하기 위해 <span class="math inline">\(Y_n\)</span>을 <span class="math inline">\(U_n/n\)</span>으로 나타내면</li>
+</ol>
+<p><span class="math display">\[Y_n=Y_0(0.5)^{n-U_n}(1.7)^{U_n}=Y_0\left(\frac{(3.4)^{U_n/n}}2\right)^n.\]</span></p>
+<p><span class="math inline">\(U_n/n\to0.5\)</span>가 확률 1로 성립하므로 <span class="math inline">\((3.4)^{U_n/n}\to\sqrt{3.4}&lt;2\)</span>가 확률 1로 성립한다. 따라서 <span class="math inline">\(Y_n\to0\)</span>이 확률 1로 성립한다.</p>
+<p>역설적으로 <span class="math inline">\(E(Y_n)\to\infty\)</span>이지만 <span class="math inline">\(Y_n\to0\)</span>은 확률 1로 성립한다. 이 결과에 대한 직관을 얻기 위해 도박꾼이 100달러로 시작하여 매일 같은 확률로 돈을 네 배로 불리거나 재산 전부를 잃는 극단적인 예를 생각해 보자. 그러면 도박꾼의 재산은 평균적으로 매일 두 배가 된다. 이는 언젠가 도박꾼이 파산하는 날이 온다는 사실을 알아차리기 전까지는 좋아 보인다. 도박꾼의 실제 재산은 확률 1로 0에 수렴하는 반면, 기댓값은 상트페테르부르크의 역설에서처럼 극히 큰 액수를 얻을 아주 작은 확률 때문에 무한대로 간다. <span class="math inline">\(\square\)</span></p>
+<p><strong>주의 10.3.8 (고약한 코시 분포).</strong> 중심극한정리는 <span class="math inline">\(X_j\)</span>의 평균과 분산이 유한할 것을 요구하며, 약한 큰 수의 법칙(WLLN)에 대한 우리의 증명도 같은 조건에 의존했다. 예제 7.1.25에서 소개한 코시 분포에는 평균과 분산이 없으므로 코시 분포는 큰 수의 법칙과 중심극한정리 어느 쪽도 따르지 않는다. 독립이고 동일한 코시 분포를 따르는 확률변수 <span class="math inline">\(n\)</span>개의 표본평균은 <span class="math inline">\(n\)</span>이 아무리 커져도 여전히 같은 코시 분포를 따른다는 것을 보일 수 있다. 따라서 표본평균은 중심극한정리에서 본 거동과 달리 결코 정규분포에 가까워지지 않는다. 또한 <span class="math inline">\(\bar X_n\)</span>이 수렴할 참평균이 없으므로 큰 수의 법칙도 적용되지 않는다.</p>
+</section>
+<section id="카이제곱분포와-스튜던트-t분포" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="카이제곱분포와-스튜던트-t분포"><span class="header-section-number">10.4</span> 카이제곱분포와 스튜던트 t분포</h2>
+<p>이 책에서 다룰 마지막 두 연속분포를 소개하며 이 장을 마무리하자. 두 분포 모두 정규분포와 밀접한 관련이 있다.</p>
+<p><strong>정의 10.4.1 (카이제곱분포).</strong> <span class="math inline">\(Z_1,Z_2,\ldots,Z_n\)</span>이 독립이고 동일한 <span class="math inline">\(N(0,1)\)</span> 분포를 따를 때 <span class="math inline">\(V=Z_1^2+\cdots+Z_n^2\)</span>이라고 하자. 그러면 <span class="math inline">\(V\)</span>는 자유도가 <span class="math inline">\(n\)</span>인 카이제곱분포를 따른다고 하며, <span class="math inline">\(V\sim\chi_n^2\)</span>으로 쓴다.</p>
+<p>알고 보면 <span class="math inline">\(\chi_n^2\)</span> 분포는 감마분포의 특수한 경우이다.</p>
+<p><strong>정리 10.4.2.</strong> <span class="math inline">\(\chi_n^2\)</span> 분포는 <span class="math inline">\(\operatorname{Gamma}(n/2,1/2)\)</span> 분포이다.</p>
+<p><strong>증명.</strong> 먼저 <span class="math inline">\(Z_1^2\sim\chi_1^2\)</span>의 확률밀도함수가 <span class="math inline">\(\operatorname{Gamma}(1/2,1/2)\)</span>의 확률밀도함수와 같음을 확인하자. <span class="math inline">\(x&gt;0\)</span>일 때</p>
+<p><span class="math display">\[F(x)=P(Z_1^2\leq x)=P(-\sqrt{x}\leq Z_1\leq\sqrt{x})=\Phi(\sqrt{x})-\Phi(-\sqrt{x})=2\Phi(\sqrt{x})-1,\]</span></p>
+<p>이므로</p>
+<p><span class="math display">\[f(x)=\frac{d}{dx}F(x)=2\phi(\sqrt{x})\frac12x^{-1/2}=\frac{1}{\sqrt{2\pi x}}e^{-x/2}.\]</span></p>
+<p>이는 실제로 <span class="math inline">\(\operatorname{Gamma}(1/2,1/2)\)</span>의 확률밀도함수이다. 이제 <span class="math inline">\(V=Z_1^2+\cdots+Z_n^2\sim\chi_n^2\)</span>은 독립인 <span class="math inline">\(\operatorname{Gamma}(1/2,1/2)\)</span> 확률변수 <span class="math inline">\(n\)</span>개의 합이므로 <span class="math inline">\(V\sim\operatorname{Gamma}(n/2,1/2)\)</span>이다. <span class="math inline">\(\blacksquare\)</span></p>
+<p>감마분포의 평균과 분산에 관한 지식으로부터 <span class="math inline">\(E(V)=n\)</span>, <span class="math inline">\(\operatorname{Var}(V)=2n\)</span>이다. <span class="math inline">\(V\)</span>가 독립이고 동일한 정규 확률변수의 제곱의 합이라는 사실과 6장에서 구한 정규분포의 적률을 이용해서도 평균과 분산을 구할 수 있다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(V)&amp;=nE(Z_1^2)=n,\\
+\operatorname{Var}(V)&amp;=n\operatorname{Var}(Z_1^2)
+=n\left(E(Z_1^4)-(EZ_1^2)^2\right)=n(3-1)=2n.
+\end{aligned}
+\]</span></p>
+<p>카이제곱분포의 적률생성함수(MGF)를 구하려면 보다 일반적인 <span class="math inline">\(\operatorname{Gamma}(a,\lambda)\)</span>의 MGF에 <span class="math inline">\(n/2\)</span>와 <span class="math inline">\(1/2\)</span>를 대입하면 된다. 정리 8.4.3의 계산을 <span class="math inline">\(a&gt;0\)</span>으로 일반화하면 그 MGF는 <span class="math inline">\(t&lt;\lambda\)</span>일 때 <span class="math inline">\((\lambda/(\lambda-t))^a\)</span>이다. 따라서</p>
+<p><span class="math display">\[M_V(t)=\left(\frac{1}{1-2t}\right)^{n/2},\qquad t&lt;1/2.\]</span></p>
+<p>카이제곱분포는 표본분산의 분포와 관련이 있으므로 통계학에서 중요하다. 표본분산은 분포의 실제 분산을 추정하는 데 사용할 수 있다. 확률변수들이 독립이고 동일한 정규분포를 따르면 표본분산을 적절히 척도 변환한 결과는 카이제곱분포를 따른다.</p>
+<p><strong>예제 10.4.3 (표본분산의 분포).</strong> <span class="math inline">\(n\geq 2\)</span>, <span class="math inline">\(\sigma^2&gt;0\)</span>이고 <span class="math inline">\(X_1,\ldots,X_n\)</span>이 독립이고 동일한 <span class="math inline">\(N(\mu,\sigma^2)\)</span> 분포를 따를 때 표본분산은 확률변수</p>
+<p><span class="math display">\[S_n^2=\frac{1}{n-1}\sum_{j=1}^n(X_j-\bar X_n)^2\]</span></p>
+<p>이다. 다음을 보여라.</p>
+<p><span class="math display">\[\frac{(n-1)S_n^2}{\sigma^2}\sim\chi_{n-1}^2.\]</span></p>
+<p><strong>풀이.</strong> 먼저 표준정규 확률변수 <span class="math inline">\(Z_1,\ldots,Z_n\)</span>에 대해 <span class="math inline">\(\sum_{j=1}^n(Z_j-\bar Z_n)^2\sim\chi_{n-1}^2\)</span>임을 보이자. 이는 증명하려는 더 일반적인 결과와 부합하며 유용한 디딤돌이 된다. 먼저 정리 6.3.4의 증명에 나온 항등식의 특수한 경우인 다음 유용한 항등식에서 시작하자.</p>
+<p><span class="math display">\[\sum_{j=1}^n Z_j^2=\sum_{j=1}^n(Z_j-\bar Z_n)^2+n\bar Z_n^2.\]</span></p>
+<p>이제 양변의 MGF를 취하자. 예제 7.5.9에 따라 <span class="math inline">\(\sum_{j=1}^n(Z_j-\bar Z_n)^2\)</span>과 <span class="math inline">\(n\bar Z_n^2\)</span>은 독립이므로 두 변수의 합의 MGF는 각각의 MGF의 곱이다. 또한</p>
+<p><span class="math display">\[\sum_{j=1}^n Z_j^2\sim\chi_n^2,\qquad n\bar Z_n^2\sim\chi_1^2\]</span></p>
+<p>이므로</p>
+<p><span class="math display">\[\left(\frac{1}{1-2t}\right)^{n/2}=\left(\sum_{j=1}^n(Z_j-\bar Z_n)^2\text{의 MGF}\right)\cdot\left(\frac{1}{1-2t}\right)^{1/2}.\]</span></p>
+<p>따라서</p>
+<p><span class="math display">\[\left(\sum_{j=1}^n(Z_j-\bar Z_n)^2\text{의 MGF}\right)=\left(\frac{1}{1-2t}\right)^{(n-1)/2}.\]</span></p>
+<p>이는 <span class="math inline">\(\chi_{n-1}^2\)</span>의 MGF이다. MGF가 분포를 결정하므로</p>
+<p><span class="math display">\[\sum_{j=1}^n(Z_j-\bar Z_n)^2\sim\chi_{n-1}^2.\]</span></p>
+<p>일반적인 <span class="math inline">\(X_1,\ldots,X_n\)</span>에 대해서는 위치-척도 변환을 이용하여 <span class="math inline">\(X_j=\mu+\sigma Z_j\)</span>, <span class="math inline">\(\bar X_n=\mu+\sigma\bar Z_n\)</span>으로 쓴다. <span class="math inline">\(\sum_{j=1}^n(X_j-\bar X_n)^2\)</span>을 <span class="math inline">\(Z_j\)</span>로 나타내면 <span class="math inline">\(\mu\)</span>는 소거되고 <span class="math inline">\(\sigma\)</span>는 제곱되어 밖으로 나온다.</p>
+<p><span class="math display">\[\sum_{j=1}^n(X_j-\bar X_n)^2=\sum_{j=1}^n\bigl(\mu+\sigma Z_j-(\mu+\sigma\bar Z_n)\bigr)^2=\sigma^2\sum_{j=1}^n(Z_j-\bar Z_n)^2.\]</span></p>
+<p>종합하면</p>
+<p><span class="math display">\[\frac{(n-1)S_n^2}{\sigma^2}=\frac{1}{\sigma^2}\sum_{j=1}^n(X_j-\bar X_n)^2=\frac{1}{\sigma^2}\cdot\sigma^2\sum_{j=1}^n(Z_j-\bar Z_n)^2\sim\chi_{n-1}^2,\]</span></p>
+<p>이는 원하던 결과이다. 이 결과는 <span class="math inline">\(E(S_n^2)=\sigma^2\)</span>도 뜻하며, 이는 표본분산이 실제 분산을 추정하는 불편추정량이라는 정리 6.3.4의 결과와 일치한다. <span class="math inline">\(\blacksquare\)</span></p>
+<p>스튜던트 t분포는 표준정규 확률변수와 <span class="math inline">\(\chi_n^2\)</span> 확률변수로 나타내어 정의한다.</p>
+<p><strong>정의 10.4.4 (스튜던트 t분포).</strong></p>
+<p><span class="math display">\[T=\frac{Z}{\sqrt{V/n}}\]</span></p>
+<p>이라고 하자. 여기서 <span class="math inline">\(Z\sim N(0,1)\)</span>, <span class="math inline">\(V\sim\chi_n^2\)</span>이며 <span class="math inline">\(Z\)</span>와 <span class="math inline">\(V\)</span>는 독립이다. 그러면 <span class="math inline">\(T\)</span>는 자유도가 <span class="math inline">\(n\)</span>인 스튜던트 t분포를 따른다고 하며 <span class="math inline">\(T\sim t_n\)</span>으로 쓴다. 흔히 ‘스튜던트 t분포’를 줄여 ‘t분포’라고 한다.</p>
+<p>스튜던트 t분포는 기네스의 양조 책임자였던 윌리엄 고셋이 맥주의 품질관리를 연구하던 중 1908년에 도입했다. 회사는 그에게 필명으로 연구를 발표하도록 요구했고, 그는 스튜던트(Student)라는 이름을 선택했다. t분포는 실제로 매우 널리 쓰이는 t검정이라는 가설검정 절차의 기초가 된다(여기서는 t검정의 자세한 내용을 소개하지 않는다. 통계적 추론 강의에서 다루는 편이 더 좋기 때문이다).</p>
+<p>자유도가 <span class="math inline">\(n\)</span>인 스튜던트 t분포의 확률밀도함수는 표준정규분포의 확률밀도함수와 비슷하지만 꼬리가 더 두껍다. <span class="math inline">\(n\)</span>이 작으면 훨씬 더 두껍고, <span class="math inline">\(n\)</span>이 크면 크게 두껍지는 않다. 확률밀도함수의 공식은</p>
+<p><span class="math display">\[f_T(t)=\frac{\Gamma((n+1)/2)}{\sqrt{n\pi}\,\Gamma(n/2)}(1+t^2/n)^{-(n+1)/2}\]</span></p>
+<p>이다. 유도가 복잡하므로 이를 증명하지는 않겠다. 어차피 스튜던트 t분포의 가장 중요한 성질 상당수는 확률밀도함수로 지루한 계산을 하기보다 정규 확률변수와 <span class="math inline">\(\chi_n^2\)</span> 확률변수를 이용한 정의를 생각하면 더 쉽게 이해할 수 있다. 다음은 그러한 성질들이다.</p>
+<p><strong>정리 10.4.5 (스튜던트 t분포의 성질).</strong> 스튜던트 t분포 <span class="math inline">\(t_n\)</span>은 다음 성질을 갖는다.</p>
+<ol type="1">
+<li>대칭성: <span class="math inline">\(T\sim t_n\)</span>이면 <span class="math inline">\(-T\sim t_n\)</span>이다.</li>
+<li>특수한 경우인 코시분포: <span class="math inline">\(t_1\)</span> 분포는 예제 7.1.25에서 소개한 코시분포와 같다.</li>
+<li>정규분포로의 수렴: <span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(t_n\)</span> 분포는 표준정규분포에 가까워진다.</li>
+</ol>
+<p><strong>증명.</strong> 각 성질을 증명할 때 정의 10.4.4를 이용한다.</p>
+<ol type="1">
+<li><p><span class="math inline">\(Z\sim N(0,1)\)</span>, <span class="math inline">\(V\sim\chi_n^2\)</span>이고 <span class="math inline">\(Z\)</span>와 <span class="math inline">\(V\)</span>가 독립일 때</p>
+<p><span class="math display">\[T=\frac{Z}{\sqrt{V/n}}\]</span></p>
+<p>으로 나타내자. 그러면</p>
+<p><span class="math display">\[-T=\frac{-Z}{\sqrt{V/n}}\]</span></p>
+<p>이고 <span class="math inline">\(-Z\sim N(0,1)\)</span>이므로 <span class="math inline">\(-T\sim t_n\)</span>이다.</p></li>
+<li><p>코시분포는 독립이고 동일한 <span class="math inline">\(N(0,1)\)</span> 분포를 따르는 <span class="math inline">\(X,Y\)</span>에 대해 <span class="math inline">\(X/Y\)</span>의 분포로 정의했음을 떠올리자. 정의에 따라 <span class="math inline">\(T\sim t_1\)</span>은 <span class="math inline">\(T=Z/\sqrt V\)</span>로 나타낼 수 있다. 여기서 <span class="math inline">\(Z_1\)</span>은 <span class="math inline">\(Z\)</span>와 독립이고 <span class="math inline">\(\sqrt V=\sqrt{Z_1^2}=|Z_1|\)</span>이다. 그런데 대칭성에 의해 <span class="math inline">\(Z/|Z_1|\)</span>은 <span class="math inline">\(Z/Z_1\)</span>과 같은 분포를 가지며, <span class="math inline">\(Z/Z_1\)</span>은 코시분포를 따른다. 따라서 <span class="math inline">\(t_1\)</span> 분포와 코시분포는 같다.</p></li>
+<li><p>이는 강한 큰 수의 법칙(SLLN)에서 따른다. 독립이고 동일한 표준정규 확률변수의 수열 <span class="math inline">\(Z_1,Z_2,\ldots\)</span>을 생각하고</p>
+<p><span class="math display">\[V_n=Z_1^2+\cdots+Z_n^2\]</span></p>
+<p>으로 놓자. 강한 큰 수의 법칙에 따라 <span class="math inline">\(V_n/n\to E(Z_1^2)=1\)</span>이 확률 1로 성립한다. 이제 모든 <span class="math inline">\(Z_j\)</span>와 독립인 <span class="math inline">\(Z\sim N(0,1)\)</span>을 택하고 모든 <span class="math inline">\(n\)</span>에 대해</p>
+<p><span class="math display">\[T_n=\frac{Z}{\sqrt{V_n/n}}\]</span></p>
+<p>으로 놓자. 정의에 따라 <span class="math inline">\(T_n\sim t_n\)</span>이고, 분모가 1로 수렴하므로 <span class="math inline">\(T_n\to Z\sim N(0,1)\)</span>이다. 따라서 <span class="math inline">\(T_n\)</span>의 분포는 <span class="math inline">\(Z\)</span>의 분포에 가까워진다. <span class="math inline">\(\blacksquare\)</span></p></li>
+</ol>
+<p>그림 10.6은 여러 <span class="math inline">\(n\)</span> 값에 대한 스튜던트 t분포의 확률밀도함수를 그려 위 정리의 세 성질을 모두 보여준다. 확률밀도함수는 모두 0을 중심으로 대칭이고, <span class="math inline">\(n=1\)</span>일 때의 확률밀도함수는 코시분포의 확률밀도함수처럼 보이며, <span class="math inline">\(n\to\infty\)</span>일 때 두꺼운 꼬리는 점점 얇아지고 확률밀도함수는 표준정규분포의 확률밀도함수에 가까워진다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-10-6.png" class="img-fluid figure-img"></p>
+<figcaption>그림 10.6: 자유도가 <span class="math inline">\(n=1,2,3,5,10\)</span>인 스튜던트 t분포의 확률밀도함수(밝은색에서 어두운색 순서)와 표준정규분포의 확률밀도함수(검은색). <span class="math inline">\(n\to\infty\)</span>일 때 스튜던트 t분포의 확률밀도함수는 표준정규분포의 확률밀도함수에 가까워진다.</figcaption>
+</figure>
+</div>
+</section>
+<section id="요약" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="요약"><span class="header-section-number">10.5</span> 요약</h2>
+<p>부등식과 극한정리는 정확하게 계산하고 싶지 않은 기댓값과 확률을 다루는 서로 다른 두 가지 방법이다. 부등식을 이용하면 알려지지 않은 값의 하한이나 상한, 또는 둘 다를 얻을 수 있다. 코시-슈바르츠 부등식과 옌센 부등식은 기댓값의 경계를 주고, 마르코프 부등식, 체비쇼프 부등식, 체르노프 경계는 꼬리확률의 경계를 준다.</p>
+<p>두 극한정리인 큰 수의 법칙과 중심극한정리는 평균이 <span class="math inline">\(\mu\)</span>이고 분산이 <span class="math inline">\(\sigma^2\)</span>인 독립이고 동일한 분포를 따르는 확률변수 <span class="math inline">\(X_1,X_2,\ldots\)</span>의 표본평균 <span class="math inline">\(\bar X_n\)</span>의 거동을 설명한다. 강한 큰 수의 법칙(SLLN)은 <span class="math inline">\(n\to\infty\)</span>일 때 표본평균 <span class="math inline">\(\bar X_n\)</span>이 확률 1로 참평균 <span class="math inline">\(\mu\)</span>에 수렴한다고 말한다. 중심극한정리(CLT)는 <span class="math inline">\(\bar X_n\)</span>을 표준화한 분포가 표준정규분포로 수렴한다고 말한다.</p>
+<p><em>옮긴이 주:</em> 아래 중심극한정리의 표준화에는 <span class="math inline">\(0&lt;\sigma^2&lt;\infty\)</span>가 필요하다.</p>
+<p><span class="math display">\[\sqrt n\left(\frac{\bar X_n-\mu}{\sigma}\right)\xrightarrow{d}N(0,1).\]</span></p>
+<p>이를 <span class="math inline">\(\bar X_n\)</span>의 분포에 대한 근사로 바꾸어 쓰면 다음과 같다.</p>
+<p><span class="math display">\[\bar X_n\mathrel{\dot\sim}N\left(\mu,\frac{\sigma^2}{n}\right).\]</span></p>
+<p>동등하게, 합 <span class="math inline">\(S_n=X_1+\cdots+X_n=n\bar X_n\)</span>을 표준화한 분포가 표준정규분포로 수렴한다고 말할 수도 있다.</p>
+<p><span class="math display">\[\frac{S_n-n\mu}{\sigma\sqrt n}\xrightarrow{d}N(0,1).\]</span></p>
+<p>그림 10.7은 분포에서 그 분포를 따르는 독립이고 동일한 분포의 확률변수들로, 그리고 그 확률변수들로부터 표본평균을 만들어 그 자체를 확률변수로 연구하는 과정을 보여 준다. 체비쇼프 부등식, 큰 수의 법칙, 중심극한정리는 모두 표본평균의 거동에 관한 중요한 정보를 제공한다.</p>
+<p>카이제곱분포와 스튜던트 t분포는 통계학에서 중요한 두 가지 이름 있는 분포이다. 카이제곱분포는 감마분포의 특수한 경우이다. 스튜던트 t분포는 종 모양의 확률밀도함수를 가지며 정규분포보다 꼬리가 두껍고, 자유도가 증가함에 따라 표준정규분포로 수렴한다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-10-7.png" class="img-fluid figure-img"></p>
+<figcaption>그림 10.7: 독립이고 동일한 분포를 따르는 확률변수 <span class="math inline">\(X_1,\ldots,X_n\)</span>의 표본평균 <span class="math inline">\(\bar X_n\)</span>은 많은 문제에서 중요한 양이다. 체비쇼프 부등식은 표본평균이 참평균에서 멀리 떨어질 확률의 경계를 준다. 체비쇼프 부등식에서 따라 나오는 약한 큰 수의 법칙은 <span class="math inline">\(n\)</span>이 클 때 표본평균이 참평균에 매우 가까울 확률이 아주 높다고 말한다. 중심극한정리는 <span class="math inline">\(n\)</span>이 클 때 표본평균의 분포가 근사적으로 정규분포라고 말한다.</figcaption>
+</figure>
+</div>
+<p>그림에서 왼쪽부터 <strong>분포</strong>, <strong>확률변수</strong>, <strong>사건</strong>, <strong>수</strong>를 나타낸다. 분포는 누적분포함수(CDF) <span class="math inline">\(F\)</span>, 확률질량함수(PMF, 이산형), 확률밀도함수(PDF, 연속형), 이야기, 이름과 모수, 적률생성함수(MGF)로 표현할 수 있으며 확률변수를 생성한다. <span class="math inline">\(E(X_i)=\mu\)</span>, <span class="math inline">\(\operatorname{Var}(X_i)=\sigma^2\)</span>인 독립이고 동일한 분포의 확률변수에 대해 <span class="math inline">\(\bar X_n=\frac1n\sum_{i=1}^nX_i\)</span>이다. 그림의 사건과 수의 관계는 다음과 같다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+P(|\bar X_n-\mu|&gt;\epsilon)&amp;\leq\frac{\sigma^2}{n\epsilon^2} &amp;&amp;\text{(체비쇼프 부등식)},\\
+P(|\bar X_n-\mu|&gt;\epsilon)&amp;\to0\quad(n\to\infty) &amp;&amp;\text{(큰 수의 법칙)},\\
+P(a\leq\bar X_n\leq b)&amp;\approx\Phi\left(\frac{\sqrt n(b-\mu)}{\sigma}\right)-\Phi\left(\frac{\sqrt n(a-\mu)}{\sigma}\right) &amp;&amp;\text{($n$이 클 때, 중심극한정리)},\\
+E(\bar X_n)&amp;=\mu,\qquad \operatorname{Var}(\bar X_n)=\frac{\sigma^2}{n}.
+\end{aligned}
+\]</span></p>
+<p>마지막으로 이름 있는 분포들 사이의 관계를 나타내는 그림을 다시 살펴보자. 이번에는 카이제곱분포를 감마분포의 특수한 경우로, 스튜던트 t분포를 코시분포를 특수한 경우로 갖는 분포로 추가했다. 또한 포아송분포, 감마분포, 스튜던트 t분포가 정규분포로 수렴함을 나타내는 화살표를 추가했다. 앞의 두 수렴은 중심극한정리의 결과이고, 세 번째 수렴은 큰 수의 법칙의 결과이다.</p>
+<p><em>옮긴이 주:</em> 포아송분포와 감마분포의 정규 극한은 해당 모수가 커질 때 적절히 중심화하고 표준화한 분포에 관한 것이다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-10-distributions.png" class="img-fluid figure-img"></p>
+<figcaption>이름 있는 분포 사이의 관계. 화살표의 Limit은 극한, Conditioning은 조건화, Conjugacy는 켤레성, Poisson process는 포아송 과정, Bank–Post Office는 은행–우체국 관계를 뜻한다.</figcaption>
+</figure>
+</div>
+<p>그림의 분포 이름은 HGeom(초기하분포), Bin(이항분포; Bern은 베르누이분포), Pois(포아송분포), Beta(베타분포; Unif는 균등분포), Gamma(감마분포; Expo는 지수분포, Chi-Square는 카이제곱분포), NBin(음이항분포; Geom은 기하분포), Normal(정규분포), Student-<span class="math inline">\(t\)</span>(스튜던트 t분포; Cauchy는 코시분포)이다.</p>
+<p>이제 이름 있는 분포들이 모두 서로 연결되어 있음을 알 수 있다!</p>
+</section>
+<section id="r" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="r"><span class="header-section-number">10.6</span> R</h2>
+<section id="옌센-부등식" class="level3" data-number="10.6.1">
+<h3 data-number="10.6.1" class="anchored" data-anchor-id="옌센-부등식"><span class="header-section-number">10.6.1</span> 옌센 부등식</h3>
+<p>R을 이용하면 주어진 함수 <span class="math inline">\(g\)</span>에 대해 <span class="math inline">\(X\)</span>와 <span class="math inline">\(g(X)\)</span>의 기댓값을 쉽게 비교할 수 있으므로, 옌센 부등식의 몇 가지 특수한 경우를 확인할 수 있다. 예를 들어 <span class="math inline">\(\operatorname{Expo}(1)\)</span> 분포에서 <span class="math inline">\(10^4\)</span>번 시뮬레이션한다고 하자.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">10</span><span class="sc">^</span><span class="dv">4</span>)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>옌센 부등식에 따르면 <span class="math inline">\(E(\log X) \leq \log EX\)</span>이다. 전자는 <code>mean(log(x))</code>로, 후자는 <code>log(mean(x))</code>로 근사할 수 있으므로 둘 다 계산해 보자.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">log</span>(x))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(<span class="fu">mean</span>(x))</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p><span class="math inline">\(\operatorname{Expo}(1)\)</span> 분포에 대해 <code>mean(log(x))</code>는 약 <span class="math inline">\(-0.6\)</span>(실제 값은 약 <span class="math inline">\(-0.577\)</span>)이고 <code>log(mean(x))</code>는 약 <span class="math inline">\(0\)</span>(실제 값은 <span class="math inline">\(0\)</span>)이다. 이는 실제로 <span class="math inline">\(E(\log X) \leq \log EX\)</span>임을 시사한다. <code>mean(x^3)</code>과 <code>mean(x)^3</code> 또는 <code>mean(sqrt(x))</code>와 <code>sqrt(mean(x))</code>를 비교할 수도 있다. 이처럼 가능한 비교는 무궁무진하다.</p>
+</section>
+<section id="큰-수의-법칙-시각화" class="level3" data-number="10.6.2">
+<h3 data-number="10.6.2" class="anchored" data-anchor-id="큰-수의-법칙-시각화"><span class="header-section-number">10.6.2</span> 큰 수의 법칙 시각화</h3>
+<p>독립적인 공정한 동전 던지기에서 앞면이 나온 누적 비율을 그리려면, 먼저 동전 던지기 결과를 생성한다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nsim <span class="ot">&lt;-</span> <span class="dv">300</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(nsim,<span class="dv">1</span>,p)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>그런 다음 각 <span class="math inline">\(n\)</span>에 대해 <span class="math inline">\(\bar X_n\)</span>을 계산하고 결과를 <code>xbar</code>에 저장한다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(x)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">:</span>nsim)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>위 코드는 두 벡터 <code>cumsum(x)</code>와 <code>1:nsim</code>을 원소별로 나눈다. 마지막으로 동전 던지기 횟수에 따른 <code>xbar</code>를 그린다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span>nsim,xbar,<span class="at">type=</span><span class="st">"l"</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>큰 수의 법칙에 따라 <code>xbar</code>의 값이 <span class="math inline">\(p\)</span>에 가까워지는 것을 볼 수 있다.</p>
+</section>
+<section id="몬테카를로를-이용한-pi의-추정" class="level3" data-number="10.6.3">
+<h3 data-number="10.6.3" class="anchored" data-anchor-id="몬테카를로를-이용한-pi의-추정"><span class="header-section-number">10.6.3</span> 몬테카를로를 이용한 <span class="math inline">\(\pi\)</span>의 추정</h3>
+<p>몬테카를로 적분의 유명한 예로 <span class="math inline">\(\pi\)</span>의 몬테카를로 추정이 있다. 단위원판 <span class="math inline">\(\{(x,y):x^2+y^2\leq 1\}\)</span>은 넓이가 <span class="math inline">\(4\)</span>인 정사각형 <span class="math inline">\([-1,1]\times[-1,1]\)</span>에 내접한다. 정사각형 위에 균등하게 분포하는 점을 많이 생성하면 원판 안에 들어가는 점의 비율은 원판과 정사각형의 넓이의 비인 <span class="math inline">\(\pi/4\)</span>에 대략 같아진다. 따라서 원 안에 들어가는 점의 비율에 <span class="math inline">\(4\)</span>를 곱하여 <span class="math inline">\(\pi\)</span>를 추정할 수 있다.</p>
+<p>R에서 이 2차원 정사각형 위에 균등하게 분포하는 점을 생성하려면, 예제 7.1.23의 결과를 이용하여 <span class="math inline">\(x\)</span>좌표와 <span class="math inline">\(y\)</span>좌표를 각각 독립적인 <span class="math inline">\(\operatorname{Unif}(-1,1)\)</span> 확률변수로 생성하면 된다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>nsim <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">6</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(nsim,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">runif</span>(nsim,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-10-8.png" class="img-fluid figure-img"></p>
+<figcaption>그림 10.8: <span class="math inline">\(\pi\)</span>의 몬테카를로 추정. 넓이가 <span class="math inline">\(4\)</span>인 2차원 정사각형 <span class="math inline">\([-1,1]\times[-1,1]\)</span> 위에 균등하게 분포하는 점들을 생성한다. 단위원판 안에 들어가는 점의 비율은 대략 <span class="math inline">\(\pi/4\)</span>이다.</figcaption>
+</figure>
+</div>
+<p>원판 안에 들어가는 점의 개수를 세려면 <code>sum(x^2+y^2&lt;1)</code>을 입력한다. 벡터 <code>x^2+y^2&lt;1</code>은 <span class="math inline">\(i\)</span>번째 점이 원판 안에 있으면 <span class="math inline">\(i\)</span>번째 원소가 1이고 그렇지 않으면 0인 지시벡터이므로, 그 원소들의 합은 원판 안에 있는 점의 개수이다. <span class="math inline">\(\pi\)</span>의 추정값을 구하려면 이 합을 비율로 바꾸고 <span class="math inline">\(4\)</span>를 곱한다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span><span class="sc">*</span><span class="fu">sum</span>(x<span class="sc">^</span><span class="dv">2</span><span class="sc">+</span>y<span class="sc">^</span><span class="dv">2</span><span class="sc">&lt;</span><span class="dv">1</span>)<span class="sc">/</span>nsim</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>추정값은 <span class="math inline">\(\pi\)</span>의 실제 값에 얼마나 가까웠는가?</p>
+</section>
+<section id="중심극한정리의-시각화" class="level3" data-number="10.6.4">
+<h3 data-number="10.6.4" class="anchored" data-anchor-id="중심극한정리의-시각화"><span class="header-section-number">10.6.4</span> 중심극한정리의 시각화</h3>
+<p>관심 있는 분포에 대해 중심극한정리를 시각화하는 한 가지 방법은 그림 10.5처럼 여러 <span class="math inline">\(n\)</span> 값에 대한 <span class="math inline">\(\bar X_n\)</span>의 분포를 그리는 것이다. 이를 위해 먼저 관심 있는 분포에서 독립이고 동일한 분포를 따르는 <span class="math inline">\(X_1,\ldots,X_n\)</span>을 여러 번 생성해야 한다. 예를 들어 관심 있는 분포가 <span class="math inline">\(\operatorname{Unif}(0,1)\)</span>이고 <span class="math inline">\(\bar X_{12}\)</span>의 분포를 살펴보고 싶다고 하자. 즉, <span class="math inline">\(n=12\)</span>로 둔다. 다음 코드에서는 독립이고 동일한 표준균등분포를 따르는 값들로 행렬을 만든다. 이 행렬은 <span class="math inline">\(X_1\)</span>부터 <span class="math inline">\(X_{12}\)</span>까지에 해당하는 12개의 열을 가진다. 행렬의 각 행은 <span class="math inline">\(X_1\)</span>부터 <span class="math inline">\(X_{12}\)</span>까지의 서로 다른 실현값이다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>nsim <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">4</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">12</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">runif</span>(n<span class="sc">*</span>nsim), <span class="at">nrow=</span>nsim, <span class="at">ncol=</span>n)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>이제 <span class="math inline">\(\bar X_{12}\)</span>의 실현값을 얻으려면 행렬 <code>x</code>의 각 행의 평균을 구하면 된다. 이를 위해 <code>rowMeans</code> 함수를 사용할 수 있다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(x)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>마지막으로 히스토그램을 그린다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(xbar)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>대략 정규분포 모양인 히스토그램이 나타날 것이다. 이 균등분포 예에서는 <span class="math inline">\(n=12\)</span>일 때도 <span class="math inline">\(\bar X_n\)</span>에 대한 정규근사가 잘 맞는다.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> <code>runif</code>를 <code>rexp</code>로 바꾸면 <span class="math inline">\(X_j\sim\operatorname{Expo}(1)\)</span>일 때 <span class="math inline">\(n=12\)</span>에서도 <span class="math inline">\(\bar X_n\)</span>의 분포가 여전히 치우쳐 있음을 알 수 있다. 따라서 정규근사가 어느 정도 잘 맞으려면 더 큰 <span class="math inline">\(n\)</span>이 필요하다.</p>
+<p>중심극한정리의 또 다른 흥미로운 시각화는 <code>animation</code> 패키지에서 볼 수 있다. 이 패키지에는 통계학자이자 유전학자인 프랜시스 골턴이 정규분포를 설명하기 위해 발명한 퀸컹크스 또는 콩 기계의 애니메이션이 내장되어 있다. 패키지를 설치한 후 다음을 실행해 보자.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(animation)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">quincunx</span>()</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>퀸컹크스가 만들어 내는 히스토그램이 대략 정규분포 모양을 띠는 이유를 중심극한정리로 설명할 수 있는가?</p>
+</section>
+<section id="카이제곱분포와-스튜던트-t분포-1" class="level3" data-number="10.6.5">
+<h3 data-number="10.6.5" class="anchored" data-anchor-id="카이제곱분포와-스튜던트-t분포-1"><span class="header-section-number">10.6.5</span> 카이제곱분포와 스튜던트 t분포</h3>
+<p>카이제곱분포는 감마분포의 특수한 경우일 뿐이지만 R에는 이를 위한 별도의 함수 <code>dchisq</code>, <code>pchisq</code>, <code>rchisq</code>가 있다. <code>dchisq(x,n)</code>과 <code>pchisq(x,n)</code>은 <span class="math inline">\(x\)</span>에서의 <span class="math inline">\(\chi_n^2\)</span> 확률밀도함수와 누적분포함수 값을 반환하고, <code>rchisq(nsim,n)</code>은 독립이고 동일한 <span class="math inline">\(\chi_n^2\)</span> 분포를 따르는 확률변수를 <code>nsim</code>개 생성한다.</p>
+<p>스튜던트 t분포에는 <code>dt</code>, <code>pt</code>, <code>rt</code> 함수가 있다. <span class="math inline">\(x\)</span>에서 <span class="math inline">\(t_n\)</span> 분포의 확률밀도함수 또는 누적분포함수 값을 구하려면 <code>dt(x,n)</code> 또는 <code>pt(x,n)</code>을 사용한다. <span class="math inline">\(t_n\)</span> 분포에서 독립이고 동일한 분포를 따르는 확률변수를 <code>nsim</code>개 생성하려면 <code>rt(nsim,n)</code>을 사용한다. 물론 <code>dt(x,1)</code>은 <code>dcauchy(x)</code>와 같다.</p>
+</section>
+</section>
+<section id="연습문제" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="연습문제"><span class="header-section-number">10.7</span> 연습문제</h2>
+<p>◆ 표시가 있는 문제의 자세한 풀이는 <a href="http://stat110.net" class="uri">http://stat110.net</a>에 있다.</p>
+<section id="부등식-1" class="level3" data-number="10.7.1">
+<h3 data-number="10.7.1" class="anchored" data-anchor-id="부등식-1"><span class="header-section-number">10.7.1</span> 부등식</h3>
+<p><strong>1. ◆</strong> 전국 조사에서 사람들을 무작위로 추출하여 특정 정책을 지지하는지 묻는다. 매 단계에서 모집단의 모든 사람이 조사 대상이 될 가능성이 같고 복원추출한다고 가정하자. (비복원추출이 보통 더 현실적이지만, 표본 크기가 모집단 크기에 비해 작으면 복원추출이 좋은 근사가 된다.) 표본 크기를 <span class="math inline">\(n\)</span>, 표본과 전체 모집단에서 정책을 지지하는 사람의 비율을 각각 <span class="math inline">\(\hat p\)</span>와 <span class="math inline">\(p\)</span>라 하자. 모든 <span class="math inline">\(c&gt;0\)</span>에 대해 다음을 보여라.</p>
+<p><span class="math display">\[P(|\hat p-p|&gt;c)\leq\frac{1}{4nc^2}.\]</span></p>
+<p><strong>2. ◆</strong> 평균이 <span class="math inline">\(\mu\)</span>, 분산이 <span class="math inline">\(\sigma^2\)</span>인 독립이고 동일한 분포를 따르는 확률변수 <span class="math inline">\(X_1,\ldots,X_n\)</span>에 대해, 표본평균과 실제 평균 <span class="math inline">\(\mu\)</span>의 차이가 표준편차 2개 이내일 확률이 적어도 99%가 되도록 하는 <span class="math inline">\(n\)</span>의 값을 구체적인 수로 제시하라.</p>
+<p><strong>3. ◆</strong> 서로 어느 한쪽도 다른 쪽의 상수배가 아닌 양의 확률변수 <span class="math inline">\(X,Y\)</span>에 대해 <span class="math inline">\(E(X/Y)E(Y/X)&gt;1\)</span>임을 보여라.</p>
+<p><strong>4. ◆</strong> 유명한 산술평균-기하평균 부등식은 양수 <span class="math inline">\(a_1,a_2,\ldots,a_n\)</span>에 대해 다음이 성립한다고 말한다.</p>
+<p><span class="math display">\[\frac{a_1+a_2+\cdots+a_n}{n}\geq(a_1a_2\cdots a_n)^{1/n}.\]</span></p>
+<p>가능한 값이 <span class="math inline">\(a_1,\ldots,a_n\)</span>인 확률변수 <span class="math inline">\(X\)</span>에 대해 <span class="math inline">\(E\log(X)\)</span>를 고려하여 이 부등식이 옌센 부등식에서 따름을 보여라. <span class="math inline">\(X\)</span>의 확률질량함수를 명시해야 한다. 원한다면 <span class="math inline">\(a_j\)</span>들이 서로 다르다고, 즉 중복이 없다고 가정해도 되지만, 그렇게 가정한다면 명시해야 한다.</p>
+<p><strong>5. ◆</strong> <span class="math inline">\(X\)</span>를 서로 다른 가능한 값이 <span class="math inline">\(x_0,x_1,\ldots\)</span>인 이산확률변수라 하고 <span class="math inline">\(p_k=P(X=x_k)\)</span>라 하자. <span class="math inline">\(X\)</span>의 엔트로피는 <span class="math inline">\(H(X)=\sum_{k=0}^{\infty}p_k\log_2(1/p_k)\)</span>이다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(X\sim\operatorname{Geom}(p)\)</span>일 때 <span class="math inline">\(H(X)\)</span>를 구하라. 힌트: 로그의 성질을 이용하고 합의 일부를 기댓값으로 해석하라.</p></li>
+<li><p><span class="math inline">\(X,Y\)</span>가 독립이고 동일한 분포를 따르는 이산확률변수일 때 <span class="math inline">\(P(X=Y)\geq2^{-H(X)}\)</span>임을 보여라. 힌트: 확률 <span class="math inline">\(p_k\)</span>로 값 <span class="math inline">\(p_k\)</span>를 취하는 확률변수 <span class="math inline">\(W\)</span>에 대해 <span class="math inline">\(E(\log_2 W)\)</span>를 생각하라.</p></li>
+</ol>
+<p><strong>6.</strong> 평균이 <span class="math inline">\(\mu\)</span>, 분산이 <span class="math inline">\(\sigma^2\)</span>인 확률변수 <span class="math inline">\(X\)</span>에 대해 <span class="math inline">\(E(X-\mu)^4\geq\sigma^4\)</span>임을 보이고, 이를 이용하여 <span class="math inline">\(X\)</span>의 첨도가 적어도 <span class="math inline">\(-2\)</span>임을 보여라.</p>
+</section>
+<section id="빈칸에-부등호-채우기" class="level3" data-number="10.7.2">
+<h3 data-number="10.7.2" class="anchored" data-anchor-id="빈칸에-부등호-채우기"><span class="header-section-number">10.7.2</span> 빈칸에 부등호 채우기</h3>
+<p><strong>7. ◆</strong> <span class="math inline">\(X,Y\)</span>가 독립이고 동일한 분포를 따르는 양의 확률변수이고 <span class="math inline">\(c&gt;0\)</span>이라 하자. 각 항목의 빈칸에 알맞은 등호 또는 부등호를 써라. 양변이 항상 같으면 <span class="math inline">\(=\)</span>, 왼쪽이 오른쪽보다 작거나 같지만 반드시 같지는 않으면 <span class="math inline">\(\leq\)</span>를 쓰고, <span class="math inline">\(\geq\)</span>도 같은 방식으로 쓴다. 일반적으로 어떤 관계도 성립하지 않으면 <span class="math inline">\(?\)</span>를 써라.</p>
+<ol type="a">
+<li><p><span class="math inline">\(E(\log X)\;\underline{\qquad}\;\log(E X)\)</span></p></li>
+<li><p><span class="math inline">\(E(X)\;\underline{\qquad}\;\sqrt{E(X^2)}\)</span></p></li>
+<li><p><span class="math inline">\(E(\sin^2 X)+E(\cos^2 X)\;\underline{\qquad}\;1\)</span></p></li>
+<li><p><span class="math inline">\(E(|X|)\;\underline{\qquad}\;\sqrt{E(X^2)}\)</span></p></li>
+<li><p><span class="math inline">\(P(X&gt;c)\;\underline{\qquad}\;E(X^3)/c^3\)</span></p></li>
+<li><p><span class="math inline">\(P(X\leq Y)\;\underline{\qquad}\;P(X\geq Y)\)</span></p></li>
+<li><p><span class="math inline">\(E(XY)\;\underline{\qquad}\;\sqrt{E(X^2)E(Y^2)}\)</span></p></li>
+<li><p><span class="math inline">\(P(X+Y&gt;10)\;\underline{\qquad}\;P(X&gt;5\text{ 또는 }Y&gt;5)\)</span></p></li>
+<li><p><span class="math inline">\(E(\min(X,Y))\;\underline{\qquad}\;\min(EX,EY)\)</span></p></li>
+<li><p><span class="math inline">\(E(X/Y)\;\underline{\qquad}\;EX/EY\)</span></p></li>
+<li><p><span class="math inline">\(E(X^2(X^2+1))\;\underline{\qquad}\;E(X^2(Y^2+1))\)</span></p></li>
+<li><p><span class="math inline">\(E\left(\frac{X^3}{X^3+Y^3}\right)\;\underline{\qquad}\;E\left(\frac{Y^3}{X^3+Y^3}\right)\)</span></p></li>
+</ol>
+<p><strong>8. ◆</strong> 각 빈칸에 <span class="math inline">\(\leq,\geq,=,?\)</span> 중 가장 적절한 것을 써라. <span class="math inline">\(?\)</span>는 일반적으로 관계가 성립하지 않음을 뜻한다. (c)~(f)에서 <span class="math inline">\(X,Y\)</span>는 독립이고 동일한 분포를 따르는 양의 확률변수이다. 각 기댓값은 존재한다고 가정하라.</p>
+<ol type="a">
+<li><p>공정한 주사위 두 개의 합이 9일 확률 <span class="math inline">\(\;\underline{\qquad}\;\)</span> 합이 10일 확률</p></li>
+<li><p>공정한 동전을 20번 던져 적어도 65%가 앞면일 확률 <span class="math inline">\(\;\underline{\qquad}\;\)</span> 2000번 던져 적어도 65%가 앞면일 확률</p></li>
+<li><p><span class="math inline">\(E(\sqrt X)\;\underline{\qquad}\;\sqrt{E(X)}\)</span></p></li>
+<li><p><span class="math inline">\(E(\sin X)\;\underline{\qquad}\;\sin(EX)\)</span></p></li>
+<li><p><span class="math inline">\(P(X+Y&gt;4)\;\underline{\qquad}\;P(X&gt;2)P(Y&gt;2)\)</span></p></li>
+<li><p><span class="math inline">\(E((X+Y)^2)\;\underline{\qquad}\;2E(X^2)+2(EX)^2\)</span></p></li>
+</ol>
+<p><strong>9.</strong> <span class="math inline">\(X,Y\)</span>가 독립이고 동일한 분포를 따르는 연속확률변수라고 하자. 아래의 표현들은 존재한다고 가정하라. 각 빈칸에 <span class="math inline">\(\leq,\geq,=,?\)</span> 중 가장 적절한 것을 써라. <span class="math inline">\(?\)</span>는 일반적으로 관계가 성립하지 않음을 뜻한다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(e^{-E(X)}\;\underline{\qquad}\;E(e^{-X})\)</span></p></li>
+<li><p><span class="math inline">\(P(X&gt;Y+3)\;\underline{\qquad}\;P(Y&gt;X+3)\)</span></p></li>
+<li><p><span class="math inline">\(P(X&gt;Y+3)\;\underline{\qquad}\;P(X&gt;Y-3)\)</span></p></li>
+<li><p><span class="math inline">\(E(X^4)\;\underline{\qquad}\;(E(XY))^2\)</span></p></li>
+<li><p><span class="math inline">\(\operatorname{Var}(Y)\;\underline{\qquad}\;E(\operatorname{Var}(Y\mid X))\)</span></p></li>
+<li><p><span class="math inline">\(P(|X+Y|&gt;3)\;\underline{\qquad}\;E|X|\)</span></p></li>
+</ol>
+<p><strong>10. ◆</strong> <span class="math inline">\(X,Y\)</span>는 반드시 독립일 필요가 없는 양의 확률변수이고 아래 기댓값들은 존재한다고 가정하라. 각 빈칸에 <span class="math inline">\(\leq,\geq,=,?\)</span> 중 가장 적절한 것을 써라. <span class="math inline">\(?\)</span>는 일반적으로 관계가 성립하지 않음을 뜻한다.</p>
+<ol type="a">
+<li><p><span class="math inline">\((E(XY))^2\;\underline{\qquad}\;E(X^2)E(Y^2)\)</span></p></li>
+<li><p><span class="math inline">\(P(|X+Y|&gt;2)\;\underline{\qquad}\;\frac1{10}E((X+Y)^4)\)</span></p></li>
+<li><p><span class="math inline">\(E(\log(X+3))\;\underline{\qquad}\;\log(E(X+3))\)</span></p></li>
+<li><p><span class="math inline">\(E(X^2e^X)\;\underline{\qquad}\;E(X^2)E(e^X)\)</span></p></li>
+<li><p><span class="math inline">\(P(X+Y=2)\;\underline{\qquad}\;P(X=1)P(Y=1)\)</span></p></li>
+<li><p><span class="math inline">\(P(X+Y=2)\;\underline{\qquad}\;P(\{X\geq1\}\cup\{Y\geq1\})\)</span></p></li>
+</ol>
+<p><strong>11. ◆</strong> <span class="math inline">\(X,Y\)</span>는 반드시 독립일 필요가 없는 양의 확률변수이고 아래 기댓값들은 존재한다고 가정하라. 각 빈칸에 <span class="math inline">\(\leq,\geq,=,?\)</span> 중 가장 적절한 것을 써라. <span class="math inline">\(?\)</span>는 일반적으로 관계가 성립하지 않음을 뜻한다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(E(X^3)\;\underline{\qquad}\;\sqrt{E(X^2)E(X^4)}\)</span></p></li>
+<li><p><span class="math inline">\(P(|X+Y|&gt;2)\;\underline{\qquad}\;\frac1{16}E((X+Y)^4)\)</span></p></li>
+<li><p><span class="math inline">\(E(\sqrt{X+3})\;\underline{\qquad}\;\sqrt{E(X+3)}\)</span></p></li>
+<li><p><span class="math inline">\(E(\sin^2 X)+E(\cos^2 X)\;\underline{\qquad}\;1\)</span></p></li>
+<li><p><span class="math inline">\(E(Y\mid X+3)\;\underline{\qquad}\;E(Y\mid X)\)</span></p></li>
+<li><p><span class="math inline">\(E(E(Y^2\mid X))\;\underline{\qquad}\;(EY)^2\)</span></p></li>
+</ol>
+<p><strong>12. ◆</strong> <span class="math inline">\(X,Y\)</span>는 반드시 독립일 필요가 없는 양의 확률변수이고 아래 표현들은 존재한다고 가정하라. 각 빈칸에 <span class="math inline">\(\leq,\geq,=,?\)</span> 중 가장 적절한 것을 써라. <span class="math inline">\(?\)</span>는 일반적으로 관계가 성립하지 않음을 뜻한다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(P(X+Y&gt;2)\;\underline{\qquad}\;(EX+EY)/2\)</span></p></li>
+<li><p><span class="math inline">\(P(X+Y&gt;3)\;\underline{\qquad}\;P(X&gt;3)\)</span></p></li>
+<li><p><span class="math inline">\(E(\cos X)\;\underline{\qquad}\;\cos(EX)\)</span></p></li>
+<li><p><span class="math inline">\(E(X^{1/3})\;\underline{\qquad}\;(EX)^{1/3}\)</span></p></li>
+<li><p><span class="math inline">\(E(X^Y)\;\underline{\qquad}\;(EX)^{EY}\)</span></p></li>
+<li><p><span class="math inline">\(E(E(X\mid Y)+E(Y\mid X))\;\underline{\qquad}\;EX+EY\)</span></p></li>
+</ol>
+<p><strong>13. ◆</strong> <span class="math inline">\(X,Y\)</span>는 독립이고 동일한 분포를 따르는 양의 확률변수이고 아래 표현들은 존재한다고 가정하라. 각 빈칸에 <span class="math inline">\(\leq,\geq,=,?\)</span> 중 가장 적절한 것을 써라. <span class="math inline">\(?\)</span>는 일반적으로 관계가 성립하지 않음을 뜻한다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(E(e^{X+Y})\;\underline{\qquad}\;e^{2E(X)}\)</span></p></li>
+<li><p><span class="math inline">\(E(X^2e^X)\;\underline{\qquad}\;\sqrt{E(X^4)E(e^{2X})}\)</span></p></li>
+<li><p><span class="math inline">\(E(X\mid3X)\;\underline{\qquad}\;E(X\mid2X)\)</span></p></li>
+<li><p><span class="math inline">\(E(X^7Y)\;\underline{\qquad}\;E(X^7E(Y\mid X))\)</span></p></li>
+<li><p><span class="math inline">\(E(X/Y+Y/X)\;\underline{\qquad}\;2\)</span></p></li>
+<li><p><span class="math inline">\(P(|X-Y|&gt;2)\;\underline{\qquad}\;\operatorname{Var}(X)/2\)</span></p></li>
+</ol>
+<p><strong>14. ◆</strong> <span class="math inline">\(X,Y\)</span>는 독립이고 동일한 <span class="math inline">\(\operatorname{Gamma}(1/2,1/2)\)</span> 분포를 따르며 <span class="math inline">\(Z\sim N(0,1)\)</span>이라 하자. <span class="math inline">\(X\)</span>와 <span class="math inline">\(Z\)</span>, 그리고 <span class="math inline">\(Y\)</span>와 <span class="math inline">\(Z\)</span>는 각각 종속일 수도 있음에 주의하라. (a)~(c)는 <span class="math inline">\(&lt;,&gt;,=,?\)</span> 중에서, (d)~(f)는 <span class="math inline">\(\leq,\geq,=,?\)</span> 중에서 가장 적절한 것을 각 빈칸에 써라.</p>
+<ol type="a">
+<li><p><span class="math inline">\(P(X&lt;Y)\;\underline{\qquad}\;1/2\)</span></p></li>
+<li><p><span class="math inline">\(P(X=Z^2)\;\underline{\qquad}\;1\)</span></p></li>
+<li><p><span class="math inline">\(P\left(Z\geq\frac1{X^4+Y^4+7}\right)\;\underline{\qquad}\;1\)</span></p></li>
+<li><p><span class="math inline">\(E\left(\frac X{X+Y}\right)E((X+Y)^2)\;\underline{\qquad}\;E(X^2)+(E(X))^2\)</span></p></li>
+<li><p><span class="math inline">\(E(X^2Z^2)\;\underline{\qquad}\;\sqrt{E(X^4)E(X^2)}\)</span></p></li>
+<li><p><span class="math inline">\(E((X+2Y)^4)\;\underline{\qquad}\;3^4\)</span></p></li>
+</ol>
+<p><strong>15.</strong> <span class="math inline">\(X,Y,Z\)</span>는 독립이고 동일한 <span class="math inline">\(N(0,1)\)</span> 분포를 따르는 확률변수이다. 각 빈칸에 <span class="math inline">\(\leq,\geq,=,?\)</span> 중 가장 적절한 것을 써라. <span class="math inline">\(?\)</span>는 일반적으로 관계가 성립하지 않음을 뜻한다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(P(X^2+Y^2+Z^2&gt;6)\;\underline{\qquad}\;1/2\)</span></p></li>
+<li><p><span class="math inline">\(P(X^2&lt;1)\;\underline{\qquad}\;2/3\)</span></p></li>
+<li><p><span class="math inline">\(E\left(\frac{X^2}{X^2+Y^2+Z^2}\right)\;\underline{\qquad}\;1/4\)</span></p></li>
+<li><p><span class="math inline">\(\operatorname{Var}(\Phi(X)+\Phi(Y)+\Phi(Z))\;\underline{\qquad}\;1/4\)</span></p></li>
+<li><p><span class="math inline">\(E(e^{-X})\;\underline{\qquad}\;E(e^X)\)</span></p></li>
+<li><p><span class="math inline">\(E(|X|e^X)\;\underline{\qquad}\;\sqrt{E(e^{2X})}\)</span></p></li>
+</ol>
+<p><strong>16.</strong> <span class="math inline">\(X,Y,Z,W\)</span>는 누적분포함수 <span class="math inline">\(F\)</span>를 갖는 독립이고 동일한 분포의 양의 확률변수이고 <span class="math inline">\(E(X)=1\)</span>이다. 각 빈칸에 <span class="math inline">\(\leq,\geq,=,?\)</span> 중 가장 적절한 것을 써라. <span class="math inline">\(?\)</span>는 일반적으로 관계가 성립하지 않음을 뜻한다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(F(3)\;\underline{\qquad}\;2/3\)</span></p></li>
+<li><p><span class="math inline">\((F(3))^3\;\underline{\qquad}\;P(X+Y+Z\leq9)\)</span></p></li>
+<li><p><span class="math inline">\(E\left(\frac{X^2}{X^2+Y^2+Z^2+W^2}\right)\;\underline{\qquad}\;1/4\)</span></p></li>
+<li><p><span class="math inline">\(E(XYZW)\;\underline{\qquad}\;E(X^4)\)</span></p></li>
+<li><p><span class="math inline">\(\operatorname{Var}(E(Y\mid X))\;\underline{\qquad}\;\operatorname{Var}(Y)\)</span></p></li>
+<li><p><span class="math inline">\(\operatorname{Cov}(X+Y,X-Y)\;\underline{\qquad}\;0\)</span></p></li>
+</ol>
+<p><strong>17.</strong> <span class="math inline">\(X,Y,Z\)</span>는 독립이고 동일한 연속분포를 따르는 확률변수이다. 각 빈칸에 <span class="math inline">\(\leq,\geq,=,?\)</span> 중 가장 적절한 것을 써라. <span class="math inline">\(?\)</span>는 일반적으로 관계가 성립하지 않음을 뜻한다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(P(X&lt;Y&lt;Z)\;\underline{\qquad}\;1/6\)</span></p></li>
+<li><p><span class="math inline">\(P(X&gt;1)\;\underline{\qquad}\;E(X)\)</span></p></li>
+<li><p><span class="math inline">\(P\left(\sum_{k=0}^{2015}\left(\frac{X^2+1}{X^2+2}\right)^k&gt;3\right)\;\underline{\qquad}\;P(X^2&gt;1)\)</span></p></li>
+<li><p><span class="math inline">\(E(\sqrt{X^2+Y^2})\;\underline{\qquad}\;\sqrt{E(X^2)+E(Y^2)}\)</span></p></li>
+<li><p><span class="math inline">\(\operatorname{Var}(Y^2\mid Z)\;\underline{\qquad}\;\operatorname{Var}(X^2\mid X)\)</span></p></li>
+<li><p><span class="math inline">\(\operatorname{Var}(X-2Y+3Z)\;\underline{\qquad}\;14\operatorname{Var}(X)\)</span></p></li>
+</ol>
+<p><strong>18.</strong> <span class="math inline">\(X,Y,Z\)</span>는 독립이고 동일한 <span class="math inline">\(\operatorname{Bin}(n,p)\)</span> 분포를 따른다. 각 빈칸에 <span class="math inline">\(\leq,\geq,=,?\)</span> 중 가장 적절한 것을 써라. <span class="math inline">\(?\)</span>는 일반적으로 관계가 성립하지 않음을 뜻한다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(P(X&lt;Y&lt;Z)\;\underline{\qquad}\;1/6\)</span></p></li>
+<li><p><span class="math inline">\(P(X+Y+Z&gt;n)\;\underline{\qquad}\;3p\)</span></p></li>
+<li><p><span class="math inline">\(P\left(\sum_{n=0}^{2016}\frac{(X^2+1)^n}{n!}&gt;e^5\right)\;\underline{\qquad}\;P(X&gt;2)\)</span></p></li>
+<li><p><span class="math inline">\(E(e^X)\;\underline{\qquad}\;(pe+1-p)^n\)</span></p></li>
+<li><p><span class="math inline">\(\operatorname{Var}(X+Y)\;\underline{\qquad}\;n/2\)</span></p></li>
+<li><p><span class="math inline">\(E(X\mid X+Y=n)\;\underline{\qquad}\;n/2\)</span></p></li>
+</ol>
+<p><strong>19.</strong> <span class="math inline">\(X,Y,Z,W\)</span>는 독립이고 동일한 <span class="math inline">\(N(c,c^2)\)</span> 분포를 따르며 <span class="math inline">\(c&gt;0\)</span>이다. 각 빈칸에 <span class="math inline">\(\leq,\geq,=,?\)</span> 중 가장 적절한 것을 써라. <span class="math inline">\(?\)</span>는 일반적으로 관계가 성립하지 않음을 뜻한다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(P(X+Y\leq Z-W)\;\underline{\qquad}\;\Phi(-1)\)</span></p></li>
+<li><p><span class="math inline">\(P(X^4-Y^8\leq Z^4-W^8)\;\underline{\qquad}\;\Phi(-1)\)</span></p></li>
+<li><p><span class="math inline">\(E(X-c)^2\;\underline{\qquad}\;c\)</span></p></li>
+<li><p><span class="math inline">\(E(X-c)^3\;\underline{\qquad}\;c\)</span></p></li>
+<li><p><span class="math inline">\(E(\frac14 X^2+X)\;\underline{\qquad}\;\frac12c^2+c\)</span></p></li>
+<li><p><span class="math inline">\(\log(E(e^X))\;\underline{\qquad}\;\frac12c^2+c\)</span></p></li>
+</ol>
+<p><strong>20.</strong> <span class="math inline">\(X,Y\)</span>는 독립이고 동일한 <span class="math inline">\(\operatorname{Pois}(\lambda)\)</span> 분포를 따르며 <span class="math inline">\(\lambda&gt;1\)</span>이다. 각 빈칸에 <span class="math inline">\(\leq,\geq,=,?\)</span> 중 가장 적절한 것을 써라. <span class="math inline">\(?\)</span>는 일반적으로 관계가 성립하지 않음을 뜻한다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(P(X\leq Y)\;\underline{\qquad}\;1/2\)</span></p></li>
+<li><p><span class="math inline">\(P(X+Y\leq1)\;\underline{\qquad}\;3e^{-2\lambda}\)</span></p></li>
+<li><p><span class="math inline">\(E(e^{X+Y})\;\underline{\qquad}\;e^{2\lambda}\)</span></p></li>
+<li><p><span class="math inline">\(E(X\mid X+Y=4)\;\underline{\qquad}\;2\)</span></p></li>
+<li><p><span class="math inline">\(\operatorname{Var}(X\mid X+Y=4)\;\underline{\qquad}\;1\)</span></p></li>
+<li><p><span class="math inline">\(E(X^2-Y)\;\underline{\qquad}\;\lambda^2\)</span></p></li>
+</ol>
+</section>
+<section id="큰-수의-법칙과-중심극한정리" class="level3" data-number="10.7.3">
+<h3 data-number="10.7.3" class="anchored" data-anchor-id="큰-수의-법칙과-중심극한정리"><span class="header-section-number">10.7.3</span> 큰 수의 법칙과 중심극한정리</h3>
+<p><strong>21. ◆</strong> <span class="math inline">\(X_1,X_2,\ldots\)</span>은 평균이 2인 독립이고 동일한 분포의 양의 확률변수이며, <span class="math inline">\(Y_1,Y_2,\ldots\)</span>은 평균이 3인 독립이고 동일한 분포의 양의 확률변수이다. 다음이 확률 1로 성립함을 보여라.</p>
+<p><span class="math display">\[\frac{X_1+X_2+\cdots+X_n}{Y_1+Y_2+\cdots+Y_n}\to\frac23.\]</span></p>
+<p><span class="math inline">\(X_i\)</span>들이 <span class="math inline">\(Y_j\)</span>들과 독립인지 여부가 중요한가?</p>
+<p><strong>22. ◆</strong> <span class="math inline">\(U_1,U_2,\ldots,U_{60}\)</span>은 독립이고 동일한 <span class="math inline">\(\operatorname{Unif}(0,1)\)</span> 분포를 따르며 <span class="math inline">\(X=U_1+U_2+\cdots+U_{60}\)</span>이라 하자.</p>
+<ol type="a">
+<li><p><span class="math inline">\(X\)</span>의 분포는 어떤 중요한 분포에 매우 가까운가? 모수를 명시하고 선택의 근거가 되는 정리를 밝혀라.</p></li>
+<li><p><span class="math inline">\(P(X&gt;17)\)</span>의 간단하면서도 정확한 근삿값을 구하고 간략히 설명하라.</p></li>
+</ol>
+<p><strong>23. ◆</strong> 모든 양의 정수 <span class="math inline">\(n\)</span>에 대해 <span class="math inline">\(V_n\sim\chi_n^2\)</span>, <span class="math inline">\(T_n\sim t_n\)</span>이라 하자.</p>
+<ol type="a">
+<li><p><span class="math inline">\(a_n(V_n-b_n)\)</span>이 분포상 <span class="math inline">\(N(0,1)\)</span>로 수렴하도록 하는 수 <span class="math inline">\(a_n,b_n\)</span>을 구하라.</p></li>
+<li><p><span class="math inline">\(T_n^2/(n+T_n^2)\)</span>이 베타분포를 따름을 미적분을 사용하지 않고 보여라.</p></li>
+</ol>
+<p><strong>24. ◆</strong> <span class="math inline">\(T_1,T_2,\ldots\)</span>이 자유도 <span class="math inline">\(m\geq3\)</span>인 독립이고 동일한 스튜던트 t분포를 따르는 확률변수라 하자. <span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(a_n(T_1+T_2+\cdots+T_n-b_n)\)</span>이 분포상 <span class="math inline">\(N(0,1)\)</span>로 수렴하도록 하는 상수 <span class="math inline">\(a_n,b_n\)</span>을 <span class="math inline">\(m,n\)</span>으로 나타내어 구하라.</p>
+<p><strong>25. ◆</strong> (a) <span class="math inline">\(X\sim\operatorname{Expo}(3)\)</span>이고 <span class="math inline">\(Y=e^X\)</span>라 하자. <span class="math inline">\(Y\)</span>의 평균과 분산을 구하라.</p>
+<ol start="2" type="a">
+<li><span class="math inline">\(Y_1,\ldots,Y_n\)</span>이 독립이고 동일하게 (a)의 <span class="math inline">\(Y\)</span>와 같은 분포를 따른다면, <span class="math inline">\(n\)</span>이 클 때 표본평균 <span class="math inline">\(\bar Y_n=\frac1n\sum_{j=1}^nY_j\)</span>의 근사 분포는 무엇인가?</li>
+</ol>
+<p><strong>26. ◆</strong> (a) <span class="math inline">\(n\)</span>이 큰 양의 정수일 때 <span class="math inline">\(\operatorname{Pois}(n)\)</span> 분포가 정규분포로 근사되는 이유를 설명하고, 정규분포의 모수를 명시하라.</p>
+<ol start="2" type="a">
+<li>스털링 공식은 팩토리얼에 대한 놀라울 정도로 정확한 근사이다.</li>
+</ol>
+<p><span class="math display">\[n!\approx\sqrt{2\pi n}\left(\frac ne\right)^n.\]</span></p>
+<p>실제로 <span class="math inline">\(n\to\infty\)</span>일 때 양변의 비는 1로 간다. (a)를 이용하여 <span class="math inline">\(\operatorname{Pois}(n)\)</span> 확률변수가 <span class="math inline">\(n\)</span>일 확률에 정규근사를 적용함으로써 스털링 공식을 빠르게 직관적으로 유도하라. 연속성 보정을 사용하되, 먼저 <span class="math inline">\(N\sim\operatorname{Pois}(n)\)</span>에 대해 <span class="math inline">\(P(N=n)=P(n-\frac12&lt;N&lt;n+\frac12)\)</span>로 써라.</p>
+<p><strong>27. ◆</strong> (a) 독립이고 동일한 <span class="math inline">\(\operatorname{Pois}(\lambda)\)</span> 확률변수 <span class="math inline">\(X_1,X_2,\ldots\)</span>을 생각하자. <span class="math inline">\(X_j\)</span>의 MGF는 <span class="math inline">\(M(t)=e^{\lambda(e^t-1)}\)</span>이다. 표본평균 <span class="math inline">\(\bar X_n=\frac1n\sum_{j=1}^nX_j\)</span>의 MGF <span class="math inline">\(M_n(t)\)</span>를 구하라.</p>
+<ol start="2" type="a">
+<li><span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(M_n(t)\)</span>의 극한을 구하라. 적절한 정리를 이용하면 거의 계산 없이 구할 수 있다. 또는 (a)와 <span class="math inline">\(x\)</span>가 매우 작을 때 <span class="math inline">\(e^x\approx1+x\)</span>라는 사실을 이용할 수도 있다.</li>
+</ol>
+<p><strong>28.</strong> 모든 양의 정수 <span class="math inline">\(n\)</span>에 대해 <span class="math inline">\(X_n\sim\operatorname{Pois}(n)\)</span>이라 하자. 중심극한정리를 사용하지 말고 MGF를 이용하여 <span class="math inline">\(n\to\infty\)</span>일 때 표준화한 <span class="math inline">\(X_n\)</span>의 분포가 정규분포로 수렴함을 보여라.</p>
+<p><strong>29.</strong> 빈도주의 통계학의 중요한 개념 중 하나가 신뢰구간(CI)이다. 모수 <span class="math inline">\(\theta\)</span>를 갖는 분포에서 데이터 <span class="math inline">\(X\)</span>를 관측한다고 하자. 베이즈 통계학과 달리 <span class="math inline">\(\theta\)</span>는 고정되어 있지만 알려지지 않은 상수로 취급하며 사전분포를 부여하지 않는다. 95% 신뢰구간은 모든 가능한 <span class="math inline">\(\theta\)</span> 값에 대해</p>
+<p><span class="math display">\[P(L(X)&lt;\theta&lt;U(X))=0.95\]</span></p>
+<p>가 되도록 하는 하한 <span class="math inline">\(L(X)\)</span>와 상한 <span class="math inline">\(U(X)\)</span>로 이루어진다. 위 식에서 <span class="math inline">\(L(X)\)</span>와 <span class="math inline">\(U(X)\)</span>는 확률변수 <span class="math inline">\(X\)</span>의 함수이므로 확률변수인 반면, <span class="math inline">\(\theta\)</span>는 상수라는 점에 주의하라. 이 정의에 따르면 확률구간 <span class="math inline">\((L(X),U(X))\)</span>이 <span class="math inline">\(\theta\)</span>의 참값을 포함할 확률은 95%이다.</p>
+<p>전 세계의 수많은 빈도주의자가 독립적으로 95% 신뢰구간을 만든다고 상상해 보자. <span class="math inline">\(j\)</span>번째 빈도주의자는 데이터 <span class="math inline">\(X_j\)</span>를 관측하고 모수 <span class="math inline">\(\theta_j\)</span>의 신뢰구간을 만든다. 이 빈도주의자가 <span class="math inline">\(n\)</span>명일 때, 각자의 모수를 포함하는 구간의 비율이 <span class="math inline">\(n\to\infty\)</span>일 때 0.95에 가까워짐을 보여라.</p>
+<p>힌트: 지시확률변수 <span class="math inline">\(I_j=I(L(X_j)&lt;\theta_j&lt;U(X_j))\)</span>를 생각하라.</p>
+<p><strong>30.</strong> 이 문제는 예제 10.3.7을 더 일반적인 상황으로 확장한다. 다시, 변동성이 매우 큰 주식의 가격이 매일 같은 확률로 70% 상승하거나 50% 하락하며 날짜별 변동은 독립이라고 하자.</p>
+<ol type="a">
+<li><p>한 헤지펀드 매니저가 매일 현재 재산의 절반을 항상 이 주식에 투자한다고 하자. 최초 재산은 <span class="math inline">\(Y_0=100\)</span>이고 <span class="math inline">\(n\)</span>일 후 재산을 <span class="math inline">\(Y_n\)</span>이라 할 때, <span class="math inline">\(n\to\infty\)</span>이면 <span class="math inline">\(Y_n\)</span>은 어떻게 되는가?</p></li>
+<li><p>더 일반적으로 매니저가 매일 현재 재산의 비율 <span class="math inline">\(\alpha\)</span>를 항상 이 주식에 투자한다고 하자. (a)에서는 <span class="math inline">\(\alpha=1/2\)</span>였다. <span class="math inline">\(Y_0,Y_n\)</span>을 (a)와 같이 정의할 때 <span class="math inline">\(n\to\infty\)</span>이면 확률 1로</p></li>
+</ol>
+<p><span class="math display">\[\frac{\log Y_n}{n}\to g(\alpha)\]</span></p>
+<p>가 되는 함수 <span class="math inline">\(g(\alpha)\)</span>를 구하고, <span class="math inline">\(\alpha=2/7\)</span>일 때 <span class="math inline">\(g(\alpha)\)</span>가 최대가 됨을 증명하라.</p>
+</section>
+<section id="종합-연습" class="level3" data-number="10.7.4">
+<h3 data-number="10.7.4" class="anchored" data-anchor-id="종합-연습"><span class="header-section-number">10.7.4</span> 종합 연습</h3>
+<p><strong>31.</strong> 3장의 연습문제 36과 같이 어떤 나라의 다가오는 선거에 <span class="math inline">\(n\)</span>명의 유권자가 있으며, <span class="math inline">\(n\)</span>은 큰 짝수라고 하자. 후보는 A와 B 두 명이다. 각 유권자는 누구에게 투표할지 독립적으로 같은 확률로 무작위 선택한다.</p>
+<ol type="a">
+<li><p>연속성 보정을 적용한 정규근사를 이용하여 동률이 될 확률의 근삿값을 <span class="math inline">\(\Phi\)</span>로 나타내라.</p></li>
+<li><p>(a)의 근삿값에 1차 테일러 전개, 즉 선형근사를 적용하여 동률 확률이 근사적으로 <span class="math inline">\(1/\sqrt{cn}\)</span>임을 보여라. 상수 <span class="math inline">\(c\)</span>를 명시하라.</p></li>
+</ol>
+<p><strong>32.</strong> 캐시는 1달러를 가지고 카지노에 들어가 다음 게임을 반복한다. 확률 <span class="math inline">\(1/3\)</span>로 가진 돈이 3배가 되고, 확률 <span class="math inline">\(2/3\)</span>로 가진 돈이 3분의 1이 된다. 이 게임을 <span class="math inline">\(n\)</span>번 한 후 가진 돈을 <span class="math inline">\(X_n\)</span>이라 하자. 예를 들어 <span class="math inline">\(X_1\)</span>은 확률 <span class="math inline">\(1/3\)</span>로 3이고 확률 <span class="math inline">\(2/3\)</span>로 <span class="math inline">\(3^{-1}\)</span>이다.</p>
+<p><em>옮긴이 주:</em> 각 게임의 결과는 서로 독립이라고 가정한다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(E(X_1)\)</span>과 <span class="math inline">\(E(X_2)\)</span>를 구하고, 일반적으로 <span class="math inline">\(E(X_n)\)</span>을 구하라.</p></li>
+<li><p><span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(E(X_n)\)</span>은 어떻게 되는가?</p></li>
+<li><p>처음 <span class="math inline">\(n\)</span>번의 게임 중 캐시의 돈이 3배가 된 횟수를 <span class="math inline">\(Y_n\)</span>이라 하자. <span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(Y_n/n\)</span>은 어떻게 되는가?</p></li>
+<li><p><span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(X_n\)</span>은 어떻게 되는가?</p></li>
+</ol>
+<p><strong>33.</strong> 통계학과 일상생활에서 쓸 만한 경험 법칙은 다음과 같다.</p>
+<blockquote class="blockquote">
+<p>조건을 부여하면 상황이 좋아지는 경우가 많다.</p>
+</blockquote>
+<p>이 문제에서는 이 경험 법칙이 미지의 모수 추정에 어떻게 적용되는지 살펴본다. 데이터 <span class="math inline">\(X_1,X_2,\ldots,X_n\)</span>에 근거하여 추정하고자 하는 미지의 모수를 <span class="math inline">\(\theta\)</span>라 하자. 데이터는 관측되기 전에는 확률변수이고 실험 후에 데이터로 ‘결정된다’. 이 문제에서 <span class="math inline">\(\theta\)</span>는 미지의 상수로 보며 베이즈 접근법처럼 확률변수로 취급하지 않는다. <span class="math inline">\(T_1\)</span>을 <span class="math inline">\(\theta\)</span>의 추정량이라 하자. 즉 <span class="math inline">\(T_1\)</span>은 <span class="math inline">\(\theta\)</span>를 추정하는 데 쓰이는 <span class="math inline">\(X_1,\ldots,X_n\)</span>의 함수이다.</p>
+<p>일부 문제에서 <span class="math inline">\(T_1\)</span>을 개선하는 전략은 다음과 같다. <span class="math inline">\(T_2=E(T_1\mid R)\)</span>이 <span class="math inline">\(X_1,\ldots,X_n\)</span>의 함수가 되는 확률변수 <span class="math inline">\(R\)</span>이 있다고 하자. 일반적으로 <span class="math inline">\(E(T_1\mid R)\)</span>은 <span class="math inline">\(\theta\)</span> 같은 미지의 값을 포함할 수도 있는데, 그 경우에는 추정량으로 사용할 수 없다. 또한 <span class="math inline">\(P(T_1=T_2)&lt;1\)</span>이고 <span class="math inline">\(E(T_1^2)\)</span>은 유한하다고 하자.</p>
+<ol type="a">
+<li>옌센 부등식을 이용하여 평균제곱오차가 더 작다는 의미에서 <span class="math inline">\(T_2\)</span>가 <span class="math inline">\(T_1\)</span>보다 낫다는 것, 즉 다음을 보여라.</li>
+</ol>
+<p><span class="math display">\[E(T_2-\theta)^2&lt;E(T_1-\theta)^2.\]</span></p>
+<p>힌트: 오른쪽에 아담의 법칙을 적용하라.</p>
+<ol start="2" type="a">
+<li><span class="math inline">\(\theta\)</span>의 추정량 <span class="math inline">\(T\)</span>의 편향은 <span class="math inline">\(b(T)=E(T)-\theta\)</span>로 정의한다. 통계학의 중요한 항등식이자 편향-분산 상충관계의 한 형태에 따르면 평균제곱오차는 분산과 편향의 제곱의 합이다.</li>
+</ol>
+<p><span class="math display">\[E(T-\theta)^2=\operatorname{Var}(T)+(b(T))^2.\]</span></p>
+<p>이 항등식과 이브의 법칙을 이용하여 (a)의 결과를 다른 방식으로 증명하라.</p>
+<ol start="3" type="a">
+<li>이제 <span class="math inline">\(X_1,X_2,\ldots\)</span>이 평균 <span class="math inline">\(\theta\)</span>인 독립이고 동일한 분포를 따른다고 하고, <span class="math inline">\(T_1=X_1\)</span>, <span class="math inline">\(R=\sum_{j=1}^nX_j\)</span>인 특수한 경우를 생각하자. <span class="math inline">\(T_2\)</span>를 간단한 형태로 구하고 <span class="math inline">\(n\geq2\)</span>일 때 <span class="math inline">\(T_1\)</span>보다 평균제곱오차가 작은지 확인하라. 또한 <span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(T_1\)</span>과 <span class="math inline">\(T_2\)</span>가 어떻게 되는지 말하라.</li>
+</ol>
+<p><strong>34.</strong> <span class="math inline">\(n\)</span>쪽짜리 책에서 각 쪽의 오타 수는 <span class="math inline">\(\operatorname{Pois}(\lambda)\)</span> 분포를 따른다. <span class="math inline">\(\lambda\)</span>는 알려져 있지 않지만 확률변수로 취급하지 않는다. 서로 다른 쪽의 오타는 독립이다. 따라서 <span class="math inline">\(X_j\)</span>를 <span class="math inline">\(j\)</span>쪽의 오타 수라고 하면 <span class="math inline">\(X_1,\ldots,X_n\)</span>은 독립이고 동일한 <span class="math inline">\(\operatorname{Pois}(\lambda)\)</span> 분포를 따른다. 한 쪽에 오타가 없을 확률 <span class="math inline">\(\theta\)</span>를 추정하는 데 관심이 있다고 하자.</p>
+<p><span class="math display">\[\theta=P(X_j=0)=e^{-\lambda}.\]</span></p>
+<ol type="a">
+<li><p><span class="math inline">\(\bar X_n=\frac1n(X_1+\cdots+X_n)\)</span>이라 하자. 추정량 <span class="math inline">\(T_n=e^{-\bar X_n}\)</span>이 <span class="math inline">\(\theta\)</span>에 대해 편향되어 있음을 보여라. 즉 <span class="math inline">\(E(T_n)\ne\theta\)</span>임을 보여라. 추정량과 편향은 앞 문제에서 정의했다.</p></li>
+<li><p><span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(T_n\to\theta\)</span>가 확률 1로 성립함을 보여라.</p></li>
+<li><p><span class="math inline">\(W=\frac1n(I(X_1=0)+\cdots+I(X_n=0))\)</span>가 <span class="math inline">\(\theta\)</span>의 불편추정량임을 보여라. <span class="math inline">\(X_1\mid(X_1+\cdots+X_n=s)\sim\operatorname{Bin}(s,1/n)\)</span>이라는 사실을 이용하여 <span class="math inline">\(E(W\mid X_1+\cdots+X_n)\)</span>을 구하라. 추정량 <span class="math inline">\(\widetilde W=E(W\mid X_1+\cdots+X_n)\)</span>도 <span class="math inline">\(\theta\)</span>의 불편추정량인가?</p></li>
+<li><p>이브의 법칙 등을 이용하여 <span class="math inline">\(\widetilde W\)</span>의 분산이 <span class="math inline">\(W\)</span>보다 작음을 보이고 이를 앞 문제와 연결하여 설명하라.</p></li>
+</ol>
+<p><em>옮긴이 주:</em> 분산의 엄격한 부등식에는 <span class="math inline">\(n\geq2\)</span>와 <span class="math inline">\(\lambda&gt;0\)</span>이 필요하다. 경계 사례에서는 두 분산이 같을 수 있다.</p>
+<p><strong>35.</strong> 어떤 과정에 의해 이진 수열이 생성되고 있다. 이 과정은 무작위일 수도 있고 결정적일 수도 있다. 새로운 숫자를 순차적으로 예측해야 한다. 즉 다음 숫자가 0일지 1일지 예측하고, 그 숫자를 관측한 뒤, 그다음 숫자를 예측하는 식이다. 각 예측은 수열의 과거 전체에 기초할 수 있다.</p>
+<ol type="a">
+<li><p>이 항목에서 이진 수열은 독립이고 동일한 <span class="math inline">\(\operatorname{Bern}(p)\)</span> 확률변수로 이루어지고 <span class="math inline">\(p\)</span>는 알려져 있다고 하자. 각 예측을 맞힐 확률을 최대화하려면 최적 전략은 무엇인가? 이 전략으로 <span class="math inline">\(n\)</span>번째 값을 맞힐 확률은 얼마인가?</p></li>
+<li><p>이제 이진 수열은 독립이고 동일한 <span class="math inline">\(\operatorname{Bern}(p)\)</span> 확률변수로 이루어지지만 <span class="math inline">\(p\)</span>는 알려져 있지 않다고 하자. 다음 전략을 생각하자. 첫 예측은 1로 하고, 그 뒤에는 지금까지 나온 1의 비율이 적어도 <span class="math inline">\(1/2\)</span>이면 1, 그렇지 않으면 0이라고 말한다. <span class="math inline">\(n\)</span>번째 값을 맞힐 확률의 <span class="math inline">\(n\to\infty\)</span> 극한을 <span class="math inline">\(p\)</span>로 나타내어 구하라.</p></li>
+<li><p>이제 (b)의 전략을 따르지만, 이진 수열은 당신의 전략을 아는 악의적인 존재가 만들어 낸다고 하자. 이 존재는 당신이 가능한 한 자주 틀리도록 무엇을 할 수 있는가?</p></li>
+</ol>
+<p><strong>36. ◆</strong> <span class="math inline">\(X,Y\)</span>를 독립인 표준정규 확률변수라 하고 <span class="math inline">\(R^2=X^2+Y^2\)</span>이라 하자. 여기서 <span class="math inline">\(R&gt;0\)</span>은 <span class="math inline">\((X,Y)\)</span>와 원점 사이의 거리이다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(R^2\)</span>의 분포는 지금까지 본 중요한 분포 세 가지의 예이다. 이 세 분포를 밝히고 모수 값을 명시하라.</p></li>
+<li><p><span class="math inline">\(R\)</span>의 확률밀도함수를 구하라. 힌트: <span class="math inline">\(W=R^2\)</span>의 확률밀도함수 <span class="math inline">\(f_W(w)\)</span>에서 시작하라.</p></li>
+<li><p><span class="math inline">\(P(X&gt;2Y+3)\)</span>을 표준정규 누적분포함수 <span class="math inline">\(\Phi\)</span>로 나타내어 구하라.</p></li>
+<li><p><span class="math inline">\(\operatorname{Cov}(R^2,X)\)</span>를 계산하라. <span class="math inline">\(R^2\)</span>과 <span class="math inline">\(X\)</span>는 독립인가?</p></li>
+</ol>
+<p><strong>37. ◆</strong> <span class="math inline">\(Z_1,\ldots,Z_n\)</span>이 독립이고 동일한 <span class="math inline">\(N(0,1)\)</span> 분포를 따른다고 하자.</p>
+<ol type="a">
+<li><p><span class="math inline">\(Z_1\)</span>의 함수로 <span class="math inline">\(\operatorname{Expo}(1)\)</span> 확률변수 <span class="math inline">\(X\)</span>를 만들어라. 답에 표준정규 누적분포함수 <span class="math inline">\(\Phi\)</span>가 들어가도 된다.</p></li>
+<li><p><span class="math inline">\(R=\sqrt{Z_1^2+\cdots+Z_n^2}\)</span>이고 <span class="math inline">\(Y=e^{-R}\)</span>이라 하자. <span class="math inline">\(E(Y)\)</span>를 나타내는 적분을 쓰되 계산하지는 말라.</p></li>
+<li><p><span class="math inline">\(X_1=3Z_1-2Z_2\)</span>, <span class="math inline">\(X_2=4Z_1+6Z_2\)</span>라 하자. <span class="math inline">\(X_1\)</span>과 <span class="math inline">\(X_2\)</span>가 독립인지 판단하고, 어떤 결과를 이용하는지 반드시 밝혀라.</p></li>
+</ol>
+<p><strong>38. ◆</strong> <span class="math inline">\(X_1,X_2,\ldots\)</span>이 평균 <span class="math inline">\(\mu\)</span>인 독립이고 동일한 분포의 양의 확률변수이고 <span class="math inline">\(W_n=X_1/(X_1+\cdots+X_n)\)</span>이라 하자.</p>
+<ol type="a">
+<li><span class="math inline">\(E(W_n)\)</span>을 구하라. 힌트: 다음을 생각하라.</li>
+</ol>
+<p><span class="math display">\[\frac{X_1}{X_1+\cdots+X_n}+\frac{X_2}{X_1+\cdots+X_n}+\cdots+\frac{X_n}{X_1+\cdots+X_n}.\]</span></p>
+<ol start="2" type="a">
+<li><p><span class="math inline">\(n\to\infty\)</span>일 때 <span class="math inline">\(nW_n\)</span>은 어떤 확률변수로 확률 1로 수렴하는가?</p></li>
+<li><p><span class="math inline">\(X_j\sim\operatorname{Expo}(\lambda)\)</span>인 경우 <span class="math inline">\(W_n\)</span>의 분포를 구하라. 가능하면 미적분을 사용하지 말라. 우리가 공부한 이름 있는 분포 중 하나라면 이름과 모수를 명시하고, 그렇지 않으면 확률밀도함수를 제시하라.</p></li>
+</ol>
+<p><em>옮긴이 주:</em> <span class="math inline">\(n=1\)</span>인 경우는 퇴화분포이므로 따로 다룬다.</p>
+<p><strong>39.</strong> <span class="math inline">\(X_1,X_2,\ldots\)</span>은 독립이고 동일한 <span class="math inline">\(\operatorname{Expo}(1)\)</span> 분포를 따른다고 하자.</p>
+<ol type="a">
+<li><p><span class="math inline">\(N=\min\{n:X_n\geq1\}\)</span>을 1을 처음 넘는 <span class="math inline">\(X_j\)</span>의 지표라고 하자. <span class="math inline">\(N-1\)</span>의 분포를 이름과 모수로 밝히고, 이를 이용하여 <span class="math inline">\(E(N)\)</span>을 구하라.</p></li>
+<li><p><span class="math inline">\(M=\min\{n:X_1+X_2+\cdots+X_n\geq10\}\)</span>을 합이 처음으로 10을 넘을 때까지 관측한 <span class="math inline">\(X_j\)</span>의 개수라고 하자. <span class="math inline">\(M-1\)</span>의 분포를 이름과 모수로 밝히고, 이를 이용하여 <span class="math inline">\(E(M)\)</span>을 구하라. 힌트: 포아송 과정을 생각하라.</p></li>
+<li><p><span class="math inline">\(\bar X_n=(X_1+\cdots+X_n)/n\)</span>이라 하자. <span class="math inline">\(\bar X_n\)</span>의 정확한 분포와 <span class="math inline">\(n\)</span>이 클 때의 근사 분포를 각각 이름과 모수로 밝혀라.</p></li>
+</ol>
+
+
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>역자 주: <span class="math inline">\(E(X^2)=0\)</span>이면 <span class="math inline">\(X=0\)</span>이 확률 1로 성립하므로 부등식이 자명하다. 위의 나눗셈은 <span class="math inline">\(E(X^2)&gt;0\)</span>인 경우에 적용한다.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>역자 주: 상관계수는 두 분산이 모두 양수일 때 정의된다.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>역자 주: 분모 <span class="math inline">\(E(X^2)\)</span>가 양수인 경우의 식이다. <span class="math inline">\(X=0\)</span>이 확률 1로 성립하면 그 경우는 별도로 처리한다.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>역자 주: 기댓값과 비교식이 의미 있게 정의된다고 가정한다. 등호 조건은 특히 <span class="math inline">\(E(X)\)</span>에서의 지지직선 <span class="math inline">\(a+bx\)</span>에 대해 성립해야 한다. 단지 <span class="math inline">\(g(X)=a+bX\)</span>인 어떤 직선이 존재한다는 것만으로는 일반적으로 충분하지 않다.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>역자 주: 일반적으로 <span class="math inline">\(E(S_n)\leq\sigma\)</span>이며, 엄격한 편향 여부는 등호 성립 여부에 달려 있다.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>옮긴이 주: 원문은 <span class="math inline">\(H(Y)=E(\log_2Y)\)</span>라고 쓰지만, 서로 다른 <span class="math inline">\(j\)</span>에 대해 <span class="math inline">\(p_j\)</span>가 같으면 <span class="math inline">\(Y\)</span>의 값이 합쳐지므로 이 등식은 일반적으로 성립하지 않는다. 여기서는 원래 확률변수 <span class="math inline">\(Z\)</span>의 엔트로피를 사용해 증명을 고쳤다. <span class="math inline">\(p_j=0\)</span>인 항은 <span class="math inline">\(0\log(1/0)=0\)</span>으로 연속적으로 해석한다.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>역자 주: 표시된 풀이는 모든 <span class="math inline">\(p_j,r_j&gt;0\)</span>인 경우에 바로 적용된다. 0인 확률이 있으면 <span class="math inline">\(p_j=0\)</span>인 항은 0으로, <span class="math inline">\(p_j&gt;0\)</span>인데 <span class="math inline">\(r_j=0\)</span>인 항은 무한대로 해석한다. 일반적인 경우에도 발산은 음이 아니고 등호는 두 벡터가 같을 때 성립한다.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Joe가 Caltech 학부생이었을 때 철학 교수 Alan Hájek은 정확히 이 방식을 사용했다. 그는 확률 0을 적지 말라고 수강생들에게 경고했다. 점수 <span class="math inline">\(-\infty\)</span>는 그 시험에서만 <span class="math inline">\(-\infty\)</span>를 받는 것이 아니라 학기 전체 성적도 <span class="math inline">\(-\infty\)</span>가 되기 때문이다. 가중평균에서 <span class="math inline">\(-\infty\)</span>에 아무리 작은 양의 가중치를 주어도 결과는 <span class="math inline">\(-\infty\)</span>이다. 이러한 경고에도 일부 학생은 정답에 확률 0을 부여했다.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>역자 주: 앞 예제의 발산은 밑이 2인 로그로 정의되었다. 여기서 <span class="math inline">\(\log\)</span>가 자연로그라면 두 점수의 차이는 그 발산에 <span class="math inline">\(\ln 2\)</span>를 곱한 값이며, 어느 밑이든 결론은 같다.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>역자 주: 이 소득 해석에서는 소득이 음이 아니고 평균이 유한하며 양수라고 가정한다.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>역자 주: 이 형태는 <span class="math inline">\(\sigma&gt;0\)</span>일 때 성립한다. <span class="math inline">\(\sigma=0\)</span>이면 <span class="math inline">\(X=\mu\)</span>가 확률 1로 성립한다.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>옮긴이 주: 원문은 균등분포의 대칭성과 빠른 근사를 연결하지만, 대칭성만으로 정규근사의 속도를 일반적으로 보장할 수는 없다.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "복사완료!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "복사완료!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./09-조건부기댓값.html" class="pagination-link" aria-label="조건부기댓값">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">조건부기댓값</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./11-마르코프-연쇄.html" class="pagination-link" aria-label="마르코프 연쇄">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">마르코프 연쇄</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

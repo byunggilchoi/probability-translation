@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>12&nbsp; 마르코프 연쇄 몬테카를로 – 확률론 입문 — 한국어 번역</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./13-포아송-과정.html" rel="next">
+<link href="./11-마르코프-연쇄.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-7d8ad657b878717df1156ab40fed854c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./12-마르코프-연쇄-몬테카를로.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">마르코프 연쇄 몬테카를로</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="검색" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">확률론 입문 — 한국어 번역</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">번역 안내</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./서문.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">헌정사와 서문</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-확률과-경우의-수.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">확률과 경우의 수</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-조건부확률.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">조건부확률</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-확률변수와-분포.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">확률변수와 그 분포</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-기댓값.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">기댓값</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-연속확률변수.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">연속확률변수</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-적률.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">적률</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-결합분포.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">결합분포</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-변환.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">변환</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-조건부기댓값.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">조건부기댓값</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-부등식과-극한정리.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">부등식과 극한정리</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-마르코프-연쇄.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">마르코프 연쇄</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-마르코프-연쇄-몬테카를로.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">마르코프 연쇄 몬테카를로</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-포아송-과정.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">포아송 과정</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./A-수학.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">수학</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./B-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./C-분포표.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">분포표</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./참고문헌.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">참고문헌</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./색인.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">색인</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul>
+  <li><a href="#메트로폴리스헤이스팅스" id="toc-메트로폴리스헤이스팅스" class="nav-link active" data-scroll-target="#메트로폴리스헤이스팅스"><span class="header-section-number">12.1</span> 메트로폴리스–헤이스팅스</a></li>
+  <li><a href="#깁스-샘플링" id="toc-깁스-샘플링" class="nav-link" data-scroll-target="#깁스-샘플링"><span class="header-section-number">12.2</span> 깁스 샘플링</a></li>
+  <li><a href="#요약" id="toc-요약" class="nav-link" data-scroll-target="#요약"><span class="header-section-number">12.3</span> 요약</a></li>
+  <li><a href="#r" id="toc-r" class="nav-link" data-scroll-target="#r"><span class="header-section-number">12.4</span> R</a>
+  <ul class="collapse">
+  <li><a href="#메트로폴리스-헤이스팅스" id="toc-메트로폴리스-헤이스팅스" class="nav-link" data-scroll-target="#메트로폴리스-헤이스팅스"><span class="header-section-number">12.4.1</span> 메트로폴리스-헤이스팅스</a></li>
+  <li><a href="#깁스" id="toc-깁스" class="nav-link" data-scroll-target="#깁스"><span class="header-section-number">12.4.2</span> 깁스</a></li>
+  </ul></li>
+  <li><a href="#연습문제" id="toc-연습문제" class="nav-link" data-scroll-target="#연습문제"><span class="header-section-number">12.5</span> 연습문제</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">마르코프 연쇄 몬테카를로</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>이 책 전체에서 살펴보았듯이 시뮬레이션은 확률론의 강력한 기법이다. 몬티 홀 문제에서 문을 바꾸는 것이 좋다는 사실을 친구에게 납득시킬 수 없다면, 1초 만에 게임을 수천 번 시뮬레이션하여 문을 바꾸면 약 <span class="math inline">\(2/3\)</span>의 확률로 성공한다는 것을 직접 보여줄 수 있다. 확률변수 <span class="math inline">\(X\)</span>의 평균과 분산을 계산하는 방법은 모르지만 그 분포에서 독립이고 동일한 분포를 따르는 표본 <span class="math inline">\(X_1,X_2,\ldots,X_n\)</span>을 생성할 수 있다면, 생성한 표본의 표본평균과 표본분산으로 실제 평균과 분산을 근사할 수 있다.</p>
+<p><span class="math display">\[
+E(X)\approx\frac1n(X_1+\cdots+X_n)=\bar X_n,\qquad
+\operatorname{Var}(X)\approx\frac1{n-1}\sum_{j=1}^n(X_j-\bar X_n)^2.
+\]</span></p>
+<p>큰 수의 법칙에 따르면 <span class="math inline">\(n\)</span>이 크면 이 근사는 정확해진다. 계산하기 어려울 수도 있는 합이나 적분을 힘들게 구하는 대신 컴퓨터를 더 오래 실행하여 <span class="math inline">\(n\)</span>을 늘리기만 하면 점점 더 좋은 근삿값을 얻을 수 있다. 10장에서 설명했듯이 어떤 양을 근사하기 위해 무작위 값을 생성하는 이러한 시뮬레이션 방식을 몬테카를로 방법이라고 한다.</p>
+<p>위 몬테카를로 아이디어의 큰 한계는 <span class="math inline">\(X_1,X_2,\ldots,X_n\)</span>을 생성하는 방법을 알아야 한다는 것이다. <span class="math inline">\(n\)</span>을 크게 만들고 싶으므로 효율적인 생성 방법이면 더욱 좋다. 예를 들어 <span class="math inline">\(0&lt;x&lt;1\)</span>에서 확률밀도함수 <span class="math inline">\(f\)</span>가</p>
+<p><span class="math display">\[
+f(x)\propto x^{3.1}(1-x)^{4.2}
+\]</span></p>
+<p>이고 그 밖에서는 0인 연속분포에서 무작위 표본을 생성하고 싶다고 하자. 밀도함수를 바라보는 것만으로는 그 밀도를 가진 확률변수를 얻는 방법이 곧바로 떠오르지 않는다. 이 경우에는 <span class="math inline">\(\operatorname{Beta}(4.1,5.2)\)</span> 분포의 확률밀도함수라는 것을 알아볼 수 있으므로, <span class="math inline">\(\operatorname{Unif}(0,1)\)</span> 확률변수를 사용할 수 있다면 이론적으로 균등분포의 보편성을 이용할 수 있다. 안타깝게도 베타분포의 누적분포함수를 구하기는 어렵고 그 역함수를 구하기는 더욱 어렵다. 베타분포 시뮬레이션 문제는 예제 12.1.4에서 더 자세히 살펴본다.</p>
+<p>물론 실제 응용에서 나타나는 분포들은 베타분포보다 훨씬 복잡한 경우가 많다. 베타분포에서는 정규화 상수를 감마함수로 표현할 수 있다. 그러나 과학적으로 관심 있는 다른 많은 분포에서는 확률밀도함수나 확률질량함수의 정규화 상수를 알지 못하며, 가장 빠른 컴퓨터와 가장 정교한 수학 기법으로도 구할 수 없다.</p>
+<p>이 장에서는 마르코프 연쇄를 이용해 복잡한 분포에서 표본을 생성할 수 있게 해 주는 강력한 알고리즘들의 집합인 <em>마르코프 연쇄 몬테카를로</em>(MCMC)를 소개한다. MCMC의 발전은 고차원의 결합분포를 포함하여 시뮬레이션할 수 있는 분포의 범위를 크게 넓힘으로써 통계학과 과학 계산에 혁명을 가져왔다. 기본 아이디어는 관심 있는 분포가 정상분포가 되도록 마르코프 연쇄를 직접 만드는 것이다.</p>
+<p>앞 장에서는 전이행렬 <span class="math inline">\(Q\)</span>가 주어진 마르코프 연쇄를 살펴보고 연쇄의 정상분포 <span class="math inline">\(\mathbf{s}\)</span>를 구하려 했다. 이 장에서는 반대로, 시뮬레이션하고자 하는 분포 <span class="math inline">\(\mathbf{s}\)</span>에서 출발하여 정상분포가 <span class="math inline">\(\mathbf{s}\)</span>인 마르코프 연쇄를 설계한다. 이렇게 설계한 연쇄를 아주 오랫동안 실행하면 연쇄의 분포는 원하는 <span class="math inline">\(\mathbf{s}\)</span>에 가까워진다.</p>
+<p>하지만 원하는 정상분포를 가진 전이행렬 <span class="math inline">\(Q\)</span>를 만드는 것이 가능할까? 가능하더라도 이 문제를 푸는 것이 그 분포에서 무작위 표본을 생성하는 원래 문제보다 더 쉬울까? 놀랍도록 넓은 범위에서 MCMC는 원하는 정상분포를 가진 마르코프 연쇄를 그 분포의 정규화 상수를 알 필요 없이 쉽게 설명할 수 있는 방법으로 만들 수 있음을 보여준다!</p>
+<p>오늘날 MCMC는 생물과학, 자연과학, 물리과학의 수많은 문제에 적용되고 있으며 다양한 MCMC 알고리즘이 개발되었다. 여기서는 가장 중요하고 널리 쓰이는 두 알고리즘인 메트로폴리스–헤이스팅스 알고리즘과 깁스 표본추출을 소개한다. MCMC는 규모가 방대하고 계속 성장하는 통계 계산 분야이다. 이론, 방법, 응용에 관해서는 Brooks, Gelman, Jones와 Meng [2]을 참고하라.</p>
+<section id="메트로폴리스헤이스팅스" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="메트로폴리스헤이스팅스"><span class="header-section-number">12.1</span> 메트로폴리스–헤이스팅스</h2>
+<p>메트로폴리스–헤이스팅스 알고리즘은 관심 있는 상태공간 위의 임의의 기약 마르코프 연쇄에서 출발하여, 원하는 정상분포를 가진 새로운 마르코프 연쇄로 수정하는 일반적인 방법이다. 이 수정은 원래 연쇄에 선택성을 도입한다. 이동은 원래 연쇄에 따라 제안하지만 그 제안이 수락될 수도 있고 거절될 수도 있다. 예를 들어 원래 연쇄가 ‘보스턴’이라는 상태에서 ‘샌프란시스코’로 전이하려 한다고 하자. 그러면 새 연쇄에서는 제안을 수락하고 샌프란시스코로 가거나 제안을 거절하고 다음 단계에도 보스턴에 머문다. 제안의 수락 확률을 신중하게 선택하면 이 간단한 수정으로 새 연쇄가 원하는 정상분포를 갖게 된다.</p>
+<p><em>옮긴이 주:</em> 원하는 정상분포가 존재한다는 사실만으로 임의의 시작점에서 그 분포로 수렴하는 것은 아니다. 유한 상태공간에서 수렴하려면 수정된 연쇄의 기약성과 비주기성도 확인해야 한다. 원래 제안 연쇄가 기약이라는 사실만으로 수정된 연쇄의 기약성이 보장되지는 않는다.</p>
+<p><strong>알고리즘 12.1.1 (메트로폴리스–헤이스팅스).</strong> <span class="math inline">\(\mathbf{s}=(s_1,\ldots,s_M)\)</span>을 상태공간 <span class="math inline">\(\{1,\ldots,M\}\)</span>에서 원하는 정상분포라 하자. 모든 <span class="math inline">\(i\)</span>에 대해 <span class="math inline">\(s_i&gt;0\)</span>이라고 가정한다. 그렇지 않다면 <span class="math inline">\(s_i=0\)</span>인 상태 <span class="math inline">\(i\)</span>를 상태공간에서 삭제하면 된다. <span class="math inline">\(P=(p_{ij})\)</span>를 상태공간 <span class="math inline">\(\{1,\ldots,M\}\)</span> 위의 마르코프 연쇄의 전이행렬이라 하자. 직관적으로 <span class="math inline">\(P\)</span>는 실행하는 방법은 알지만 원하는 정상분포는 갖지 않은 마르코프 연쇄이다.</p>
+<p>우리의 목표는 <span class="math inline">\(P\)</span>를 수정하여 정상분포가 <span class="math inline">\(\mathbf{s}\)</span>인 마르코프 연쇄 <span class="math inline">\(X_0,X_1,\ldots\)</span>을 만드는 것이다. 이를 위한 메트로폴리스–헤이스팅스 알고리즘을 제시한다. 임의의 상태 <span class="math inline">\(X_0\)</span>에서 시작하고(무작위 또는 결정적으로 선택), 새 연쇄가 현재 <span class="math inline">\(X_n\)</span>에 있다고 하자. 새 연쇄를 한 번 이동시키려면 다음을 수행한다.</p>
+<ol type="1">
+<li><p><span class="math inline">\(X_n=i\)</span>이면 원래 전이행렬 <span class="math inline">\(P\)</span>의 <span class="math inline">\(i\)</span>번째 행에 있는 전이확률을 이용해 새로운 상태 <span class="math inline">\(j\)</span>를 제안한다.</p></li>
+<li><p>수락 확률을 계산한다.</p>
+<p><span class="math display">\[a_{ij}=\min\left(\frac{s_jp_{ji}}{s_ip_{ij}},1\right).\]</span></p></li>
+<li><p>앞면이 나올 확률이 <span class="math inline">\(a_{ij}\)</span>인 동전을 던진다.</p></li>
+<li><p>앞면이면 제안을 수락하여 <span class="math inline">\(j\)</span>로 이동하고 <span class="math inline">\(X_{n+1}=j\)</span>로 둔다. 그렇지 않으면 제안을 거절하여 <span class="math inline">\(i\)</span>에 머물고 <span class="math inline">\(X_{n+1}=i\)</span>로 둔다.</p></li>
+</ol>
+<p>즉 메트로폴리스–헤이스팅스 연쇄는 원래의 전이확률 <span class="math inline">\(p_{ij}\)</span>를 이용해 다음에 갈 곳을 제안한 다음 확률 <span class="math inline">\(a_{ij}\)</span>로 그 제안을 수락하며, 거절하면 현재 상태에 머문다. 이 알고리즘의 특히 좋은 점은 <span class="math inline">\(\mathbf{s}\)</span>의 정규화 상수를 알 필요가 없다는 것이다. 어차피 <span class="math inline">\(s_j/s_i\)</span>에서 상수가 소거되기 때문이다. 예를 들어 어떤 문제에서는 모든 상태에 걸친 균등분포, 즉 <span class="math inline">\(\mathbf{s}=(1/M,1/M,\ldots,1/M)\)</span>을 정상분포로 원하지만 상태의 수 <span class="math inline">\(M\)</span>이 크고 알려져 있지 않아 <span class="math inline">\(M\)</span>을 구하는 것이 매우 어려운 경우가 있다. 다행히 <span class="math inline">\(M\)</span>에 관계없이 <span class="math inline">\(s_j/s_i=1\)</span>이므로 단순히 <span class="math inline">\(\mathbf{s}\propto(1,1,\ldots,1)\)</span>이라고 쓰고 <span class="math inline">\(M\)</span>을 몰라도 <span class="math inline">\(a_{ij}\)</span>를 계산할 수 있다.</p>
+<p>알고리즘을 실행할 때 <span class="math inline">\(a_{ij}\)</span>의 분모에 있는 <span class="math inline">\(p_{ij}\)</span>는 결코 0이 아니다. <span class="math inline">\(p_{ij}=0\)</span>이면 원래 연쇄가 <span class="math inline">\(i\)</span>에서 <span class="math inline">\(j\)</span>로 가는 것을 결코 제안하지 않기 때문이다. 또한 <span class="math inline">\(p_{ii}&gt;0\)</span>이면 제안된 <span class="math inline">\(j\)</span>가 현재 상태 <span class="math inline">\(i\)</span>와 같을 수 있는데, 이 경우 제안을 수락하든 거절하든 연쇄는 <span class="math inline">\(i\)</span>에 머문다. (<span class="math inline">\(i\)</span>에 머물자는 제안을 거절하면서도 거기에 머무는 것은 외출 금지 처분을 받은 아이가 ‘그래, 내 방에 있을 거야. 하지만 시켜서 그러는 건 아니야!’라고 말하는 것과 같다.)</p>
+<p>이제 메트로폴리스–헤이스팅스 연쇄가 정상분포 <span class="math inline">\(\mathbf{s}\)</span>에 대해 가역적임을 보이자.</p>
+<p><em>증명.</em> <span class="math inline">\(Q\)</span>를 메트로폴리스–헤이스팅스 연쇄의 전이행렬이라 하자. 모든 <span class="math inline">\(i,j\)</span>에 대해 가역성 조건 <span class="math inline">\(s_iq_{ij}=s_jq_{ji}\)</span>만 확인하면 된다. <span class="math inline">\(i=j\)</span>이면 명백하므로 <span class="math inline">\(i\ne j\)</span>라고 하자. <span class="math inline">\(q_{ij}&gt;0\)</span>이면 <span class="math inline">\(p_{ij}&gt;0\)</span>이고(연쇄가 <span class="math inline">\(i\)</span>에서 <span class="math inline">\(j\)</span>로 가는 것을 제안할 수도 없다면 그곳에 갈 수 없다), <span class="math inline">\(p_{ji}&gt;0\)</span>이다(그렇지 않으면 수락 확률이 0일 것이다). 반대로 <span class="math inline">\(p_{ij}&gt;0\)</span>이고 <span class="math inline">\(p_{ji}&gt;0\)</span>이면 <span class="math inline">\(q_{ji}&gt;0\)</span>이다. 따라서 <span class="math inline">\(q_{ij}\)</span>와 <span class="math inline">\(q_{ji}\)</span>는 모두 0이거나 모두 0이 아니다. 둘 다 0이 아니라고 가정해도 된다. 그러면</p>
+<p><span class="math display">\[q_{ij}=p_{ij}a_{ij}\]</span></p>
+<p>이다. <span class="math inline">\(i\)</span>에서 출발해 <span class="math inline">\(j\)</span>에 도달하는 유일한 방법은 먼저 그 이동을 제안하고 다음에 제안을 수락하는 것이기 때문이다. 먼저 <span class="math inline">\(s_jp_{ji}\leq s_ip_{ij}\)</span>인 경우를 생각하자. 이때</p>
+<p><span class="math display">\[a_{ij}=\frac{s_jp_{ji}}{s_ip_{ij}},\qquad a_{ji}=1,\]</span></p>
+<p>이므로</p>
+<p><span class="math display">\[s_iq_{ij}=s_ip_{ij}a_{ij}=s_ip_{ij}\frac{s_jp_{ji}}{s_ip_{ij}}=s_jp_{ji}=s_jp_{ji}a_{ji}=s_jq_{ji}.\]</span></p>
+<p>대칭적으로 <span class="math inline">\(s_jp_{ji}&gt;s_ip_{ij}\)</span>이면 앞의 계산에서 <span class="math inline">\(i\)</span>와 <span class="math inline">\(j\)</span>의 역할을 바꾸어 다시 <span class="math inline">\(s_iq_{ij}=s_jq_{ji}\)</span>를 얻는다. 가역성 조건이 성립하므로 <span class="math inline">\(\mathbf{s}\)</span>는 전이행렬이 <span class="math inline">\(Q\)</span>인 연쇄의 정상분포이다. <span class="math inline">\(\blacksquare\)</span></p>
+<p><strong>주의 12.1.2.</strong> 메트로폴리스–헤이스팅스 알고리즘은 원하는 정상분포를 가진 마르코프 연쇄를 만드는 매우 일반적인 방법이다. 위 정식화에서 <span class="math inline">\(\mathbf{s}\)</span>와 <span class="math inline">\(P\)</span>는 모두 매우 일반적이며 같은 상태공간 위에 있다는 것 외에는 둘 사이의 관계를 규정하지 않았다. 그러나 실제로는 제안분포의 선택이 매우 중요하다. 선택에 따라 연쇄가 정상분포에 수렴하는 속도가 크게 달라질 수 있기 때문이다.</p>
+<p>좋은 제안분포를 선택하는 방법은 복잡한 주제이므로 여기서는 자세히 다루지 않는다. 직관적으로 수락률이 매우 낮은 제안분포는 연쇄가 거의 움직이지 않으므로 수렴이 느리다. 하지만 수락률이 높다고 반드시 이상적인 것도 아니다. 연쇄가 작고 소극적인 제안을 하는 경향이 있음을 나타낼 수 있기 때문이다. 상태공간이 크면 그런 연쇄가 전체 공간을 탐색하는 데 매우 오래 걸린다.</p>
+<p>다음은 메트로폴리스–헤이스팅스 알고리즘을 사용하여 분포에서 표본을 생성하는 예제들이다.</p>
+<p><strong>예제 12.1.3 (지프분포 시뮬레이션).</strong> <span class="math inline">\(M\geq2\)</span>를 정수라 하자. 확률변수 <span class="math inline">\(X\)</span>의 확률질량함수가 <span class="math inline">\(k=1,2,\ldots,M\)</span>에 대해</p>
+<p><span class="math display">\[P(X=k)=\frac{1/k^a}{\sum_{j=1}^M(1/j^a)}\]</span></p>
+<p>이고 그 밖에서는 0이면 <span class="math inline">\(X\)</span>는 모수 <span class="math inline">\(a&gt;0\)</span>인 지프분포를 따른다. 이 분포는 언어학에서 단어의 빈도를 연구할 때 널리 쓰인다.</p>
+<p>정상분포가 지프분포이고 모든 <span class="math inline">\(n\)</span>에 대해 <span class="math inline">\(|X_{n+1}-X_n|\leq1\)</span>인 마르코프 연쇄 <span class="math inline">\(X_0,X_1,\ldots\)</span>을 만들어라. 답에는 연쇄의 각 이동을 얻는 방법, 즉 각 <span class="math inline">\(n\)</span>에 대해 <span class="math inline">\(X_n\)</span>에서 <span class="math inline">\(X_{n+1}\)</span>로 전이하는 방법을 간단하고 정확하게 설명해야 한다.</p>
+<p><em>풀이.</em> 제안분포를 구한 후 메트로폴리스–헤이스팅스 알고리즘을 사용할 수 있다. 가능한 제안분포는 많지만 간단한 선택은 <span class="math inline">\(\{1,2,\ldots,M\}\)</span> 위의 다음과 같은 랜덤워크이다. <span class="math inline">\(i\ne1\)</span>, <span class="math inline">\(i\ne M\)</span>인 상태 <span class="math inline">\(i\)</span>에서는 각각 확률 <span class="math inline">\(1/2\)</span>로 상태 <span class="math inline">\(i-1\)</span> 또는 <span class="math inline">\(i+1\)</span>로 이동한다. 상태 1에서는 각각 확률 <span class="math inline">\(1/2\)</span>로 그곳에 머물거나 상태 2로 이동한다. 상태 <span class="math inline">\(M\)</span>에서는 각각 확률 <span class="math inline">\(1/2\)</span>로 그곳에 머물거나 상태 <span class="math inline">\(M-1\)</span>로 이동한다. 이 연쇄는 아래 그림과 같다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-12-1.png" class="img-fluid figure-img"></p>
+<figcaption>그림 12.1: 지프분포 시뮬레이션을 위한 제안 연쇄.</figcaption>
+</figure>
+</div>
+<p><span class="math inline">\(P\)</span>를 이 연쇄의 전이행렬이라 하자. <span class="math inline">\(P\)</span>는 대칭행렬이므로 명제 11.4.3을 적용할 수 있고, <span class="math inline">\(P\)</span>의 정상분포는 균등분포이다. 메트로폴리스–헤이스팅스를 이용하면 <span class="math inline">\(P\)</span>를 정상분포가 지프분포인 연쇄로 바꿀 수 있다.</p>
+<p><span class="math inline">\(X_0\)</span>을 임의의 시작 상태로 두고 연쇄 <span class="math inline">\(X_0,X_1,\ldots\)</span>을 다음과 같이 생성한다. 연쇄가 현재 상태 <span class="math inline">\(i\)</span>에 있다면 다음을 수행한다.</p>
+<ol type="1">
+<li>제안 연쇄 <span class="math inline">\(P\)</span>에 따라 제안 상태 <span class="math inline">\(j\)</span>를 생성한다.</li>
+<li>확률 <span class="math inline">\(\min(i^a/j^a,1)\)</span>로 제안을 수락한다. 수락하면 <span class="math inline">\(j\)</span>로 이동하고 그렇지 않으면 <span class="math inline">\(i\)</span>에 머문다.</li>
+</ol>
+<p>이 연쇄는 구현하기 쉽고 한 번 이동하는 데 계산이 거의 필요하지 않다. 연쇄를 실행하는 데 정규화 상수 <span class="math inline">\(\sum_{j=1}^M(1/j^a)\)</span>가 필요하지 않음에 주목하자. <span class="math inline">\(\square\)</span></p>
+<p><strong>예제 12.1.4 (베타분포 시뮬레이션).</strong> 이제 장의 시작에서 소개한 베타분포 시뮬레이션 문제로 돌아가자. <span class="math inline">\(W\sim\operatorname{Beta}(a,b)\)</span>를 생성하고 싶지만 R의 <code>rbeta</code> 명령을 모른다고 하자. 대신 독립이고 동일한 분포를 따르는 <span class="math inline">\(\operatorname{Unif}(0,1)\)</span> 확률변수들을 이용할 수 있다.</p>
+<ol type="a">
+<li><p><span class="math inline">\(a\)</span>와 <span class="math inline">\(b\)</span>가 양의 정수일 때 이야기와 균등분포의 보편성을 이용하여 <span class="math inline">\(W\)</span>를 어떻게 정확하게 생성할 수 있는가?</p></li>
+<li><p><span class="math inline">\(a\)</span>와 <span class="math inline">\(b\)</span>가 임의의 양의 실수일 때 상태공간 <span class="math inline">\((0,1)\)</span> 위의 마르코프 연쇄를 이용하여 대략 <span class="math inline">\(\operatorname{Beta}(a,b)\)</span> 분포를 따르는 <span class="math inline">\(W\)</span>를 어떻게 생성할 수 있는가?</p></li>
+</ol>
+<p><em>풀이.</em> (a) 베타분포에 균등분포의 보편성을 직접 적용하기는 어려우므로 먼저 은행–우체국 이야기를 이용하자. <span class="math inline">\(X\sim\operatorname{Gamma}(a,1)\)</span>과 <span class="math inline">\(Y\sim\operatorname{Gamma}(b,1)\)</span>가 독립이면 <span class="math inline">\(X/(X+Y)\sim\operatorname{Beta}(a,b)\)</span>이다. 따라서 감마분포를 시뮬레이션할 수 있다면 베타분포도 시뮬레이션할 수 있다!</p>
+<p><span class="math inline">\(X\sim\operatorname{Gamma}(a,1)\)</span>을 시뮬레이션하려면 독립이고 동일한 <span class="math inline">\(\operatorname{Expo}(1)\)</span> 분포를 따르는 <span class="math inline">\(X_j\)</span>들의 합 <span class="math inline">\(X_1+X_2+\cdots+X_a\)</span>를 사용할 수 있다. 마찬가지로 <span class="math inline">\(Y\sim\operatorname{Gamma}(b,1)\)</span>은 독립이고 동일한 <span class="math inline">\(\operatorname{Expo}(1)\)</span> 확률변수 <span class="math inline">\(b\)</span>개의 합으로 시뮬레이션할 수 있다. 마지막으로 <span class="math inline">\(\operatorname{Expo}(1)\)</span>의 누적분포함수의 역함수와 균등분포의 보편성을 이용하면 <span class="math inline">\(U\sim\operatorname{Unif}(0,1)\)</span>에 대해 <span class="math inline">\(-\log(1-U)\sim\operatorname{Expo}(1)\)</span>이므로 필요한 만큼 <span class="math inline">\(\operatorname{Expo}(1)\)</span> 확률변수를 쉽게 만들 수 있다.</p>
+<ol start="2" type="a">
+<li>메트로폴리스–헤이스팅스 알고리즘을 사용하자. 지금까지는 유한 상태공간에 대해서만 이 알고리즘을 소개했지만 무한 상태공간에서도 아이디어는 비슷하다. 사용할 수 있는 간단한 제안 연쇄는 독립적인 <span class="math inline">\(\operatorname{Unif}(0,1)\)</span> 확률변수들로 이루어진다. 즉 구간 <span class="math inline">\((0,1)\)</span>에서 제안되는 상태는 항상 현재 상태와 독립인 새로운 <span class="math inline">\(\operatorname{Unif}(0,1)\)</span> 값이다. 이렇게 얻는 메트로폴리스–헤이스팅스 연쇄를 독립 표본추출기라고 한다.</li>
+</ol>
+<p><span class="math inline">\(W_0\)</span>을 임의의 시작 상태로 두고 <span class="math inline">\(W_0,W_1,\ldots\)</span>을 다음과 같이 생성한다. 현재 상태가 <span class="math inline">\(w\)</span>라면 다음을 수행한다.</p>
+<ol type="1">
+<li><span class="math inline">\(\operatorname{Unif}(0,1)\)</span> 확률변수를 추출하여 제안값 <span class="math inline">\(u\)</span>를 생성한다.</li>
+<li>확률 <span class="math inline">\(\min\left(\frac{u^{a-1}(1-u)^{b-1}}{w^{a-1}(1-w)^{b-1}},1\right)\)</span>로 제안을 수락한다. 수락하면 <span class="math inline">\(u\)</span>로 이동하고, 그렇지 않으면 <span class="math inline">\(w\)</span>에 머문다.</li>
+</ol>
+<p>이번에도 연쇄를 실행하는 데 정규화 상수는 필요하지 않았다. 수락 확률을 구할 때 원하는 정상분포인 <span class="math inline">\(\operatorname{Beta}(a,b)\)</span>의 확률밀도함수가 <span class="math inline">\(\mathbf{s}\)</span>의 역할을 하고, 제안값이 현재 상태와 독립인 <span class="math inline">\(\operatorname{Unif}(0,1)\)</span> 확률변수이므로 그 확률밀도함수가 <span class="math inline">\(p_{ij}\)</span>와 <span class="math inline">\(p_{ji}\)</span>의 역할을 한다.</p>
+<p>마르코프 연쇄를 실행하면 <span class="math inline">\(n\)</span>이 클 때 <span class="math inline">\(W_n,W_{n+1},W_{n+2},\ldots\)</span>은 대략 <span class="math inline">\(\operatorname{Beta}(a,b)\)</span> 분포를 따른다. 이들은 독립이고 동일한 표본이 아니라 상관된 확률변수임에 주의하자. <span class="math inline">\(\square\)</span></p>
+<p><strong>주의 12.1.5 (MCMC는 상관된 표본을 만든다).</strong> 몬테카를로 계산을 위해 마르코프 연쇄 <span class="math inline">\(X_0,X_1,\ldots\)</span>을 실행할 때 얼마나 오래 실행해야 하는가는 중요한 문제이다. 한 가지 이유는 대개 시점 <span class="math inline">\(n\)</span>에서 연쇄의 분포가 정상분포에 얼마나 가까운지 알기 어렵기 때문이다. 또 다른 문제는 <span class="math inline">\(X_0,X_1,\ldots\)</span>이 일반적으로 서로 상관되어 있다는 것이다. 어떤 연쇄는 상태공간 전체를 탐색하기보다 특정 영역에 갇히는 경향이 있다. 연쇄가 쉽게 갇힌다면 <span class="math inline">\(X_n\)</span>과 <span class="math inline">\(X_{n+1}\)</span> 사이에 강한 양의 상관관계가 있을 수 있다. 시차 <span class="math inline">\(k\)</span>의 자기상관은 <span class="math inline">\(n\)</span>이 커질 때 <span class="math inline">\(X_n\)</span>과 <span class="math inline">\(k\)</span>단계 뒤의 값 <span class="math inline">\(X_{n+k}\)</span> 사이의 상관계수의 극한이다. <span class="math inline">\(k\)</span>가 커질 때 시차 <span class="math inline">\(k\)</span>의 자기상관이 빠르게 0에 가까워지는 것이 바람직하다. 자기상관이 높으면 몬테카를로 근삿값의 분산이 큰 경향이 있다.</p>
+<p>연쇄를 얼마나 오래 실행할지 분석하고 충분히 오래 실행했는지 진단하는 방법을 찾는 것은 활발한 연구 분야이다. 일반적인 조언으로는 연쇄를 아주 많은 단계 동안 실행하고 서로 다른 출발점에서 시작한 연쇄들을 시도하여 결과가 얼마나 안정적인지 살펴보는 것이 있다.</p>
+<p>메트로폴리스–헤이스팅스는 상태공간이 엄청나게 클 때에도 유용한 경우가 많다. 암호 해독처럼 처음에는 분포를 시뮬레이션하는 것과 아무 관계가 없어 보이는 문제에도 유용할 수 있다.</p>
+<p><strong>예제 12.1.6 (암호 해독).</strong> 최근 마르코프 연쇄가 암호 해독에 적용되었으며, 이 예제에서는 그 한 가지 방법을 소개한다. (이런 응용에 관한 자세한 내용은 Diaconis [6]과 Chen 및 Rosenthal [3]을 참조하라.) 치환 암호는 a부터 z까지의 문자들에 대한 순열 <span class="math inline">\(g\)</span>로서, 메시지의 각 문자 <span class="math inline">\(\alpha\)</span>를 <span class="math inline">\(g(\alpha)\)</span>로 바꾸어 암호화한다. 예를 들어 <span class="math inline">\(g\)</span>가 다음 순열로 주어졌다고 하자.</p>
+<pre class="text"><code>abcdefghijklmnopqrstuvwxyz
+zyxwvutsrqponmlkjihgfedcba</code></pre>
+<p>두 번째 행은 <span class="math inline">\(g(a),g(b),\ldots,g(z)\)</span>를 나열한다. 이 경우 ‘statistics’는 ‘hgzgrhgrxh’로 암호화된다. (원한다면 대문자, 공백, 문장부호도 포함할 수 있다.) 상태공간은 a부터 z까지의 문자의 순열 전체로, 그 수는 <span class="math inline">\(26!\approx4\cdot10^{26}\)</span>이다. 이는 엄청나게 큰 공간이다. 각 순열로 텍스트를 해독해 보아야 하고 나노초마다 한 순열을 처리할 수 있다 해도 모든 순열을 살펴보는 데 120억 년 이상 걸린다. 따라서 모든 순열을 하나씩 살펴보는 무차별 탐색은 불가능하다. 대신 무작위 순열들을 살펴보자.</p>
+<ol type="a">
+<li>1부터 26 사이에서 서로 다른 두 위치를 무작위로 선택해 두 번째 행의 해당 성분들을 서로 바꾸는 마르코프 연쇄를 생각하자. 예를 들어 7과 20을 선택하면</li>
+</ol>
+<pre class="text"><code>abcdefghijklmnopqrstuvwxyz
+zyxwvutsrqponmlkjihgfedcba</code></pre>
+<p>가 다음과 같이 바뀐다.</p>
+<pre class="text"><code>abcdefghijklmnopqrstuvwxyz
+zyxwvugsrqponmlkjihtfedcba</code></pre>
+<p>모든 <span class="math inline">\(g,h\)</span>에 대해 순열 <span class="math inline">\(g\)</span>에서 순열 <span class="math inline">\(h\)</span>로 한 단계에 이동할 확률을 구하고, 이 연쇄의 정상분포를 구하라.</p>
+<ol start="2" type="a">
+<li>각 순열 <span class="math inline">\(g\)</span>에 양의 ‘점수’ <span class="math inline">\(s(g)\)</span>를 부여하는 체계가 있다고 하자. 직관적으로 이는 사용된 암호가 <span class="math inline">\(g\)</span>일 때 관찰된 암호문을 얻을 가능성의 척도일 수 있다. 메트로폴리스–헤이스팅스 알고리즘을 이용해 정상분포가 모든 점수 <span class="math inline">\(s(g)\)</span>의 목록에 비례하는 마르코프 연쇄를 만들어라.</li>
+</ol>
+<p><em>풀이.</em> (a) 두 번째 행의 성분 두 개를 서로 바꾸어 <span class="math inline">\(g\)</span>에서 <span class="math inline">\(h\)</span>를 얻을 수 없다면 한 단계에 <span class="math inline">\(g\)</span>에서 <span class="math inline">\(h\)</span>로 갈 확률은 0이다. 그렇게 <span class="math inline">\(h\)</span>를 얻을 수 있다면 가능한 교환은 <span class="math inline">\(\binom{26}{2}\)</span>개이고 모두 같은 확률이므로 그 확률은 <span class="math inline">\(1/\binom{26}{2}\)</span>이다.</p>
+<p>충분히 많은 교환을 수행하면 어느 순열에서든 다른 모든 순열로 갈 수 있으므로 이 마르코프 연쇄는 기약이다. (카드 두 장씩 교환하여 카드 한 벌의 순서를 바꾼다고 생각해 보자. 이를 충분히 반복하면 카드를 원하는 어떤 순서로든 배열할 수 있다.) <span class="math inline">\(p(g,h)\)</span>를 <span class="math inline">\(g\)</span>에서 <span class="math inline">\(h\)</span>로 가는 전이확률이라 하면 <span class="math inline">\(p(g,h)=p(h,g)\)</span>임에 주목하자. 전이행렬이 대칭이므로 정상분포는 a부터 z까지 문자의 <span class="math inline">\(26!\)</span>개 순열 전체에 걸친 균등분포이다.</p>
+<p><em>옮긴이 주:</em> 매번 두 문자를 교환하는 제안 연쇄는 주기가 2이다. 메트로폴리스–헤이스팅스에서 모든 제안이 항상 수락되는 경우에도 주기가 남으므로 임의의 초기분포에서 수렴한다고 단정할 수 없다. 일정한 양의 확률로 제자리에 머무는 단계를 추가하면 이 주기성을 없앨 수 있다.</p>
+<ol start="2" type="a">
+<li>제안 연쇄로 (a)의 연쇄를 사용한다. 임의의 상태 <span class="math inline">\(g\)</span>에서 출발하여 (a)의 연쇄로 제안 <span class="math inline">\(h\)</span>를 생성한다. 앞면이 나올 확률이 <span class="math inline">\(\min(s(h)/s(g),1)\)</span>인 동전을 던진다. 앞면이면 <span class="math inline">\(h\)</span>로 이동하고 뒷면이면 <span class="math inline">\(g\)</span>에 머문다.</li>
+</ol>
+<p>원하는 정상분포를 갖는다는 것을 증명하기 위해 알고리즘 12.1.1의 일반적인 증명을 이용하거나 가역성 조건을 직접 확인할 수 있다. 연습을 위해 후자를 택하자. 수정된 연쇄에서 <span class="math inline">\(g\)</span>에서 <span class="math inline">\(h\)</span>로 가는 전이확률을 <span class="math inline">\(q(g,h)\)</span>라 할 때, 모든 <span class="math inline">\(g,h\)</span>에 대해 <span class="math inline">\(s(g)q(g,h)=s(h)q(h,g)\)</span>가 필요하다. <span class="math inline">\(g=h\)</span> 또는 <span class="math inline">\(q(g,h)=0\)</span>이면 식은 명백히 성립하므로 <span class="math inline">\(g\ne h\)</span>이고 <span class="math inline">\(q(g,h)\ne0\)</span>이라 하자. (a)의 전이확률을 <span class="math inline">\(p(g,h)\)</span>라 하자. 이는 <span class="math inline">\(g\)</span>에 있을 때 <span class="math inline">\(h\)</span>를 제안할 확률이다. 먼저 <span class="math inline">\(s(g)\leq s(h)\)</span>이면 <span class="math inline">\(q(g,h)=p(g,h)\)</span>이고</p>
+<p><span class="math display">\[q(h,g)=p(h,g)\frac{s(g)}{s(h)}=p(g,h)\frac{s(g)}{s(h)}=q(g,h)\frac{s(g)}{s(h)},\]</span></p>
+<p>따라서 <span class="math inline">\(s(g)q(g,h)=s(h)q(h,g)\)</span>이다. 이제 <span class="math inline">\(s(h)&lt;s(g)\)</span>인 경우를 생각하자. <span class="math inline">\(g\)</span>와 <span class="math inline">\(h\)</span>의 역할을 바꾸는 대칭적인 논증으로 다시 <span class="math inline">\(s(g)q(g,h)=s(h)q(h,g)\)</span>를 얻는다. 따라서 <span class="math inline">\(g\)</span>의 정상확률은 점수 <span class="math inline">\(s(g)\)</span>에 비례한다.</p>
+<p>다시 말해 메트로폴리스–헤이스팅스 알고리즘을 사용하여 장기적으로 모든 암호를 같은 확률로 방문하는 마르코프 연쇄에서 출발해, 정상분포가 점수에 따라 암호들을 정렬하고 장기적으로 가장 유망한 암호들을 가장 자주 방문하는 연쇄를 만들었다. <span class="math inline">\(\square\)</span></p>
+<p>다음은 상태공간이 엄청나게 크고 얼핏 보면 분포 시뮬레이션과 별 관계가 없어 보이는 또 다른 MCMC 예제이다. 이 예제는 MCMC가 표본추출뿐 아니라 최적화에도 쓰일 수 있음을 보여준다.</p>
+<p><strong>예제 12.1.7 (배낭 문제).</strong> 도둑 빌보가 스마우그의 은신처에서 <span class="math inline">\(m\)</span>개의 보물을 발견했다. 빌보는 어떤 보물을 훔칠지(관점에 따라 정당하게 되찾을지) 결정하고 있다. 한꺼번에 들 수 있는 최대 무게가 <span class="math inline">\(w\)</span>파운드이므로 전부 가져갈 수는 없다. 보물에 1부터 <span class="math inline">\(m\)</span>까지 번호를 붙이고, <span class="math inline">\(j\)</span>번째 보물의 가치가 금화 <span class="math inline">\(g_j\)</span>개이며 무게가 <span class="math inline">\(w_j\)</span>파운드라고 하자. 빌보는 <span class="math inline">\(j\)</span>번째 보물을 훔치면 <span class="math inline">\(x_j=1\)</span>, 그렇지 않으면 <span class="math inline">\(x_j=0\)</span>인 벡터 <span class="math inline">\(\mathbf{x}=(x_1,\ldots,x_m)\)</span>을, <span class="math inline">\(x_j=1\)</span>인 보물의 총무게가 최대 <span class="math inline">\(w\)</span>가 되도록 선택해야 한다. 이러한 벡터 전체의 공간을 <span class="math inline">\(C\)</span>라 하면, <span class="math inline">\(C\)</span>는 <span class="math inline">\(\sum_{j=1}^m x_jw_j\leq w\)</span>인 모든 이진 벡터 <span class="math inline">\((x_1,\ldots,x_m)\)</span>으로 이루어진다.</p>
+<p>빌보는 가져가는 보물의 총가치를 최대화하고 싶다. 최적해를 찾는 것은 <em>배낭 문제</em>로 알려진 매우 어려운 문제이며, 컴퓨터과학에서 오랜 역사를 갖는다. 일반적으로 무차별 대입 풀이는 전혀 실현 가능하지 않다. 대신 빌보는 MCMC를 이용해 공간 <span class="math inline">\(C\)</span>를 탐색하기로 한다. 다행히 R이 실행되는 노트북을 가지고 있다.</p>
+<ol type="a">
+<li><p>다음 마르코프 연쇄를 생각하자. <span class="math inline">\((0,0,\ldots,0)\)</span>에서 출발한다. 한 번의 이동은 다음과 같다. 현재 상태가 <span class="math inline">\(\mathbf{x}=(x_1,\ldots,x_m)\)</span>이라고 하자. <span class="math inline">\(\{1,2,\ldots,m\}\)</span>에서 균등하게 무작위로 <span class="math inline">\(J\)</span>를 선택하고 <span class="math inline">\(x_J\)</span>를 <span class="math inline">\(1-x_J\)</span>로 바꾸어 <span class="math inline">\(\mathbf{x}\)</span>로부터 <span class="math inline">\(\mathbf{y}\)</span>를 얻는다. 즉 그 보물을 가져갈지 여부를 뒤집는다. <span class="math inline">\(\mathbf{y}\notin C\)</span>이면 <span class="math inline">\(\mathbf{x}\)</span>에 머물고, <span class="math inline">\(\mathbf{y}\in C\)</span>이면 <span class="math inline">\(\mathbf{y}\)</span>로 이동한다. <span class="math inline">\(C\)</span> 위의 균등분포가 이 연쇄의 정상분포임을 보여라.</p></li>
+<li><p>(a)의 연쇄가 기약이며, <span class="math inline">\(w,w_1,\ldots,w_m\)</span>에 따라 비주기적일 수도 있고 아닐 수도 있음을 보여라.</p></li>
+<li><p>(a)의 연쇄는 대략 균등한 해들을 얻는 데 유용하지만 빌보는 가치가 높은 해를 찾는 데 더 관심이 있다. 이 문항의 목표는 특정한 높은 가치의 해에 특정한 낮은 가치의 해보다 훨씬 높은 확률을 부여하는 정상분포를 가진 마르코프 연쇄를 만드는 것이다. 구체적으로</p></li>
+</ol>
+<p><span class="math display">\[s(\mathbf{x})\propto e^{\beta V(\mathbf{x})},\qquad V(\mathbf{x})=\sum_{j=1}^m x_jg_j\]</span></p>
+<p>인 분포에서 표본을 생성하고 싶다고 하자. 여기서 <span class="math inline">\(V(\mathbf{x})\)</span>는 금화로 표시한 <span class="math inline">\(\mathbf{x}\)</span>의 가치이고 <span class="math inline">\(\beta\)</span>는 양의 상수이다. 이 분포의 아이디어는 각각의 높은 가치의 해에 낮은 가치의 해보다 지수적으로 더 많은 확률을 부여하는 것이다. 원하는 정상분포를 가진 마르코프 연쇄를 만들어라.</p>
+<p><em>풀이.</em> (a) <span class="math inline">\(\mathbf{x}\ne\mathbf{y}\)</span>일 때 <span class="math inline">\(\mathbf{x}\)</span>에서 <span class="math inline">\(\mathbf{y}\)</span>로, 그리고 <span class="math inline">\(\mathbf{y}\)</span>에서 <span class="math inline">\(\mathbf{x}\)</span>로 가는 전이확률이 모두 0이거나 모두 <span class="math inline">\(1/m\)</span>이므로 전이행렬은 대칭이다. 따라서 정상분포는 <span class="math inline">\(C\)</span> 위의 균등분포이다.</p>
+<ol start="2" type="a">
+<li>임의의 <span class="math inline">\(\mathbf{x}\in C\)</span>에서 보물을 하나씩 내려놓으면 <span class="math inline">\((0,0,\ldots,0)\)</span>으로 갈 수 있다. <span class="math inline">\((0,0,\ldots,0)\)</span>에서 보물을 하나씩 집어 들면 임의의 <span class="math inline">\(\mathbf{y}\in C\)</span>로 갈 수 있다. 이를 결합하면 어디에서든 어디로든 갈 수 있으므로 연쇄는 기약이다.</li>
+</ol>
+<p>주기성을 알아보기 위해 간단한 경우들을 살펴보자. 먼저 <span class="math inline">\(w_1+\cdots+w_m&lt;w\)</span>, 즉 빌보가 모든 보물을 한꺼번에 들 수 있는 경우를 생각하자. 그러면 길이 <span class="math inline">\(m\)</span>인 모든 이진 벡터가 허용된다. 그 상태에서 출발하여 돌아오려면 보물을 집어 들었다가 내려놓아야 하므로 <span class="math inline">\((0,0,\ldots,0)\)</span>의 주기는 2이다. 실제로 빌보가 <span class="math inline">\((0,0,\ldots,0)\)</span>에서 시작하면 홀수 번 이동한 후에는 언제나 홀수 개의 보물을 들고 있다.</p>
+<p>이제 <span class="math inline">\(w_1&gt;w\)</span>, 즉 첫 번째 보물이 빌보에게 너무 무거운 경우를 생각하자. 어느 <span class="math inline">\(\mathbf{x}\in C\)</span>에서든 연쇄가 첫 번째 보물을 집어 들려고 할 확률은 <span class="math inline">\(1/m\)</span>이고, 그 경우 연쇄는 <span class="math inline">\(\mathbf{x}\)</span>에 머문다. 따라서 각 상태의 주기는 1이다.</p>
+<ol start="3" type="a">
+<li>(a)의 연쇄로 제안하면서 메트로폴리스–헤이스팅스를 적용할 수 있다. <span class="math inline">\((0,0,\ldots,0)\)</span>에서 시작하고 현재 상태가 <span class="math inline">\(\mathbf{x}=(x_1,\ldots,x_m)\)</span>이라고 하자. 그러면 다음을 수행한다.</li>
+</ol>
+<ol type="1">
+<li><span class="math inline">\(\{1,2,\ldots,m\}\)</span>에서 균등하게 무작위로 <span class="math inline">\(J\)</span>를 선택하고 <span class="math inline">\(x_J\)</span>를 <span class="math inline">\(1-x_J\)</span>로 바꾸어 <span class="math inline">\(\mathbf{x}\)</span>로부터 <span class="math inline">\(\mathbf{y}\)</span>를 얻는다.</li>
+<li><span class="math inline">\(\mathbf{y}\notin C\)</span>이면 <span class="math inline">\(\mathbf{x}\)</span>에 머문다. <span class="math inline">\(\mathbf{y}\in C\)</span>이면 앞면이 나올 확률이 <span class="math inline">\(\min(1,e^{\beta(V(\mathbf{y})-V(\mathbf{x}))})\)</span>인 동전을 던진다. 앞면이면 <span class="math inline">\(\mathbf{y}\)</span>로 이동하고 그렇지 않으면 <span class="math inline">\(\mathbf{x}\)</span>에 머문다.</li>
+</ol>
+<p>이 연쇄는 원하는 정상분포로 수렴한다. 하지만 <span class="math inline">\(\beta\)</span>를 어떻게 선택해야 할까? <span class="math inline">\(\beta\)</span>가 매우 크면 최상의 해들에 매우 높은 확률이 부여되지만, 연쇄가 국소 최빈값에 쉽게 갇혀 정상분포로 수렴하는 속도가 매우 느릴 수 있다. 연쇄가 전체적으로 최적은 아니지만 한 단계에 도달할 수 있는 다른 상태들보다는 더 좋은 상태에 있게 되면, 다른 곳으로 이동하자는 제안을 거절할 확률이 매우 높을 수 있기 때문이다. 반면 <span class="math inline">\(\beta\)</span>가 0에 가까우면 연쇄가 공간을 쉽게 탐색하지만 좋은 해를 찾아낼 유인은 그만큼 작다.</p>
+<p><em>옮긴이 주:</em> 위 수렴 주장에도 비주기성이 필요하다. 주기적인 경우 양의 확률로 제자리에 머무는 단계를 추가할 수 있다.</p>
+<p><em>모의 담금질</em>이라는 최적화 기법은 <span class="math inline">\(\beta\)</span>의 값을 하나로 선택할 필요가 없게 해 준다. 대신 시간에 따라 <span class="math inline">\(\beta\)</span>가 점차 커지도록 일련의 <span class="math inline">\(\beta\)</span> 값들을 지정한다. 처음에는 <span class="math inline">\(\beta\)</span>가 작아서 공간 <span class="math inline">\(C\)</span>를 넓게 탐색할 수 있다. <span class="math inline">\(\beta\)</span>가 점점 커지면 정상분포는 최상의 해에 점점 더 집중된다. ‘모의 담금질’이라는 이름은 금속을 고온으로 가열한 다음 매우 강하고 안정된 상태가 될 때까지 서서히 냉각하는 담금질 과정과의 유추에서 왔다. <span class="math inline">\(\beta\)</span>는 온도의 역수에 해당한다. <span class="math inline">\(\square\)</span></p>
+<p>예제 12.1.4에서 언급했듯이 메트로폴리스–헤이스팅스 알고리즘은 확률질량함수 대신 확률밀도함수를 사용하여 연속 상태공간에도 적용할 수 있다. 이는 미지의 모수의 사후분포를 연구하려는 경우가 많은 베이즈 추론에서 매우 유용하다. 이 사후분포는 해석적으로 다루기 매우 복잡할 수 있고 정규화 상수를 알지 못할 수도 있다.</p>
+<p>MCMC 접근법은 사후분포를 정상분포로 갖는 마르코프 연쇄에서 많은 표본을 얻는 것이다. 그런 다음 이 표본으로 실제 사후분포를 근사할 수 있다. 예를 들어 표본들의 표본평균으로 사후평균을, 표본중앙값으로 사후중앙값을 추정할 수 있다.</p>
+<p>Gelman 외 [10]와 McElreath [18]은 다양한 응용과 함께 통계적 모형화 및 시뮬레이션을 강조하며 베이즈적 사고와 베이즈 데이터 분석을 폭넓게 소개한다. 이 두 책의 여러 보충 자료는 각각 <a href="http://www.stat.columbia.edu/~gelman/book" class="uri">http://www.stat.columbia.edu/~gelman/book</a>과 <a href="https://xcelab.net/rm/statistical-rethinking" class="uri">https://xcelab.net/rm/statistical-rethinking</a>에서 찾을 수 있다.</p>
+<p><strong>예제 12.1.8 (정규–정규 켤레성).</strong> <span class="math inline">\(Y\mid\theta\sim\mathcal N(\theta,\sigma^2)\)</span>이고 <span class="math inline">\(\sigma^2\)</span>은 알려져 있지만 <span class="math inline">\(\theta\)</span>는 미지라고 하자. 베이즈 체계에서는 <span class="math inline">\(\theta\)</span>를 확률변수로 취급하고, 알려진 상수 <span class="math inline">\(\mu,\tau^2\)</span>에 대해 사전분포를 <span class="math inline">\(\theta\sim\mathcal N(\mu,\tau^2)\)</span>로 둔다. 즉, 다음과 같은 2단계 모형이 있다.</p>
+<p><span class="math display">\[
+\theta\sim\mathcal N(\mu,\tau^2),\qquad
+Y\mid\theta\sim\mathcal N(\theta,\sigma^2).
+\]</span></p>
+<p><span class="math inline">\(Y\)</span>의 값을 관찰한 후 메트로폴리스–헤이스팅스 알고리즘으로 <span class="math inline">\(\theta\)</span>의 사후평균과 사후분산을 구하는 방법을 설명하라.</p>
+<p><em>풀이.</em> <span class="math inline">\(Y=y\)</span>를 관찰한 후 베이즈 정리를 이용해 <span class="math inline">\(\theta\)</span>에 대한 사전 불확실성을 갱신할 수 있다. 관심 대상은 <span class="math inline">\(\theta\)</span>의 사후분포이므로 <span class="math inline">\(\theta\)</span>에 의존하지 않는 항들은 정규화 상수의 일부로 취급할 수 있다. 따라서</p>
+<p><span class="math display">\[
+f_{\theta\mid Y}(\theta\mid y)\propto f_{Y\mid\theta}(y\mid\theta)f_\theta(\theta)
+\propto e^{-\frac{1}{2\sigma^2}(y-\theta)^2}e^{-\frac{1}{2\tau^2}(\theta-\mu)^2}.
+\]</span></p>
+<p>지수에 <span class="math inline">\(\theta\)</span>의 이차함수가 있으므로 <span class="math inline">\(\theta\)</span>의 사후 확률밀도함수가 정규분포의 밀도함수임을 알아볼 수 있다. 사후분포가 정규분포족에 머무르므로 정규분포는 정규분포의 켤레사전분포이다. 실제로 완전제곱식을 만들면(꽤 지루한 계산이므로 생략한다) <span class="math inline">\(\theta\)</span>의 사후분포에 대한 명시적인 공식을 얻을 수 있다.</p>
+<p><span class="math display">\[
+\theta\mid Y=y\sim\mathcal N\!\left(
+\frac{1/\sigma^2}{1/\sigma^2+1/\tau^2}y+
+\frac{1/\tau^2}{1/\sigma^2+1/\tau^2}\mu,
+\frac{1}{1/\sigma^2+1/\tau^2}\right).
+\]</span></p>
+<p>이 공식의 의미를 살펴보자.</p>
+<ul>
+<li><span class="math inline">\(\theta\)</span>의 사후평균 <span class="math inline">\(E(\theta\mid Y=y)\)</span>은 사전평균 <span class="math inline">\(\mu\)</span>와 관찰된 데이터 <span class="math inline">\(y\)</span>의 가중평균이다. 가중치는 데이터를 얻기 전에 <span class="math inline">\(\theta\)</span>에 대해 얼마나 확신하는지, 그리고 데이터를 얼마나 정밀하게 측정했는지에 따라 결정된다. 데이터를 얻기 전부터 <span class="math inline">\(\theta\)</span>를 매우 확실히 알고 있다면 <span class="math inline">\(\tau^2\)</span>이 작고 <span class="math inline">\(1/\tau^2\)</span>이 커져 사전평균 <span class="math inline">\(\mu\)</span>에 큰 가중치를 준다. 반면 데이터가 매우 정밀하면 <span class="math inline">\(\sigma^2\)</span>이 작고 <span class="math inline">\(1/\sigma^2\)</span>이 커져 데이터 <span class="math inline">\(y\)</span>에 큰 가중치를 준다.</li>
+<li>사후분산과 관련하여 정밀도를 분산의 역수로 정의하면, 이 결과는 <span class="math inline">\(\theta\)</span>의 사후 정밀도가 사전 정밀도 <span class="math inline">\(1/\tau^2\)</span>과 데이터의 정밀도 <span class="math inline">\(1/\sigma^2\)</span>의 합이라는 뜻이다.</li>
+</ul>
+<p>이 결과는 좋지만, 완전제곱식을 만드는 방법을 모르거나 특정한 <span class="math inline">\(y,\sigma^2,\mu,\tau^2\)</span> 값에 대해 계산을 확인하고 싶다고 하자. 메트로폴리스–헤이스팅스 알고리즘으로 정상분포가 <span class="math inline">\(f_{\theta\mid Y}(\theta\mid y)\)</span>인 마르코프 연쇄를 구성해 <span class="math inline">\(\theta\)</span>의 사후분포를 시뮬레이션하면 된다. 같은 방법을 정규분포보다 해석적으로 다루기 훨씬 복잡한 다양한 분포에도 적용할 수 있다. <span class="math inline">\(\theta_0,\theta_1,\ldots\)</span>을 생성하는 메트로폴리스–헤이스팅스 알고리즘은 다음과 같다.</p>
+<ol type="1">
+<li><p><span class="math inline">\(\theta_n=x\)</span>이면 어떤 전이 규칙에 따라 새 상태 <span class="math inline">\(x'\)</span>를 제안한다. 연속 상태공간에서 이를 수행하는 한 방법은 평균이 0인 정규 확률변수 <span class="math inline">\(\epsilon_n\)</span>을 생성하여 현재 상태에 더하는 것이다. 즉 어떤 상수 <span class="math inline">\(d\)</span>에 대해 <span class="math inline">\(\epsilon_n\sim\mathcal N(0,d^2)\)</span>을 생성하고 <span class="math inline">\(x'=x+\epsilon_n\)</span>으로 둔다. 이는 연속 상태공간에서 전이행렬에 대응한다. 추가로 결정할 것은 <span class="math inline">\(d\)</span>뿐이다. 실제로는 너무 크지도 작지도 않은 적당한 값을 선택하려 한다.</p></li>
+<li><p>수락 확률은</p>
+<p><span class="math display">\[a(x,x')=\min\left(\frac{s(x')p(x',x)}{s(x)p(x,x')},1\right)\]</span></p>
+<p>이다. 여기서 <span class="math inline">\(s\)</span>는 원하는 정상 확률밀도함수(이산 경우에는 확률질량함수)이고 <span class="math inline">\(p(x,x')\)</span>는 <span class="math inline">\(x\)</span>에서 <span class="math inline">\(x'\)</span>를 제안할 확률밀도(이산 경우의 <span class="math inline">\(p_{ij}\)</span>)이다. 이 문제에서 원하는 정상 확률밀도함수는 <span class="math inline">\(f_{\theta\mid Y}\)</span>이므로 이를 <span class="math inline">\(s\)</span>로 사용한다. <span class="math inline">\(p(x,x')\)</span>에 관해서는 <span class="math inline">\(x\)</span>에서 <span class="math inline">\(x'\)</span>를 제안하는 것이 <span class="math inline">\(\epsilon_n=x'-x\)</span>인 것과 같으므로 <span class="math inline">\(\epsilon_n\)</span>의 확률밀도함수를 <span class="math inline">\(x'-x\)</span>에서 계산하여</p>
+<p><span class="math display">\[p(x,x')=\frac{1}{\sqrt{2\pi}\,d}e^{-\frac{1}{2d^2}(x'-x)^2}\]</span></p>
+<p>를 얻는다. 그러나 <span class="math inline">\(p(x',x)=p(x,x')\)</span>이므로 이 항들은 수락 확률에서 소거되어 다음만 남는다.</p>
+<p><span class="math display">\[a(x,x')=\min\left(\frac{f_{\theta\mid Y}(x'\mid y)}{f_{\theta\mid Y}(x\mid y)},1\right).\]</span></p>
+<p>이번에도 정규화 상수는 수락 확률의 분자와 분모에서 소거된다.</p></li>
+<li><p>마르코프 연쇄와 독립적으로 앞면이 나올 확률이 <span class="math inline">\(a(x,x')\)</span>인 동전을 던진다.</p></li>
+<li><p>앞면이면 제안을 수락하고 <span class="math inline">\(\theta_{n+1}=x'\)</span>로 둔다. 그렇지 않으면 제자리에 머물고 <span class="math inline">\(\theta_{n+1}=x\)</span>로 둔다.</p></li>
+</ol>
+<p><span class="math inline">\(Y=3\)</span>, <span class="math inline">\(\mu=0\)</span>, <span class="math inline">\(\sigma^2=1\)</span>, <span class="math inline">\(\tau^2=4\)</span>, <span class="math inline">\(d=1\)</span>로 설정하여 알고리즘을 <span class="math inline">\(10^4\)</span>번 반복 실행했다. 그림 12.2는 그 결과 얻은 <span class="math inline">\(\theta\)</span>의 사후분포 표본들의 히스토그램이다. 사후분포는 실제로 정규 곡선처럼 보인다. 표본평균과 표본분산을 이용하여 사후평균과 사후분산을 추정할 수 있다. 얻은 표본의 표본평균은 2.4이고 표본분산은 0.8이다. 이는 다음 이론값과 잘 일치한다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(\theta\mid Y=3)
+&amp;=\frac{1/\sigma^2}{1/\sigma^2+1/\tau^2}y+
+\frac{1/\tau^2}{1/\sigma^2+1/\tau^2}\mu
+=\frac{1}{1+1/4}\cdot3+\frac{1/4}{1+1/4}\cdot0=2.4,\\
+\operatorname{Var}(\theta\mid Y=3)&amp;=\frac{1}{1/\sigma^2+1/\tau^2}=\frac{1}{1+1/4}=0.8.
+\end{aligned}
+\]</span></p>
+<p>원서의 평균 계산 마지막 값은 2.8로 인쇄되어 있으나, 위 계산과 앞의 설명에 따라 2.4로 바로잡았다.</p>
+<p>사후평균은 사전평균보다 관찰 데이터에 더 가깝다. <span class="math inline">\(\tau^2\)</span>이 <span class="math inline">\(\sigma^2\)</span>보다 커서 사전 불확실성이 상대적으로 높으므로 이는 타당하다. 이 장의 R 절에 제공된 코드를 이용하면 여러 <span class="math inline">\(y,\mu,\sigma^2,\tau^2\)</span> 값에 대해 사후분포가 어떻게 달라지는지 볼 수 있다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-12-2.png" class="img-fluid figure-img"></p>
+<figcaption>그림 12.2: <span class="math inline">\(Y=3\)</span>이 주어졌을 때 <span class="math inline">\(\theta\)</span>의 사후분포에서 메트로폴리스–헤이스팅스로 얻은 <span class="math inline">\(10^4\)</span>개 표본의 히스토그램. <span class="math inline">\(\mu=0\)</span>, <span class="math inline">\(\sigma^2=1\)</span>, <span class="math inline">\(\tau^2=4\)</span>이다. 표본평균은 2.4이고 표본분산은 0.8로 이론값과 일치한다.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-12-3.png" class="img-fluid figure-img"></p>
+<figcaption>그림 12.3: <span class="math inline">\(d=100,1,0.01\)</span>일 때 반복 횟수 <span class="math inline">\(n\)</span>에 따른 <span class="math inline">\(\theta_n\)</span>의 추적도.</figcaption>
+</figure>
+</div>
+<p>마르코프 연쇄가 상태공간을 충분히 탐색하고 있는지 진단하기 위해 표본 <span class="math inline">\(\theta_n\)</span>을 <span class="math inline">\(n\)</span>의 함수로 그린 <em>추적도</em>를 만들 수 있다. 그림 12.3은 제안값의 표준편차 <span class="math inline">\(d\)</span>를 <span class="math inline">\(100\)</span>, <span class="math inline">\(1\)</span>, <span class="math inline">\(0.01\)</span>로 선택했을 때의 세 추적도를 보여준다. <span class="math inline">\(d=100\)</span>인 추적도에는 연쇄가 제자리에 머무는 평평한 구간이 많이 있다. 이는 <span class="math inline">\(d\)</span>가 너무 커서 제안이 자주 거절됨을 나타낸다. 반면 <span class="math inline">\(d=0.01\)</span>은 너무 작다. 추적도에서 연쇄가 아주 작은 걸음으로 이동하며 시작점에서 멀리 나아가지 못함을 볼 수 있다. <span class="math inline">\(d=1\)</span>인 추적도는 적절하다. <span class="math inline">\(d=100\)</span>인 연쇄의 낮은 수락률도, <span class="math inline">\(d=0.01\)</span>인 연쇄의 제한된 이동성도 나타나지 않는다.</p>
+<p>이 예제에서는 <span class="math inline">\(\theta\)</span>의 사후분포를 해석적으로 구할 수 있으므로, MCMC 결과가 이론값과 일치함을 보여주기 위한 예시로 MCMC를 사용했다. 하지만 같은 기법은 사전분포가 켤레분포가 아니고 사후분포가 이름 붙은 분포가 아닌 문제에도 적용할 수 있다. <span class="math inline">\(\square\)</span></p>
+</section>
+<section id="깁스-샘플링" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="깁스-샘플링"><span class="header-section-number">12.2</span> 깁스 샘플링</h2>
+<p>깁스 샘플링은 결합분포에서 근사적인 표본을 얻기 위한 MCMC 알고리즘으로, 한 번에 하나씩 조건부분포에서 표본을 추출한다. 각 단계에서 다른 모든 변수를 고정한 채, 나머지 변수들이 주어졌을 때 해당 변수의 조건부분포에서 값을 뽑아 그 변수를 갱신한다. 이 조건부분포들을 다루기 쉬운 문제에서 특히 유용한 방법이다.</p>
+<p>먼저 원하는 정상분포가 이산확률변수 <span class="math inline">\(X,Y\)</span>의 결합 확률질량함수(PMF)인 이변량 경우에 깁스 샘플러가 어떻게 작동하는지 살펴보자. 갱신 순서에 따라 깁스 샘플러에는 여러 형태가 있다. 주요한 두 종류를 소개한다. <strong>체계적 스캔</strong>은 성분을 정해진 순서대로 훑으며 갱신하고, <strong>무작위 스캔</strong>은 각 단계에서 무작위로 선택한 성분을 갱신한다.</p>
+<p><strong>알고리즘 12.2.1 (체계적 스캔 깁스 샘플러).</strong> <span class="math inline">\(X,Y\)</span>를 결합 PMF가 <span class="math inline">\(p_{X,Y}(x,y)=P(X=x,Y=y)\)</span>인 이산확률변수라고 하자. 정상분포가 <span class="math inline">\(p_{X,Y}\)</span>인 2차원 마르코프 연쇄 <span class="math inline">\((X_n,Y_n)\)</span>을 만들고자 한다. 체계적 스캔 깁스 샘플러는 <span class="math inline">\(X\)</span> 성분과 <span class="math inline">\(Y\)</span> 성분을 번갈아 갱신한다. 현재 상태가 <span class="math inline">\((X_n,Y_n)=(x_n,y_n)\)</span>이면 <span class="math inline">\(Y\)</span> 성분을 고정하고 <span class="math inline">\(X\)</span> 성분을 갱신한 다음, <span class="math inline">\(X\)</span> 성분을 고정하고 <span class="math inline">\(Y\)</span> 성분을 갱신한다.</p>
+<ol type="1">
+<li><span class="math inline">\(Y=y_n\)</span>이 주어졌을 때 <span class="math inline">\(X\)</span>의 조건부분포에서 <span class="math inline">\(x_{n+1}\)</span>을 뽑아 <span class="math inline">\(X_{n+1}=x_{n+1}\)</span>로 둔다.</li>
+<li><span class="math inline">\(X=x_{n+1}\)</span>이 주어졌을 때 <span class="math inline">\(Y\)</span>의 조건부분포에서 <span class="math inline">\(y_{n+1}\)</span>을 뽑아 <span class="math inline">\(Y_{n+1}=y_{n+1}\)</span>로 둔다.</li>
+</ol>
+<p>1단계와 2단계를 계속 반복하면 연쇄 <span class="math inline">\((X_0,Y_0),(X_1,Y_1),(X_2,Y_2),\ldots\)</span>의 정상분포는 <span class="math inline">\(p_{X,Y}\)</span>이다.</p>
+<p><strong>알고리즘 12.2.2 (무작위 스캔 깁스 샘플러).</strong> 위와 같이 <span class="math inline">\(X,Y\)</span>를 결합 PMF가 <span class="math inline">\(p_{X,Y}(x,y)\)</span>인 이산확률변수라고 하자. 정상분포가 <span class="math inline">\(p_{X,Y}\)</span>인 2차원 마르코프 연쇄 <span class="math inline">\((X_n,Y_n)\)</span>을 만들고자 한다. 무작위 스캔 깁스 샘플러는 매번 각 성분을 같은 확률로 무작위 선택하고 다른 성분이 주어졌을 때의 조건부분포에 따라 갱신한다.</p>
+<ol type="1">
+<li>갱신할 성분을 같은 확률로 선택한다.</li>
+<li><span class="math inline">\(X\)</span> 성분을 선택했다면 <span class="math inline">\(Y=y_n\)</span>이 주어졌을 때 <span class="math inline">\(X\)</span>의 조건부분포에서 <span class="math inline">\(x_{n+1}\)</span>을 뽑고 <span class="math inline">\(X_{n+1}=x_{n+1}\)</span>, <span class="math inline">\(Y_{n+1}=y_n\)</span>으로 둔다. 마찬가지로 <span class="math inline">\(Y\)</span> 성분을 선택했다면 <span class="math inline">\(X=x_n\)</span>이 주어졌을 때 <span class="math inline">\(Y\)</span>의 조건부분포에서 <span class="math inline">\(y_{n+1}\)</span>을 뽑고 <span class="math inline">\(X_{n+1}=x_n\)</span>, <span class="math inline">\(Y_{n+1}=y_{n+1}\)</span>로 둔다.</li>
+</ol>
+<p>1단계와 2단계를 계속 반복하면 연쇄 <span class="math inline">\((X_0,Y_0),(X_1,Y_1),(X_2,Y_2),\ldots\)</span>의 정상분포는 <span class="math inline">\(p_{X,Y}\)</span>이다.</p>
+<p>깁스 샘플링은 자연스럽게 고차원으로 일반화된다. <span class="math inline">\(d\)</span>차원 결합분포에서 표본을 뽑고자 한다면 구성하는 마르코프 연쇄는 <span class="math inline">\(d\)</span>차원 확률벡터의 수열이 된다. 각 단계에서 벡터의 한 성분을 선택하고, 나머지 성분들의 가장 최근 값이 주어졌을 때 그 성분의 조건부분포에서 표본을 뽑는다. 벡터의 성분을 체계적인 순서로 돌아가며 갱신하거나, 매번 갱신할 성분을 무작위로 선택할 수 있다.</p>
+<p>깁스 샘플러는 제안분포를 선택할 수 없다는 점에서 메트로폴리스-헤이스팅스 알고리즘보다 유연성이 떨어지지만, 제안분포를 선택할 필요가 없다는 점에서 더 단순하기도 하다. 깁스는 조건부분포를 강조하고 메트로폴리스-헤이스팅스는 수락확률을 강조하므로 두 방법의 성격은 상당히 다르다. 하지만 아래에서 보듯 두 알고리즘은 밀접하게 연결되어 있다.</p>
+<p><strong>정리 12.2.3 (메트로폴리스-헤이스팅스로서의 무작위 스캔 깁스).</strong> 무작위 스캔 깁스 샘플러는 제안을 항상 수락하는 메트로폴리스-헤이스팅스 알고리즘의 특수한 경우이다. 특히 이로부터 무작위 스캔 깁스 샘플러의 정상분포가 원하는 분포임이 따라 나온다.</p>
+<p><strong>증명.</strong> 2차원에서 보이겠지만 임의의 차원에서도 증명은 비슷하다. <span class="math inline">\(X,Y\)</span>를 결합 PMF가 원하는 정상분포인 이산확률변수라고 하자. 다음 제안분포를 사용했을 때 메트로폴리스-헤이스팅스 알고리즘이 무엇을 하라고 말하는지 살펴보자. <span class="math inline">\((x,y)\)</span>에서 시작해 무작위 스캔 깁스 샘플러를 한 단계 실행하여 좌표 하나를 무작위로 갱신한다.</p>
+<p>표기를 간단히 하기 위해 다음과 같이 쓴다.</p>
+<p><span class="math display">\[P(X=x,Y=y)=p(x,y),\quad P(Y=y\mid X=x)=p(y\mid x),\quad P(X=x\mid Y=y)=p(x\mid y).\]</span></p>
+<p>더 형식적으로는 <span class="math inline">\(p(5\mid3)\)</span>이 무엇을 뜻하는지 의문이 생기는 등의 문제를 피하려면 <span class="math inline">\(p(y\mid x)\)</span> 대신 <span class="math inline">\(p_{Y\mid X}(y\mid x)\)</span>라고 써야 한다. 하지만 <span class="math inline">\(p(y\mid x)\)</span>라는 표기가 더 간결하며 이 증명에서는 모호함을 일으키지 않는다.</p>
+<p><span class="math inline">\((x,y)\)</span>에서 <span class="math inline">\((x',y')\)</span>로 갈 때의 메트로폴리스-헤이스팅스 수락확률을 계산해 보자. 제안에서 한 성분만 갱신하므로 두 상태 <span class="math inline">\((x,y)\)</span>와 <span class="math inline">\((x',y')\)</span>는 적어도 한 성분이 같아야 한다. <span class="math inline">\(x=x'\)</span>이라고 하자(<span class="math inline">\(y=y'\)</span>인 경우는 대칭적으로 다룰 수 있다). 그러면 수락확률은</p>
+<p><span class="math display">\[\frac{p(x,y')p(y\mid x)\frac12}{p(x,y)p(y'\mid x)\frac12}=\frac{p(x)p(y'\mid x)p(y\mid x)}{p(x)p(y\mid x)p(y'\mid x)}=1.\]</span></p>
+<p>따라서 이 메트로폴리스-헤이스팅스 알고리즘은 제안을 항상 수락한다! 즉 무작위 스캔 깁스 샘플러를 수정하지 않고 그대로 실행하는 것이다. <span class="math inline">\(\blacksquare\)</span></p>
+<p><em>옮긴이 주:</em> 위 비율은 <span class="math inline">\(x=x'\)</span>이고 <span class="math inline">\(y\ne y'\)</span>인 이동에서 계산한다. 제안이 현재 상태와 같으면 제자리에 머무는 제안이므로 별도로 처리할 수 있다.</p>
+<p>이제 깁스 샘플러의 구체적인 예를 살펴보자.</p>
+<p><strong>예제 12.2.4 (그래프 색칠).</strong> <span class="math inline">\(G\)</span>를 네트워크(그래프라고도 한다)라고 하자. 노드는 <span class="math inline">\(n\)</span>개이고, 서로 다른 각 노드 쌍 사이에는 두 노드를 연결하는 간선이 있거나 없다. <span class="math inline">\(k\)</span>개의 색으로 이루어진 집합이 있다. 예를 들어 <span class="math inline">\(k=7\)</span>이면 색의 집합을 {빨강, 주황, 노랑, 초록, 파랑, 남색, 보라}로 정할 수 있다. 네트워크의 <span class="math inline">\(k\)</span>색칠은 각 노드에 색을 하나씩 할당하되 간선으로 연결된 두 노드의 색이 같을 수 없도록 한 것이다. 예를 들어 아래에는 네트워크의 3색칠이 나와 있다. 그래프 색칠은 컴퓨터과학의 중요한 주제로, 작업 일정 수립과 스도쿠 게임 등 광범위한 응용이 있다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-12-4.png" class="img-fluid figure-img"></p>
+<figcaption>그림 12.4: 네트워크의 3색칠.</figcaption>
+</figure>
+</div>
+<p><span class="math inline">\(G\)</span>를 <span class="math inline">\(k\)</span>색으로 색칠할 수 있다고 하자. <span class="math inline">\(G\)</span>의 모든 <span class="math inline">\(k\)</span>색칠의 공간 위에 다음 전이를 갖는 마르코프 연쇄를 만든다. <span class="math inline">\(G\)</span>의 한 <span class="math inline">\(k\)</span>색칠에서 시작해 노드를 균등하게 무작위로 고르고, 그 노드에 허용되는 색을 알아낸 다음, 허용되는 색 중 하나를 균등하게 무작위로 골라 그 노드를 다시 칠한다. 이 무작위 색이 현재 색과 같을 수도 있음에 유의하라. 이 마르코프 연쇄가 가역적임을 보이고 정상분포를 구하라.</p>
+<p><strong>풀이.</strong> <span class="math inline">\(C\)</span>를 <span class="math inline">\(G\)</span>의 모든 <span class="math inline">\(k\)</span>색칠의 집합이라 하고, <span class="math inline">\(q_{ij}\)</span>를 <span class="math inline">\(C\)</span>에 속하는 임의의 두 <span class="math inline">\(k\)</span>색칠 <span class="math inline">\(i,j\)</span>에 대해 <span class="math inline">\(i\)</span>에서 <span class="math inline">\(j\)</span>로 가는 전이확률이라 하자. <span class="math inline">\(q_{ij}=q_{ji}\)</span>임을 보이겠다. 그러면 정상분포가 <span class="math inline">\(C\)</span> 위의 균등분포라는 결론이 나온다.</p>
+<p>임의의 <span class="math inline">\(k\)</span>색칠 <span class="math inline">\(i\)</span>와 노드 <span class="math inline">\(v\)</span>에 대해, 다른 모든 노드의 색을 <span class="math inline">\(i\)</span>에서의 색과 같게 고정했을 때 노드 <span class="math inline">\(v\)</span>에 허용되는 색의 수를 <span class="math inline">\(L(i,v)\)</span>라 하자. <span class="math inline">\(k\)</span>색칠 <span class="math inline">\(i,j\)</span>가 두 개 이상의 노드에서 다르면 <span class="math inline">\(q_{ij}=0=q_{ji}\)</span>이다. <span class="math inline">\(i=j\)</span>이면 당연히 <span class="math inline">\(q_{ij}=q_{ji}\)</span>이다. <span class="math inline">\(i,j\)</span>가 정확히 한 노드 <span class="math inline">\(v\)</span>에서 다르면 <span class="math inline">\(L(i,v)=L(j,v)\)</span>이므로</p>
+<p><span class="math display">\[q_{ij}=\frac1n\frac1{L(i,v)}=\frac1n\frac1{L(j,v)}=q_{ji}.\]</span></p>
+<p>따라서 전이행렬은 대칭이고, 정상분포는 상태공간 위의 균등분포이다.</p>
+<p>이것이 어떻게 깁스 샘플링의 예일까? 그래프의 각 노드를 <span class="math inline">\(k\)</span>개의 가능한 값을 가질 수 있는 이산확률변수로 생각하자. 이 노드들은 결합분포를 가지며, 연결된 노드의 색이 같을 수 없다는 제약은 노드 사이에 복잡한 의존 구조를 부과한다.</p>
+<p>그래프 전체의 무작위 <span class="math inline">\(k\)</span>색칠을 뽑고자 한다. 즉 모든 노드의 결합분포에서 표본을 뽑고자 한다. 이것이 어렵기 때문에 대신 하나를 제외한 모든 노드를 조건으로 삼는다. 결합분포가 모든 허용되는 색칠 위의 균등분포라면, 다른 모든 노드가 주어졌을 때 한 노드의 조건부분포는 그 노드에 허용되는 색들 위의 균등분포이다. 따라서 알고리즘의 각 단계에서는 나머지 모든 노드가 주어졌을 때 한 노드의 조건부분포에서 표본을 뽑는다. 즉 무작위 스캔 깁스 샘플러를 실행하는 것이다! <span class="math inline">\(\square\)</span></p>
+<p><em>옮긴이 주:</em> 균등분포가 정상분포라는 사실만으로 임의의 시작 상태에서 수렴한다고 보장되지는 않는다. 허용 색칠들의 공간이 깁스 갱신으로 연결되는지 확인해야 한다.</p>
+<p><strong>예제 12.2.5 (다윈의 핀치).</strong> 찰스 다윈은 갈라파고스 제도를 방문했을 때 각 섬에서 관찰한 핀치 종을 기록했다. 표 12.1은 다윈의 자료를 요약한 것으로, 각 행은 종, 각 열은 섬에 대응한다. 표의 <span class="math inline">\((i,j)\)</span> 성분이 1이면 섬 <span class="math inline">\(j\)</span>에서 종 <span class="math inline">\(i\)</span>가 관찰되었다는 뜻이다.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>종 / 섬</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th>15</th>
+<th>16</th>
+<th>17</th>
+<th>합계</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>14</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>13</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>14</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>12</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>11</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>17</td>
+</tr>
+<tr class="even">
+<td>합계</td>
+<td>4</td>
+<td>4</td>
+<td>11</td>
+<td>10</td>
+<td>10</td>
+<td>8</td>
+<td>9</td>
+<td>10</td>
+<td>8</td>
+<td>9</td>
+<td>3</td>
+<td>10</td>
+<td>4</td>
+<td>7</td>
+<td>9</td>
+<td>3</td>
+<td>3</td>
+<td>122</td>
+</tr>
+</tbody>
+</table>
+<p>표 12.1: 17개 섬(열)에서 13종의 핀치(행)가 존재하는지 나타낸 표. <span class="math inline">\((i,j)\)</span> 성분이 1이면 섬 <span class="math inline">\(j\)</span>에서 종 <span class="math inline">\(i\)</span>가 관찰되었음을 뜻한다. 자료 출처는 Sanderson [22]이다.</p>
+<p>이 자료가 주어졌을 때 표에서 관찰된 0과 1의 패턴이 어떤 점에서 특이한지 알고 싶을 수 있다. 예를 들어 행과 열 사이에 의존성이 있는 것처럼 보이는가? 어떤 종들의 쌍은 우연히 기대할 수 있는 것보다 같은 섬에서 함께 나타나는 빈도가 더 높은가? 이런 패턴은 종 간 협력이나 경쟁의 동태를 이해하는 데 도움이 될 수 있다. 이런 패턴을 검정하는 한 가지 방법은 관찰된 표와 행의 합 및 열의 합이 같은 무작위 표를 많이 살펴보고, 관찰된 표가 무작위 표들과 비교해 어떤지 보는 것이다. 이는 통계학에서 <strong>적합도 검정</strong>으로 알려진 흔한 기법이다.</p>
+<p>그런데 표 12.1과 행의 합 및 열의 합이 같은 무작위 표를 어떻게 생성할까? 이 제약을 만족하는 표의 수를 일일이 셀 수는 없다. 이때 MCMC가 도움이 된다. 주어진 행의 합과 열의 합을 가진 모든 표의 공간 위에서 정상분포가 그러한 모든 표에 걸친 균등분포인 마르코프 연쇄를 만들겠다.</p>
+<p>마르코프 연쇄를 구성하려면 행이나 열의 합을 바꾸지 않고 한 표에서 다른 표로 전이하는 방법이 필요하다. 관찰된 표에서 시작하여 두 행과 두 열을 무작위로 선택한다. 그 교차점의 네 성분이 다음 두 패턴 중 하나라면</p>
+<p><span class="math display">\[\begin{pmatrix}0&amp;1\\1&amp;0\end{pmatrix}\quad\text{또는}\quad\begin{pmatrix}1&amp;0\\0&amp;1\end{pmatrix}\]</span></p>
+<p>확률 <span class="math inline">\(1/2\)</span>로 반대 패턴으로 바꾸고, 그렇지 않으면 그대로 둔다. 예를 들어 행 1과 3, 열 1과 17을 선택했다면 교차점의 네 성분을 확률 <span class="math inline">\(1/2\)</span>로 <span class="math inline">\(\begin{pmatrix}0&amp;1\\1&amp;0\end{pmatrix}\)</span>에서 <span class="math inline">\(\begin{pmatrix}1&amp;0\\0&amp;1\end{pmatrix}\)</span>로 바꾼다. 이는 대칭적인 전이 규칙이다(모든 표 <span class="math inline">\(t,t'\)</span>에 대해 <span class="math inline">\(t\)</span>에서 <span class="math inline">\(t'\)</span>로의 전이확률이 <span class="math inline">\(t'\)</span>에서 <span class="math inline">\(t\)</span>로의 전이확률과 같다). 이 전이는 행이나 열의 합을 절대 바꾸지 않으며, 이렇게 정의한 마르코프 연쇄가 기약임을 보일 수 있다. 따라서 원하는 대로 정상분포는 주어진 행의 합과 열의 합을 가진 모든 표 위의 균등분포이다.</p>
+<p>이 절차를 깁스 샘플러로 해석하기 위해 행 1과 3, 열 1과 17의 교차점에 있는 네 성분을 제외한 표의 모든 성분을 조건으로 삼는다고 생각하자. 정상분포가 주어진 행의 합과 열의 합을 가진 모든 표 위의 균등분포가 되려면, 이 네 성분의 조건부분포는 행과 열의 합을 바꾸지 않는 모든 구성, 즉 <span class="math inline">\(\begin{pmatrix}0&amp;1\\1&amp;0\end{pmatrix}\)</span>과 <span class="math inline">\(\begin{pmatrix}1&amp;0\\0&amp;1\end{pmatrix}\)</span> 위의 균등분포여야 한다. 따라서 각 단계에서 나머지 모든 성분이 주어졌을 때 네 성분의 조건부분포에서 표본을 뽑는 것이다. <span class="math inline">\(\square\)</span></p>
+<p><em>옮긴이 주:</em> 두 대각 패턴 모두 가능한 경우에만 그 둘 위의 균등분포이다. 그 밖에는 행과 열의 합을 보존하는 현재 구성이 유일하므로 조건부분포가 퇴화한다.</p>
+<p>메트로폴리스-헤이스팅스와 마찬가지로 깁스 샘플링도 조건부 PMF를 조건부 확률밀도함수(PDF)로 바꾸면 연속분포에 적용된다.</p>
+<p><strong>예제 12.2.6 (모수를 모르는 닭과 달걀).</strong> 닭 한 마리가 알을 <span class="math inline">\(N\)</span>개 낳으며 <span class="math inline">\(N\sim\operatorname{Pois}(\lambda)\)</span>이다. 각 알은 확률 <span class="math inline">\(p\)</span>로 부화하는데 <span class="math inline">\(p\)</span>는 알려지지 않았으며, <span class="math inline">\(p\sim\operatorname{Beta}(a,b)\)</span>로 둔다. 상수 <span class="math inline">\(\lambda,a,b\)</span>는 알려져 있다.</p>
+<p>여기에 문제가 있다. <span class="math inline">\(N\)</span>을 관찰할 수 없고, 대신 부화한 알의 개수 <span class="math inline">\(X\)</span>만 관찰한다. 부화한 알 <span class="math inline">\(x\)</span>개를 관찰한 후 <span class="math inline">\(p\)</span>의 사후평균 <span class="math inline">\(E(p\mid X=x)\)</span>을 구하기 위해 깁스 샘플링을 어떻게 사용할지 설명하라.</p>
+<p><strong>풀이.</strong> 닭과 달걀 이야기에 의해 <span class="math inline">\(p\)</span>가 주어졌을 때 <span class="math inline">\(X\)</span>의 분포는 <span class="math inline">\(\operatorname{Pois}(\lambda p)\)</span>이다. <span class="math inline">\(p\)</span>의 사후 PDF는 다음에 비례한다.</p>
+<p><span class="math display">\[f(p\mid X=x)\propto P(X=x\mid p)f(p)\propto e^{-\lambda p}(\lambda p)^x p^{a-1}q^{b-1},\]</span></p>
+<p>여기서 <span class="math inline">\(q=1-p\)</span>이고 <span class="math inline">\(p\)</span>에 의존하지 않는 모든 항을 생략했다.</p>
+<p>이는 이름 있는 분포가 아니므로 막다른 길에 다다른 것처럼 보일 수 있지만, 조건부로 생각하여 벗어날 수 있다. 무엇을 알고 싶을까? 알의 총 개수이다! <span class="math inline">\(N=n\)</span>을 관찰하고 <span class="math inline">\(p\)</span>의 참값을 알고 있다는 조건 아래에서는 <span class="math inline">\(X\)</span>의 분포가 <span class="math inline">\(\operatorname{Bin}(n,p)\)</span>가 된다. 알의 총 개수를 조건으로 삼으면 <span class="math inline">\(p\)</span>와 <span class="math inline">\(X\)</span> 사이의 베타-이항 켤레성이 되살아난다. 이를 이용하면 이야기 8.3.3에서 사후분포를 바로 쓸 수 있다.</p>
+<p><span class="math display">\[p\mid X=x,N=n\sim\operatorname{Beta}(x+a,n-x+b).\]</span></p>
+<p><span class="math inline">\(N\)</span>을 조건으로 삼으면 일이 훨씬 쉬워진다는 사실에서 착안하여 깁스 샘플링으로 이 문제를 다루자. 아래 설명처럼 <span class="math inline">\(N\)</span>이 주어졌을 때 <span class="math inline">\(p\)</span>를 뽑는 것과 <span class="math inline">\(p\)</span>가 주어졌을 때 <span class="math inline">\(N\)</span>을 뽑는 것을 번갈아 수행한다. 관찰된 증거가 주어졌을 때 모수의 사후분포를 알아보고자 하므로, 전 과정에서 <span class="math inline">\(X=x\)</span>도 조건으로 삼아야 한다.</p>
+<p><span class="math inline">\(p\)</span>와 <span class="math inline">\(N\)</span>에 대한 초기 추정값을 정한 다음 다음 단계를 반복한다.</p>
+<p><em>옮긴이 주:</em> 초기 <span class="math inline">\(N\)</span>은 관찰된 부화 수 <span class="math inline">\(x\)</span> 이상으로 정한다.</p>
+<ol type="1">
+<li><span class="math inline">\(N=n\)</span>과 <span class="math inline">\(X=x\)</span>가 주어졌을 때 <span class="math inline">\(\operatorname{Beta}(x+a,n-x+b)\)</span> 분포에서 <span class="math inline">\(p\)</span>의 새로운 추정값을 뽑는다.</li>
+<li><span class="math inline">\(p\)</span>와 <span class="math inline">\(X=x\)</span>가 주어졌을 때 부화하지 않은 알의 수는 닭과 달걀 이야기에 의해 <span class="math inline">\(Y\sim\operatorname{Pois}(\lambda(1-p))\)</span>이다. 따라서 <span class="math inline">\(\operatorname{Pois}(\lambda(1-p))\)</span> 분포에서 <span class="math inline">\(Y\)</span>를 뽑고 <span class="math inline">\(N\)</span>의 새 추정값을 <span class="math inline">\(N=x+Y\)</span>로 둔다.</li>
+</ol>
+<p>여러 번 반복한 후에는 <span class="math inline">\(p\)</span>와 <span class="math inline">\(N\)</span> 양쪽의 표본을 얻는다. <span class="math inline">\(N\)</span>은 단지 <span class="math inline">\(p\)</span>를 추출하는 데 도움을 주는 장치였으므로 원한다면 <span class="math inline">\(N\)</span>의 표본은 무시할 수 있다. 하지만 재미 삼아 둘 다 그래프로 나타내자. 그림 12.5는 <span class="math inline">\(\lambda=10\)</span>, <span class="math inline">\(a=b=1\)</span>(<span class="math inline">\(p\)</span>의 사전분포가 <span class="math inline">\(\operatorname{Unif}(0,1)\)</span>인 경우)이고 부화한 알 <span class="math inline">\(X=7\)</span>개를 관찰했을 때 <span class="math inline">\(p\)</span>와 <span class="math inline">\(N\)</span>의 사후 표본의 히스토그램이다.</p>
+<p>문제에서 처음 물었던 사후평균 <span class="math inline">\(E(p\mid X=x)\)</span>은 <span class="math inline">\(p\)</span>의 표본평균을 취해 잘 근사할 수 있다. 이 경우 표본평균은 0.68이다. 이 장의 R 절에 제공된 코드를 이용하여 <span class="math inline">\(\lambda,a,b,x\)</span>의 값을 바꾸면 히스토그램과 사후평균이 어떻게 영향을 받는지 살펴볼 수 있다. 이 문제의 핵심 전략은 관찰되지 않은 알의 개수 <span class="math inline">\(N\)</span>을 모형에 추가하여 다루기 쉬운 조건부분포를 얻고 깁스 샘플링을 편리하게 사용할 수 있도록 하는 것이다. <span class="math inline">\(\square\)</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/fig-12-5.png" class="img-fluid figure-img"></p>
+<figcaption>그림 12.5: <span class="math inline">\(\lambda=10\)</span>, <span class="math inline">\(a=1\)</span>, <span class="math inline">\(b=1\)</span>이고 <span class="math inline">\(X=7\)</span>을 관찰했을 때 <span class="math inline">\(p\)</span>와 <span class="math inline">\(N\)</span>의 사후분포에서 각각 추출한 <span class="math inline">\(10^4\)</span>개 값의 히스토그램. 가로축은 각각 <span class="math inline">\(p\)</span>와 <span class="math inline">\(N\)</span>, 세로축은 빈도이다.</figcaption>
+</figure>
+</div>
+</section>
+<section id="요약" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="요약"><span class="header-section-number">12.3</span> 요약</h2>
+<p>마르코프 연쇄 몬테카를로는 마르코프 연쇄를 이용하여 복잡한 분포에서 표본을 추출할 수 있게 해 준다. MCMC는 최근 매우 다양한 문제에 적용되고 있다. MCMC 알고리즘의 핵심 아이디어는 우리가 표본을 추출하고자 하는 분포를 정상분포로 갖는 마르코프 연쇄를 구성하는 것이다. 마르코프 연쇄를 오랫동안 진행한 뒤에는 연쇄가 취하는 값들을 원하는 분포에서 추출한 표본으로 사용할 수 있다.</p>
+<p><em>옮긴이 주:</em> 이를 위해서는 연쇄의 기약성과 비주기성 등 수렴 조건을 확인해야 한다. 유한 시간 뒤의 분포는 일반적으로 목표 분포에 근사하며 연속된 표본은 서로 종속적이다.</p>
+<p>이 장에서 논의한 두 MCMC 알고리즘은 메트로폴리스-헤이스팅스 알고리즘과 깁스 표본추출이다. 메트로폴리스-헤이스팅스 알고리즘은 상태공간 위의 임의의 기약 마르코프 연쇄를 이용하여 제안값을 생성한 다음, 원하는 정상분포를 갖도록 수정된 마르코프 연쇄가 만들어지게 제안값을 수락하거나 거절한다. 더 나아가 이렇게 얻은 연쇄는 가역적이다. 제안분포를 잘못 선택하면 정상분포로의 수렴이 매우 느려질 수 있으므로 실제로 제안분포의 선택은 매우 중요하다.</p>
+<p><em>옮긴이 주:</em> 제안 연쇄가 기약이어도 수정된 연쇄가 반드시 기약인 것은 아니다. 수락 가능한 이동들이 전체 상태공간을 연결하는지도 확인해야 한다.</p>
+<p>깁스 표본추출은 <span class="math inline">\(d\)</span>차원 결합분포에서 표본을 추출하는 방법이다. 다른 모든 성분을 조건으로 하여 <span class="math inline">\(d\)</span>차원 마르코프 연쇄의 성분을 한 번에 하나씩 갱신한다. 이는 성분들을 고정된 순서에 따라 결정적으로 순환하는 체계적 순회 방식이나, 각 단계에서 갱신할 성분을 무작위로 선택하는 무작위 순회 방식으로 수행할 수 있다.</p>
+</section>
+<section id="r" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="r"><span class="header-section-number">12.4</span> R</h2>
+<section id="메트로폴리스-헤이스팅스" class="level3" data-number="12.4.1">
+<h3 data-number="12.4.1" class="anchored" data-anchor-id="메트로폴리스-헤이스팅스"><span class="header-section-number">12.4.1</span> 메트로폴리스-헤이스팅스</h3>
+<p>예제 12.1.8의 정규-정규 모형에 대해 메트로폴리스-헤이스팅스 알고리즘을 구현해 보자. 먼저 <span class="math inline">\(Y\)</span>의 관측값을 선택하고 상수 <span class="math inline">\(\sigma,\mu,\tau\)</span>의 값을 정한다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> <span class="dv">2</span></span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>예제 12.1.8에서 설명했듯이 알고리즘의 1단계에 사용할 제안값의 표준편차도 선택해야 한다. 이 문제에서는 <span class="math inline">\(d=1\)</span>로 놓는다. 반복 횟수를 정하고 모의실험으로 추출한 값들을 채워 넣을 길이 <span class="math inline">\(10^4\)</span>의 벡터 <code>theta</code>를 할당한다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>niter <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">4</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,niter)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>이제 주 반복문을 실행한다. <span class="math inline">\(\theta\)</span>를 관측값 <code>y</code>로 초기화한 다음 예제 12.1.8에서 설명한 알고리즘을 실행한다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>theta[<span class="dv">1</span>] <span class="ot">&lt;-</span> y</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>niter){</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  theta.p <span class="ot">&lt;-</span> theta[i<span class="dv">-1</span>] <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>,<span class="dv">0</span>,d)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(y,theta.p,sigma) <span class="sc">*</span> <span class="fu">dnorm</span>(theta.p,mu,tau) <span class="sc">/</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    (<span class="fu">dnorm</span>(y,theta[i<span class="dv">-1</span>],sigma) <span class="sc">*</span> <span class="fu">dnorm</span>(theta[i<span class="dv">-1</span>],mu,tau))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  flip <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="fu">min</span>(r,<span class="dv">1</span>))</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  theta[i] <span class="ot">&lt;-</span> <span class="cf">if</span>(flip<span class="sc">==</span><span class="dv">1</span>) theta.p <span class="cf">else</span> theta[i<span class="dv">-1</span>]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>반복문 안의 각 줄을 살펴보자. <span class="math inline">\(\theta\)</span>의 제안값은 <code>theta.p</code>이며, 이전 <span class="math inline">\(\theta\)</span> 값에 평균이 0이고 표준편차가 <code>d</code>인 정규 확률변수를 더한 값이다. <code>rnorm</code>은 분산이 아니라 표준편차를 입력받는다는 것을 떠올리자. 비율 <code>r</code>은</p>
+<p><span class="math display">\[\frac{f_{\theta\mid Y}(x'\mid y)}{f_{\theta\mid Y}(x\mid y)}=
+\frac{e^{-\frac{1}{2\sigma^2}(y-x')^2}e^{-\frac{1}{2\tau^2}(x'-\mu)^2}}
+{e^{-\frac{1}{2\sigma^2}(y-x)^2}e^{-\frac{1}{2\tau^2}(x-\mu)^2}}\]</span></p>
+<p>이다. 여기서 <code>theta.p</code>가 <span class="math inline">\(x'\)</span>의 역할을 하고 <code>theta[i-1]</code>이 <span class="math inline">\(x\)</span>의 역할을 한다. 제안을 수락할지 거절할지 결정하는 동전 던지기는 <code>flip</code>이며, 앞면이 나올 확률은 <code>min(r,1)</code>이다. 앞면은 1, 뒷면은 0으로 표시한다. 마지막으로 동전이 앞면이면 <code>theta[i]</code>를 제안값으로 정하고, 그렇지 않으면 이전 값을 유지한다.</p>
+<p>이제 벡터 <code>theta</code>에는 모의실험으로 추출한 값이 모두 들어 있다. 보통 연쇄가 정상분포에 가까워질 시간을 주기 위해 초기 추출값의 일부를 버린다. 다음 코드는 추출값의 앞 절반을 버린다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> theta[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>(niter<span class="sc">/</span><span class="dv">2</span>))]</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>남은 추출값들이 어떤 모습인지 보려면 <code>hist(theta)</code>로 히스토그램을 만들 수 있다. 또한 <code>mean(theta)</code>와 <code>var(theta)</code> 같은 요약통계량을 계산할 수 있는데, 이들은 각각 표본평균과 표본분산을 준다.</p>
+</section>
+<section id="깁스" class="level3" data-number="12.4.2">
+<h3 data-number="12.4.2" class="anchored" data-anchor-id="깁스"><span class="header-section-number">12.4.2</span> 깁스</h3>
+<p>이제 부화 확률을 모르고 부화하지 않은 알은 보이지 않는 닭과 알 이야기인 예제 12.2.6에 대해 깁스 표본추출을 구현하자. 첫 단계는 <span class="math inline">\(X\)</span>의 관측값과 상수 <span class="math inline">\(\lambda,a,b\)</span>를 정하는 것이다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">1</span></span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>다음으로 반복 횟수를 정하고 결과를 저장할 공간을 할당한다. 모의실험으로 추출한 값들을 채울 길이 <span class="math inline">\(10^4\)</span>의 벡터 <code>p</code>와 <code>N</code>을 만든다.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>niter <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">4</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,niter)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,niter)</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>마지막으로 깁스 표본추출기를 실행할 준비가 되었다. <span class="math inline">\(p\)</span>와 <span class="math inline">\(N\)</span>을 각각 0.5와 <span class="math inline">\(2x\)</span>로 초기화한 뒤 예제 12.2.6에서 설명한 알고리즘을 실행한다.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>p[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>N[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>x</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>niter){</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  p[i] <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(<span class="dv">1</span>,x<span class="sc">+</span>a,N[i<span class="dv">-1</span>]<span class="sc">-</span>x<span class="sc">+</span>b)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  N[i] <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="fu">rpois</span>(<span class="dv">1</span>,lambda<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p[i]))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>다시 초기 추출값들을 버린다.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> p[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>(niter<span class="sc">/</span><span class="dv">2</span>))]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> N[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>(niter<span class="sc">/</span><span class="dv">2</span>))]</span></code></pre></div><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></div>
+<p>남은 추출값들이 어떤 모습인지 보려면 <code>hist(p)</code>와 <code>hist(N)</code>으로 히스토그램을 만들 수 있다. 그림 12.5는 이 방법으로 만들었다. <code>mean(p)</code>나 <code>median(p)</code> 같은 요약통계량도 계산할 수 있다.</p>
+</section>
+</section>
+<section id="연습문제" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="연습문제"><span class="header-section-number">12.5</span> 연습문제</h2>
+<ol type="1">
+<li><p>두 이산 확률변수 <span class="math inline">\(X\)</span>와 <span class="math inline">\(Y\)</span>의 결합 확률질량함수를 <span class="math inline">\(p(x,y)\)</span>라 하자. 깁스 표본추출기에서 사용한 간략한 표기처럼, <span class="math inline">\(p(x)\)</span>와 <span class="math inline">\(p(y)\)</span>를 각각 <span class="math inline">\(X\)</span>와 <span class="math inline">\(Y\)</span>의 주변 확률질량함수, <span class="math inline">\(p(x\mid y)\)</span>와 <span class="math inline">\(p(y\mid x)\)</span>를 각각 <span class="math inline">\(Y\)</span>가 주어진 <span class="math inline">\(X\)</span>와 <span class="math inline">\(X\)</span>가 주어진 <span class="math inline">\(Y\)</span>의 조건부 확률질량함수라 하자. <span class="math inline">\(Y\)</span>의 지지집합이 <span class="math inline">\(Y\mid X\)</span>의 조건부분포의 지지집합과 같다고 가정한다.</p>
+<p><em>옮긴이 주:</em> 지지집합 조건은 <span class="math inline">\(p(x)&gt;0\)</span>인 모든 <span class="math inline">\(x\)</span>에 대해 해석한다.</p>
+<ol type="a">
+<li>항등식 <span class="math inline">\(p(x)p(y\mid x)=p(y)p(x\mid y)\)</span>를 이용하여 주변 확률질량함수 <span class="math inline">\(p(y)\)</span>를 조건부 확률질량함수 <span class="math inline">\(p(x\mid y)\)</span>와 <span class="math inline">\(p(y\mid x)\)</span>로 나타내라.</li>
+</ol>
+<p><em>힌트:</em> 이 항등식을 <span class="math inline">\(p(x)/p(y)=p(x\mid y)/p(y\mid x)\)</span>로 다시 쓰고 합을 구하라.</p>
+<ol start="2" type="a">
+<li>두 조건부분포 <span class="math inline">\(p(x\mid y)\)</span>와 <span class="math inline">\(p(y\mid x)\)</span>가 결합분포 <span class="math inline">\(p(x,y)\)</span>를 결정하는 이유와 이 사실이 깁스 표본추출기와 어떤 관계가 있는지 설명하라.</li>
+</ol></li>
+<li><p>노드 <span class="math inline">\(n\)</span>개와 몇 개의 간선으로 이루어진 네트워크 <span class="math inline">\(G\)</span>가 있다. <span class="math inline">\(G\)</span>의 각 노드는 비어 있거나 점유되어 있을 수 있다. 입자들이 너무 밀집하지 않도록 <span class="math inline">\(G\)</span>의 노드에 입자를 배치하려 한다. 따라서 각 노드에 입자가 최대 하나만 있고, 점유된 노드의 이웃 노드는 어느 것도 점유되어 있지 않은 입자 배치를 <em>가능한 배치</em>라고 정의한다.</p>
+<p>가능한 모든 배치에 걸친 균등분포를 정상분포로 갖는 마르코프 연쇄를 구성하라. 마르코프 연쇄의 전이 규칙을 명확히 지정하고 정상분포가 균등분포인 이유를 설명하라.</p></li>
+<li><p>이 문제에서는 MCMC 기법을 영상 분석에 적용하는 예를 살펴본다. 흑백 픽셀이 <span class="math inline">\(L\times L\)</span> 격자를 이루는 2차원 영상을 생각하자. <span class="math inline">\(j=1,\ldots,L^2\)</span>에 대해 <span class="math inline">\(Y_j\)</span>를 <span class="math inline">\(j\)</span>번째 픽셀이 흰색이라는 사건의 지시확률변수라 하자. 픽셀을 네트워크의 노드로 보면, 한 픽셀의 이웃은 바로 위, 아래, 왼쪽, 오른쪽에 있는 픽셀이다(경계의 경우는 제외한다).</p>
+<p><span class="math inline">\(i\sim j\)</span>를 ‘<span class="math inline">\(i\)</span>와 <span class="math inline">\(j\)</span>가 이웃이다’라는 뜻으로 쓰자. <span class="math inline">\(\mathbf{Y}=(Y_1,\ldots,Y_{L^2})\)</span>의 결합 확률질량함수에 흔히 사용되는 모형은 다음과 같다.</p>
+<p><span class="math display">\[
+P(\mathbf{Y}=\mathbf{y})\propto
+\exp\left(\beta\sum_{(i,j):\,i\sim j}I(y_i=y_j)\right).
+\]</span></p>
+<p><em>옮긴이 주:</em> 원문의 합 표기는 이웃쌍을 한 번씩 세는지 두 방향의 순서쌍으로 세는지 명시하지 않는다. 풀이할 때 선택한 관례를 밝혀야 한다.</p>
+<p><span class="math inline">\(\beta\)</span>가 양수이면 이 모형은 이웃 픽셀들이 같은 색을 선호한다는 뜻이다. 이 결합 확률질량함수의 정규화 상수는 가능한 모든 <span class="math inline">\(2^{L^2}\)</span>개 배치에 걸친 합이므로 계산하기 매우 어려울 수 있다. 이것이 MCMC를 이용해 이 모형에서 표본을 생성하는 동기가 된다.</p>
+<ol type="a">
+<li><p>알려진 특정 <span class="math inline">\(\beta\)</span> 값에 대해 <span class="math inline">\(\mathbf{Y}\)</span>의 결합 확률질량함수에서 무작위 표본을 생성하려 한다고 하자. 픽셀들을 정해진 순서로 하나씩 순회하는 깁스 표본추출을 이용하여 이를 수행하는 방법을 설명하라.</p></li>
+<li><p>이제 위치 하나를 균등하게 무작위로 선택하여 그 값을 뒤집는 제안에 기초한 메트로폴리스–헤이스팅스 알고리즘을 이 문제에 대해 제시하라.</p></li>
+</ol></li>
+</ol>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>옮긴이 주: 원문의 <code>p[i-1]</code>을 <code>p[i]</code>로 고쳤다. 체계적 순회 깁스 표본추출에서는 두 번째 갱신이 방금 추출한 값에 조건부여해야 한다. 원문처럼 이전 값을 사용하면 두 성분을 이전 상태에서 동시에 갱신하므로 일반적으로 원하는 결합 정상분포가 보장되지 않는다.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>옮긴이 주: 원문의 <code>N &lt;- N[-1:(niter/2))]</code>에는 괄호 오류가 있어 위와 같이 고쳤다.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "복사완료!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "복사완료!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./11-마르코프-연쇄.html" class="pagination-link" aria-label="마르코프 연쇄">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">마르코프 연쇄</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./13-포아송-과정.html" class="pagination-link" aria-label="포아송 과정">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">포아송 과정</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
